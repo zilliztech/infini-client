@@ -353,3 +353,9 @@ export const getDefaultTitle = (measure: Measure) => {
     label,
   };
 };
+
+export const getRangeSql = (colName: string, source: string): string => {
+  let v = colName;
+  const sql = `SELECT MIN(${v}) AS minimum, MAX(${v}) AS maximum FROM ${source}`;
+  return sql;
+};

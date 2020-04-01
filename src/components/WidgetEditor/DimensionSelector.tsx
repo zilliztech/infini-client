@@ -8,6 +8,7 @@ import Input from '@material-ui/core/Input';
 import AccessTime from '@material-ui/icons/AccessTime';
 import Clear from '@material-ui/icons/Clear';
 import {rootContext} from '../../contexts/RootContext';
+import {queryMegaWiseContext} from '../../contexts/QueryMegaWiseContext';
 import {queryContext} from '../../contexts/QueryContext';
 import {I18nContext} from '../../contexts/I18nContext';
 import {DimensionSelectorProps, Dimension} from '../../types';
@@ -15,6 +16,7 @@ import {TimeBin, timeBinMap} from '../../utils/Time';
 import {
   calStatus,
   genRangeQuery,
+  getRangeSql,
   filterColumns,
   genEffectClickOutside,
 } from '../../utils/EditorHelper';
@@ -42,6 +44,7 @@ const useStyles = makeStyles(theme => genDimensionSelectorStyles(theme) as any) 
 
 const DimensionSelector: FC<DimensionSelectorProps> = (props: DimensionSelectorProps) => {
   const {getData} = useContext(queryContext);
+  const {binRangeRequest} = useContext(queryMegaWiseContext);
   const {nls} = useContext(I18nContext);
   const {setDialog, isArctern} = useContext(rootContext);
   const theme = useTheme();
@@ -159,8 +162,22 @@ const DimensionSelector: FC<DimensionSelectorProps> = (props: DimensionSelectorP
       return;
     }
     const params = genRangeQuery(col_name, source);
-    const res = await getData(params);
-    const {minimum, maximum} = res[0];
+    let res: any;
+    if (isArctern) {
+      res = await getData(params);
+      res = res[0];
+    } else {
+      const rangeSql = getRangeSql(col_name, source);
+      res = await binRangeRequest({
+        query: [
+          {
+            sql: rangeSql,
+            id,
+          },
+        ],
+      });
+    }
+    const {minimum, maximum} = res;
     if (minimum === null || minimum === undefined || maximum === null || maximum === undefined) {
       onReceiveInvalidBinRange();
       return;
@@ -196,13 +213,27 @@ const DimensionSelector: FC<DimensionSelectorProps> = (props: DimensionSelectorP
       addDimension({...newDimension, isBinned: false}, onAdd);
     } else {
       const params = genRangeQuery(expression, source);
-      const res = await getData(params);
-      const {minimum, maximum} = res[0];
+      let _res: any;
+      if (isArctern) {
+        _res = await getData(params);
+        _res = _res[0];
+      } else {
+        const rangeSql = getRangeSql(expression, source);
+        _res = await binRangeRequest({
+          query: [
+            {
+              sql: rangeSql,
+              id,
+            },
+          ],
+        });
+      }
+      const {minimum, maximum} = _res;
       if (typeof minimum !== 'number' || typeof maximum !== 'number') {
         onReceiveInvalidBinRange();
         return;
       }
-      addDimension(_addBinRange(newDimension, res[0]), onAdd);
+      addDimension(_addBinRange(newDimension, _res), onAdd);
     }
   };
 
