@@ -835,7 +835,7 @@ export const popupContentBuilder = (
   return content + `</ul>`;
 };
 
-export const getWidgetTitle = (config: WidgetConfig, nls: any) => {
+export const getWidgetTitle = (config: WidgetConfig, nls: any, isArctern: boolean=true) => {
   const {title, source, measures = []} = config;
   if (title) {
     return title;
@@ -845,5 +845,5 @@ export const getWidgetTitle = (config: WidgetConfig, nls: any) => {
     return `${nls[`label_widgetEditor_expression_${expression}`] || ''} ${label}`;
   }
 
-  return formatSource(source);
+  return isArctern ? formatSource(source) : source;
 };

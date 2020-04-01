@@ -62,7 +62,7 @@ const WidgetWrapper: FC<DefaultWidgetProps> = props => {
   const {getData} = useContext(queryContext);
   const {nls} = useContext(I18nContext);
   const theme = useTheme();
-  const {widgetSettings} = useContext(rootContext);
+  const {widgetSettings, isArctern} = useContext(rootContext);
   const classes = useStyles();
   const container = useRef<HTMLDivElement>(null);
   const {
@@ -249,7 +249,7 @@ const WidgetWrapper: FC<DefaultWidgetProps> = props => {
             onMouseLeave={onMouseLeave}
           >
             <div className={classes.header}>
-              <h3>{getWidgetTitle(config, nls)}</h3>
+              <h3>{getWidgetTitle(config, nls, isArctern)}</h3>
               <div className={clsx(classes.actions, isHover ? '' : classes.hidden)}>
                 <span className={`${classes.link} ${isFilterExist ? '' : classes.hidden}`}>
                   <div

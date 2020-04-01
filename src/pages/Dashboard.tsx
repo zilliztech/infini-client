@@ -5,6 +5,7 @@ import Header from './containers/Header';
 import WidgetWrapper from './containers/WidgetWrapper';
 import {rootContext} from '../contexts/RootContext';
 import {queryContext} from '../contexts/QueryContext';
+import {queryMegaWiseContext} from '../contexts/QueryMegaWiseContext';
 import EmptyChart from '../components/common/EmptyWidget';
 import {getDefaultConfig, getWidgetSql} from '../utils/Configs';
 import {DataQuery, getLinkData} from '../utils/Query';
@@ -32,7 +33,8 @@ const _getLayouts = (configs: WidgetConfig[]) =>
 const Dashboard: FC<DashboardProps> = ({dashboard, setDashboard}) => {
   const {configs, id, demo, sources} = dashboard;
   const {getData, isFirefox} = useContext(queryContext);
-  const {widgetSettings} = useContext(rootContext);
+  const {getData: getMegaWiseData} = useContext(queryMegaWiseContext);
+  const {widgetSettings, isArctern} = useContext(rootContext);
   const theme = useTheme();
   // get sourceOptions like dimensions options, measures options
   const classes = useStyles(theme);
@@ -41,7 +43,7 @@ const Dashboard: FC<DashboardProps> = ({dashboard, setDashboard}) => {
   const dataCache = useRef<DataCache>({});
   const dataQueryCache = useRef<DataQuery>(
     new DataQuery({
-      requester: getData,
+      requester: isArctern ? getData : getMegaWiseData,
       onRequest: (query: Query) => {
         setMeta((meta: Meta) => {
           const copiedMeta = cloneObj(meta);

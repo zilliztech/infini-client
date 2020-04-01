@@ -1,5 +1,6 @@
-import React, {Fragment} from 'react';
+import React, {useContext, Fragment} from 'react';
 import {useTheme} from '@material-ui/core/styles';
+import {rootContext} from '../../contexts/RootContext';
 import {format} from 'd3';
 import {makeStyles} from '@material-ui/core/styles';
 import {customOptsStyle} from '../../utils/Theme';
@@ -28,6 +29,7 @@ interface ISourceStats {
 }
 
 const SourceStats = (props: ISourceStats) => {
+  const {isArctern} = useContext(rootContext);
   const {data, sources, totals} = props;
   const classes = useStyles() as any;
   const theme = useTheme();
@@ -41,7 +43,7 @@ const SourceStats = (props: ISourceStats) => {
         let label = (
           <span className={classes.wrapper}>
             <span style={{color: theme.palette.primary.main}}>{`${format(',.0f')(c || 0)}`}</span>
-            <span>{` of ${format(',.0f')(total)} · ${formatSource(s)}`}</span>
+            <span>{` of ${format(',.0f')(total)} · ${isArctern ? formatSource(s) : s}`}</span>
           </span>
         );
         return {

@@ -3,6 +3,7 @@ import {useTheme, makeStyles} from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import EditableLabel from '../common/EditableLabel';
 import {I18nContext} from '../../contexts/I18nContext';
+import {rootContext} from '../../contexts/RootContext';
 import {CONFIG} from '../../utils/Consts';
 import WidgetPlaceholder from './WidgetPlaceholder';
 import {getWidgetTitle} from '../../utils/WidgetHelpers';
@@ -10,6 +11,7 @@ import {genWidgetEditorStyle} from './index.style';
 import './index.scss';
 const useStyles = makeStyles(theme => genWidgetEditorStyle(theme) as any) as Function;
 const WidgetView = (props: any) => {
+  const {isArctern} = useContext(rootContext);
   const {nls} = useContext(I18nContext);
   const theme = useTheme();
   const classes = useStyles(theme);
@@ -27,7 +29,7 @@ const WidgetView = (props: any) => {
       <div className={classes.widgetTitle}>
         <EditableLabel
           onChange={onTitleChange}
-          label={getWidgetTitle(config, nls)}
+          label={getWidgetTitle(config, nls, isArctern)}
           labelClass={classes.widgetTitle}
         />
         <Divider />
