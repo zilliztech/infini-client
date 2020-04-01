@@ -12,6 +12,7 @@ import {Redirect} from 'react-router-dom';
 import {authContext} from '../contexts/AuthContext';
 import {I18nContext} from '../contexts/I18nContext';
 import {queryContext} from '../contexts/QueryContext';
+import {queryContext as queryMegaWiseContext} from '../contexts/QueryMegaWiseContext';
 import {rootContext} from '../contexts/RootContext';
 import InfoDialog from '../components/common/Dialog';
 const MD5 = require('md5-es').default;
@@ -43,6 +44,7 @@ const Login: FC = () => {
   const {nls} = useContext(I18nContext);
   const {auth, setAuthStatus} = useContext(authContext);
   const {login} = useContext(queryContext);
+  const {login: loginMega} = useContext(queryMegaWiseContext);
   const {dialog, setDialog, isArctern} = useContext(rootContext);
   const [email, setEmail] = useState('demo');
   const [password, setPassword] = useState('demo');
@@ -61,21 +63,37 @@ const Login: FC = () => {
         onConfirm: handleDialogClose,
       });
     } else {
-      login({username: email, password: isArctern ? password : MD5.hash(password)}).then(
-        (res: any) => {
-          // token used in both | expired in Arctern | connId in Megawise
-          const {token, expired, connId} = res.data;
-          setAuthStatus({userId: email, token, expired, connId});
-        },
-        () => {
-          setDialog({
-            open: true,
-            title: nls.label_wrong_happened,
-            content: nls.tip_wrong_password,
-            onConfirm: handleDialogClose,
-          });
-        }
-      );
+      if (isArctern) {
+        login({username: email, password: MD5.hash(password)}).then(
+          (res: any) => {
+            const {token, expired} = res.data;
+            setAuthStatus({userId: email, token, expired});
+          },
+          () => {
+            setDialog({
+              open: true,
+              title: nls.label_wrong_happened,
+              content: nls.tip_wrong_password,
+              onConfirm: handleDialogClose,
+            });
+          }
+        );
+      } else {
+        loginMega({username: email, password}).then(
+          (res: any) => {
+            const {token, expired, connId} = res.data;
+            setAuthStatus({userId: email, token, expired, connId});
+          },
+          () => {
+            setDialog({
+              open: true,
+              title: nls.label_wrong_happened,
+              content: nls.tip_wrong_password,
+              onConfirm: handleDialogClose,
+            });
+          }
+        );
+      }
     }
   };
   const handleDialogClose = () => {

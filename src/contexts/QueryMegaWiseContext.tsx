@@ -12,7 +12,7 @@ const axiosInstance = axios.create();
 export const queryContext = createContext<any>({});
 
 const {Provider} = queryContext;
-const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
+const QueryMegaProvider: FC<{children: ReactNode}> = ({children}) => {
   const {setUnauthStatus, setAuthStatus} = useContext(authContext);
   const {widgetSettings, setDialog, setSnackbar, globalConfig} = useContext(rootContext);
   const {nls} = useContext(I18nContext);
@@ -286,4 +286,4 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
     </Provider>
   );
 };
-export default QueryProvider;
+export default QueryMegaProvider;
