@@ -16,13 +16,11 @@ const MainContainer: FC<any> = () => {
     return <Redirect to="/config" />;
   }
   return (
-    <>
-      <Switch>
-        <Route exact path="/" component={Dashboards} />
-        <Route path="/bi/:id" component={Bi} />
-        <Route component={Page404} />
-      </Switch>
-    </>
+    <Switch>
+      <Route exact path="/" component={Dashboards} />
+      <Route path="/bi/:id" component={Bi} />
+      <Route component={Page404} />
+    </Switch>
   );
 };
 
