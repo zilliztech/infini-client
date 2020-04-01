@@ -6,6 +6,7 @@ import {namespace} from '../utils/Helpers';
 
 // interface
 interface IRootContext {
+  serverType:string;
   theme: any;
   saveTheme: Function;
   themes: string[];
@@ -56,6 +57,7 @@ function importThemes(r: any) {
 importThemes(require.context('../themes', false, /Theme\.ts$/));
 
 export const rootContext = React.createContext<IRootContext>({
+  serverType: 'spark',
   theme: {},
   themes: [],
   themeMap: {},
@@ -159,6 +161,7 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
   return (
     <Provider
       value={{
+        serverType: 'spark',
         theme,
         themes,
         themeMap,
