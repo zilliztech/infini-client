@@ -9,9 +9,9 @@ import {DBSetting} from '../types';
 import {isDashboardReady, getDashboardById} from '../utils/Dashboard';
 
 const axiosInstance = axios.create();
-export const queryContext = createContext<any>({});
+export const queryMegaWiseContext = createContext<any>({});
 
-const {Provider} = queryContext;
+const {Provider} = queryMegaWiseContext;
 const QueryMegaProvider: FC<{children: ReactNode}> = ({children}) => {
   const {setUnauthStatus, setAuthStatus} = useContext(authContext);
   const {widgetSettings, setDialog, setSnackbar, globalConfig} = useContext(rootContext);

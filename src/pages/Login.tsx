@@ -12,7 +12,7 @@ import {Redirect} from 'react-router-dom';
 import {authContext} from '../contexts/AuthContext';
 import {I18nContext} from '../contexts/I18nContext';
 import {queryContext} from '../contexts/QueryContext';
-import {queryContext as queryMegaWiseContext} from '../contexts/QueryMegaWiseContext';
+import {queryMegaWiseContext} from '../contexts/QueryMegaWiseContext';
 import {rootContext} from '../contexts/RootContext';
 import InfoDialog from '../components/common/Dialog';
 const MD5 = require('md5-es').default;
@@ -64,7 +64,7 @@ const Login: FC = () => {
       });
     } else {
       if (isArctern) {
-        login({username: email, password: MD5.hash(password)}).then(
+        login({username: email, password}).then(
           (res: any) => {
             const {token, expired} = res.data;
             setAuthStatus({userId: email, token, expired});
@@ -79,7 +79,7 @@ const Login: FC = () => {
           }
         );
       } else {
-        loginMega({username: email, password}).then(
+        loginMega({username: email, password: MD5.hash(password)}).then(
           (res: any) => {
             const {token, expired, connId} = res.data;
             setAuthStatus({userId: email, token, expired, connId});
