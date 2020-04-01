@@ -12,7 +12,8 @@ npm/yarn start
 ```
 
 ## Support Database
-* postgres (no map support)
+* postgres (partial support)
+* mysql (not yet)
 * arctern (connecting)
 * magewise
 
