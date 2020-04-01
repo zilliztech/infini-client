@@ -47,7 +47,17 @@ export type Query = {
   // query time
   timestamp?: number;
 };
-
+// a typical MegaWise query type
+export type MegaWiseQuery = {
+  // widget identity
+  id: string;
+  // widget type
+  type: string;
+  // database sql
+  sql: string;
+  // query time
+  timestamp?: number;
+};
 // store request information
 // it can be used as
 type MetaInfo = {

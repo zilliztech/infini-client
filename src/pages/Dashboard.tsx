@@ -13,7 +13,17 @@ import {cloneObj} from '../utils/Helpers';
 import {MODE, DASH_ACTIONS} from '../utils/Consts';
 import {fullLayoutWidth, fullLayoutHeight} from '../utils/Layout';
 import configsReducer from '../utils/reducers/configsReducer';
-import {WidgetConfig, DashboardProps, Mode, Layout, Query, Data, DataCache, Meta} from '../types';
+import {
+  WidgetConfig,
+  DashboardProps,
+  Mode,
+  Layout,
+  Query,
+  MegaWiseQuery,
+  Data,
+  DataCache,
+  Meta,
+} from '../types';
 import 'react-grid-layout/css/styles.css';
 import './Dashboard.scss';
 const useStyles = makeStyles(theme => ({
@@ -41,33 +51,59 @@ const Dashboard: FC<DashboardProps> = ({dashboard, setDashboard}) => {
   const [meta, setMeta] = useState<Meta>({});
   const [sourceData, setSourceData] = useState<DataCache>({});
   const dataCache = useRef<DataCache>({});
+  const onRequest = (query: Query | MegaWiseQuery) => {
+    setMeta((meta: Meta) => {
+      const copiedMeta = cloneObj(meta);
+      const {params, id} = query as Query;
+      if (sources.includes(id)) {
+        return meta;
+      }
+      copiedMeta[query.id] = {params, id, loading: true};
+      return copiedMeta;
+    });
+  };
+  const onMegaWiseRequest = (query: Query | MegaWiseQuery) => {
+    setMeta((meta: Meta) => {
+      const copiedMeta = cloneObj(meta);
+      const {sql, id} = query as MegaWiseQuery;
+      if (sources.includes(id)) {
+        return meta;
+      }
+      copiedMeta[query.id] = {sql, id, loading: true};
+      return copiedMeta;
+    });
+  };
+  const onResponse = (query: Query | MegaWiseQuery, data: Data) => {
+    dataCache.current[query.id] = data;
+    setMeta((meta: Meta) => {
+      const copiedMeta = cloneObj(meta);
+      const {params, id} = query as Query;
+      if (sources.includes(id)) {
+        setSourceData((prev: any) => ({...prev, [id]: data}));
+        return meta;
+      }
+      copiedMeta[query.id] = {params, id, loading: false};
+      return copiedMeta;
+    });
+  };
+  const onMegaWiseResponse = (query: Query | MegaWiseQuery, data: Data) => {
+    dataCache.current[query.id] = data;
+    setMeta((meta: Meta) => {
+      const copiedMeta = cloneObj(meta);
+      const {sql, id} = query as MegaWiseQuery;
+      if (sources.includes(id)) {
+        setSourceData((prev: any) => ({...prev, [id]: data}));
+        return meta;
+      }
+      copiedMeta[query.id] = {sql, id, loading: false};
+      return copiedMeta;
+    });
+  };
   const dataQueryCache = useRef<DataQuery>(
     new DataQuery({
       requester: isArctern ? getData : getMegaWiseData,
-      onRequest: (query: Query) => {
-        setMeta((meta: Meta) => {
-          const copiedMeta = cloneObj(meta);
-          const {params, id} = query;
-          if (sources.includes(id)) {
-            return meta;
-          }
-          copiedMeta[query.id] = {params, id, loading: true};
-          return copiedMeta;
-        });
-      },
-      onResponse: (query: Query, data: Data) => {
-        dataCache.current[query.id] = data;
-        setMeta((meta: Meta) => {
-          const copiedMeta = cloneObj(meta);
-          const {params, id} = query;
-          if (sources.includes(id)) {
-            setSourceData((prev: any) => ({...prev, [id]: data}));
-            return meta;
-          }
-          copiedMeta[query.id] = {params, id, loading: false};
-          return copiedMeta;
-        });
-      },
+      onRequest: isArctern ? onRequest : onMegaWiseRequest,
+      onResponse: isArctern ? onResponse : onMegaWiseResponse,
     })
   );
 

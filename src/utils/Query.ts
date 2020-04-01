@@ -1,4 +1,4 @@
-import {WidgetConfig, Query, Params, Data, DataCache} from '../types';
+import {WidgetConfig, Query, MegaWiseQuery, Params, Data, DataCache} from '../types';
 import {cloneObj} from './Helpers';
 
 // requester
@@ -13,8 +13,8 @@ type Cache = Map<
   }
 >;
 
-type onResponse = (query: Query, data: Data) => void;
-type onRequest = (query: Query) => void;
+type onResponse = (query: Query | MegaWiseQuery, data: Data) => void;
+type onRequest = (query: Query | MegaWiseQuery) => void;
 
 interface IQuery {
   // query cache, used for store a map of last query,
