@@ -1,14 +1,11 @@
 import {makeSetting} from '../../utils/Setting';
-import {orFilterGetter} from '../../utils/Filters';
 import {CONFIG, COLUMN_TYPE, RequiredType} from '../../utils/Consts';
 import {cloneObj} from '../../utils/Helpers';
-import {
-  getColType,
-  // isTextCol
-} from '../../utils/ColTypes';
+import {getColType, isTextCol} from '../../utils/ColTypes';
 import {queryDistinctValues, MeasureParams, parseTocolorItems} from '../Utils/settingHelper';
-import {DEFAULT_MAX_POINTS_NUM, KEY} from '../Utils/Map';
+import {DEFAULT_MAX_POINTS_NUM, polygonFilterGetter, KEY} from '../Utils/Map';
 import {measureGetter} from '../../utils/WidgetHelpers';
+import {vegaGen, vegaPointGen, vegaPointWeihtedGen} from '../Utils/Vega';
 import {cleanLastSelfFilter, addSelfFilter} from '../../widgets/Utils/settingHelper';
 import {MapMeasure} from '../common/MapChart.type';
 
@@ -63,17 +60,7 @@ const onDeletePointMapColor = ({setConfig}: any) => {
 const pointMapConfigHandler = (config: any) => {
   let newConfig = cloneObj(config);
   if (!newConfig.bounds) {
-    newConfig.bounds = {
-      _sw: {
-        lng: -73.5,
-        lat: 40.1,
-      },
-      _ne: {
-        lng: -70.5,
-        lat: 41.1,
-      },
-    };
-    // return newConfig;
+    return newConfig;
   }
   let lon = measureGetter(newConfig, KEY.LONGTITUDE) as MapMeasure;
   let lat = measureGetter(newConfig, KEY.LATITUDE) as MapMeasure;
@@ -81,31 +68,53 @@ const pointMapConfigHandler = (config: any) => {
     return newConfig;
   }
 
-  const {_sw, _ne} = newConfig.bounds;
+  lon.domainStart = newConfig.bounds._sw.lng;
+  lon.domainEnd = newConfig.bounds._ne.lng;
+  lon.range = newConfig.width;
+  lat.domainStart = newConfig.bounds._sw.lat;
+  lat.domainEnd = newConfig.bounds._ne.lat;
+  lat.range = newConfig.height;
 
-  let colorMeasure = measureGetter(newConfig, 'color');
-  const pointMeasure = {
-    expression: 'project',
-    value: `ST_Point (${lon.value}, ${lat.value})`,
-    as: 'point',
-  };
-  newConfig.measures = [pointMeasure];
-  if (colorMeasure) {
-    newConfig.measures.push(colorMeasure);
-  }
+  let colorMeasure = measureGetter(newConfig, 'color')!;
+  const isPointVega = colorMeasure && isTextCol(colorMeasure.type);
+  const isMultipleColor = !!colorMeasure;
+
   newConfig.limit = newConfig.points || DEFAULT_MAX_POINTS_NUM;
 
-  newConfig.selfFilter.bounds = {
+  newConfig.selfFilter.xBounds = {
     type: 'filter',
     expr: {
-      type: 'st_within',
-      x: lon.value,
-      y: lat.value,
-      px: [_sw.lng, _sw.lng, _ne.lng, _ne.lng, _sw.lng],
-      py: [_sw.lat, _ne.lat, _ne.lat, _sw.lat, _sw.lat],
+      type: 'between',
+      field: lon.value,
+      left: lon.domainStart > lon.domainEnd ? lon.domainEnd : lon.domainStart,
+      right: lon.domainStart > lon.domainEnd ? lon.domainStart : lon.domainEnd,
     },
   };
-  newConfig.filter = orFilterGetter(newConfig.filter);
+
+  newConfig.selfFilter.yBounds = {
+    type: 'filter',
+    expr: {
+      type: 'between',
+      field: lat.value,
+      left: lat.domainStart > lat.domainEnd ? lat.domainEnd : lat.domainStart,
+      right: lat.domainStart > lat.domainEnd ? lat.domainStart : lat.domainEnd,
+    },
+  };
+
+  newConfig.filter = polygonFilterGetter(newConfig.filter);
+
+  // multiple color vs solid color
+  const as = newConfig.measures.map((m: any) => m.as);
+  const rect = as.map((a: string) => `rect.${a}`);
+  const vega = isPointVega
+    ? vegaPointGen(newConfig)
+    : isMultipleColor
+    ? vegaPointWeihtedGen(newConfig, ['gradient'])
+    : vegaGen(newConfig, ['solid']);
+  const param = `${rect.join(' , ')}`;
+  // gen vega
+  newConfig.renderSelect = `plot_scatter_2d(${param}, '${vega}')`;
+  newConfig.renderAs = `rect(${as.join(' , ')})`;
   return newConfig;
 };
 
@@ -117,14 +126,14 @@ const settings = makeSetting({
       type: RequiredType.REQUIRED,
       key: KEY.LONGTITUDE,
       short: 'longtitude',
-      expressions: ['gis_point_lon'],
+      expressions: ['gis_mapping_lon'],
       columnTypes: [COLUMN_TYPE.NUMBER],
     },
     {
       type: RequiredType.REQUIRED,
       key: KEY.LATITUDE,
       short: 'latitude',
-      expressions: ['gis_point_lat'],
+      expressions: ['gis_mapping_lat'],
       columnTypes: [COLUMN_TYPE.NUMBER],
     },
     {
@@ -141,6 +150,9 @@ const settings = makeSetting({
   enable: true,
   isServerRender: true,
   configHandler: pointMapConfigHandler,
+  onAfterSqlCreate: (sql: string, config: any): string => {
+    return `SELECT ${config.renderSelect} from (${sql}) as ${config.renderAs}`;
+  },
 });
 
 export default settings;

@@ -1,5 +1,7 @@
 import {measureGetter, dimensionGetter} from '../../utils/WidgetHelpers';
 import {MapChartConfig} from '../common/MapChart.type';
+import {SqlParser} from 'infinivis-core';
+const parseExpression = SqlParser.parseExpression;
 
 // Map related consts
 export const DEFAULT_MAP_POINT_SIZE = 3;
@@ -124,4 +126,35 @@ export const onMapLoaded = (config: MapChartConfig, getMapBound: Function) => {
   }
 
   return Promise.resolve(-1);
+};
+
+export const polygonFilterGetter = (filters: any = {}) => {
+  let newFilters: any = {},
+    mapDraws: any = [],
+    colorItems: any = [];
+
+  Object.keys(filters).forEach((f: any) => {
+    checkIsDraw(filters[f])
+      ? mapDraws.push(parseExpression(filters[f].expr))
+      : colorItems.push(parseExpression(filters[f].expr));
+  });
+  if (mapDraws.length > 0 && colorItems.length === 0) {
+    newFilters.polygon = {
+      type: 'filter',
+      expr: mapDraws.join(` OR `),
+    };
+  }
+  if (mapDraws.length === 0 && colorItems.length > 0) {
+    newFilters.polygon = {
+      type: 'filter',
+      expr: colorItems.join(` OR `),
+    };
+  }
+  if (mapDraws.length > 0 && colorItems.length > 0) {
+    newFilters.polygon = {
+      type: 'filter',
+      expr: `(${colorItems.join(` OR `)}) AND (${mapDraws.join(` OR `)})`,
+    };
+  }
+  return newFilters;
 };
