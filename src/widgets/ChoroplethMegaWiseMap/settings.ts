@@ -84,7 +84,7 @@ const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapCo
 };
 
 const settings = makeSetting<ChoroplethMapConfig>({
-  type: 'ChoroplethMap',
+  type: 'ChoroplethMegaWiseMap',
   dimensions: [
     {
       type: RequiredType.REQUIRED,

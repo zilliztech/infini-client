@@ -75,6 +75,8 @@ const {Provider} = rootContext;
 
 // put global singletons here: dialog, tooltip...
 const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
+  // database type
+  const isArctern = true;
   // color theme
   const auth = window.localStorage.getItem(namespace(['login'], 'userAuth'));
   const currTheme = (auth && JSON.parse(auth).theme) || themes[0];
@@ -88,7 +90,21 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
   const _tooltipContent = useRef<HTMLDivElement>(null);
   const _tooltipWrapper = useRef<HTMLDivElement>(null);
   const _timeout: any = useRef(null);
-
+  const keys = Object.keys(widgetSettings);
+  if (isArctern) {
+    keys.forEach((key: string) => {
+      if (key.indexOf('MegaWise') !== -1) {
+        delete widgetSettings[key];
+      }
+    });
+  } else {
+    ['PointMap, GeoHeatMap, ChoroplethMap'].forEach((key: string) => delete widgetSettings[key]);
+  }
+  useEffect(() => {
+    if (_tooltipWrapper.current) {
+      _tooltipWrapper.current.style.left = `-999999px`;
+    }
+  }, []);
   const saveTheme = (theme: string) => {
     const auth = window.localStorage.getItem(namespace(['login'], 'userAuth'));
     if (auth) {
@@ -99,7 +115,6 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
     }
     setTheme(theme);
   };
-
   // tooltip is kind special component in React World
   // most time we need to keep updating the tooltip on mouse moving
   // but we don't want react to keep rerending the whole app
@@ -152,16 +167,11 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
       }
     }, timeout);
   };
-  useEffect(() => {
-    if (_tooltipWrapper.current) {
-      _tooltipWrapper.current.style.left = `-999999px`;
-    }
-  }, []);
 
   return (
     <Provider
       value={{
-        isArctern: true,
+        isArctern,
         theme,
         themes,
         themeMap,
