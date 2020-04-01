@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => genDimensionSelectorStyles(theme) as any) 
 const DimensionSelector: FC<DimensionSelectorProps> = (props: DimensionSelectorProps) => {
   const {getData} = useContext(queryContext);
   const {nls} = useContext(I18nContext);
-  const {setDialog} = useContext(rootContext);
+  const {setDialog, isArctern} = useContext(rootContext);
   const theme = useTheme();
   const classes = useStyles(theme);
   const {
