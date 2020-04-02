@@ -46,6 +46,7 @@ const MapboxGl: FC<MapChartProps> = props => {
   const mapResizeTimeout = useRef<any>(null);
   const movingThrottle = 350;
   let data = Array.isArray(props.data) ? props.data[0] : `data:image/png;base64,${props.data}`;
+
   // create map
   useEffect(() => {
     const mapbox = new mapboxgl.Map({
@@ -164,6 +165,7 @@ const MapboxGl: FC<MapChartProps> = props => {
     if (!map) {
       return;
     }
+
     let d = typeof data !== 'string' ? TRANSPARENT_PNG : data;
     if (imageSourceCache.current) {
       const bounds = map.getBounds();
