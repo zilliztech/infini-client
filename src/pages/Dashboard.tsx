@@ -7,7 +7,7 @@ import {rootContext} from '../contexts/RootContext';
 import {queryContext} from '../contexts/QueryContext';
 import {queryMegaWiseContext} from '../contexts/QueryMegaWiseContext';
 import EmptyChart from '../components/common/EmptyWidget';
-import {getDefaultConfig, getWidgetSql} from '../utils/Configs';
+import {getDefaultConfig, getWidgetSql, getMegaWiseWidgetSql} from '../utils/Configs';
 import {DataQuery, getLinkData} from '../utils/Query';
 import {DataQuery as DataQueryMegaWise} from '../utils/QueryMegaWise';
 import {cloneObj} from '../utils/Helpers';
@@ -133,7 +133,11 @@ const Dashboard: FC<DashboardProps> = ({dashboard, setDashboard}) => {
       isFirstRun.current = false;
     }
     // parse configs to querys, create cross filter nodes and sqls
-    let querys = getWidgetSql(widgetConfigs, sources, widgetSettings);
+    let querys = (isArctern ? getWidgetSql : getMegaWiseWidgetSql)(
+      widgetConfigs,
+      sources,
+      widgetSettings
+    );
     // send to the backend
     dataQueryCache.current.q(querys);
     // eslint-disable-next-line react-hooks/exhaustive-deps
