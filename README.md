@@ -10,6 +10,7 @@ vim src/utils/Endpoints.ts
 * Install dependencies
 ```
 npm/yarn install
+```
 
 * start the server
 ```
