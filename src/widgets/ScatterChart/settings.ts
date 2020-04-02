@@ -72,8 +72,8 @@ const scatterConfigHandler = (config: any) => {
   const copiedConfig = cloneObj(config);
   const xMeasure = measureGetter(config, 'x');
   const yMeasure = measureGetter(config, 'y');
-  const colorMeasure = measureGetter(config, 'color');
-  const sizeMeasure = measureGetter(config, 'size');
+  // const colorMeasure = measureGetter(config, 'color');
+  // const sizeMeasure = measureGetter(config, 'size');
 
   if (!xMeasure || !yMeasure) {
     return copiedConfig;
@@ -81,25 +81,8 @@ const scatterConfigHandler = (config: any) => {
 
   // Put limit
   copiedConfig.limit = copiedConfig.points || DEFAULT_MAX_POINTS_NUM;
-  const as = config.measures.map((m: any) => m.as);
-  const isGradientColor = !!colorMeasure;
-  const isPointVega = colorMeasure && isTextCol(colorMeasure.type);
-  const vega = isPointVega
-    ? vegaPointGen(copiedConfig)
-    : isGradientColor
-    ? vegaPointWeihtedGen(copiedConfig, getColorTypes(colorMeasure))
-    : vegaGen(copiedConfig, getColorTypes(colorMeasure));
-
-  const param = `rect.x, rect.y${colorMeasure ? `, rect.${colorMeasure.as}` : ''}${
-    sizeMeasure ? `, rect.${sizeMeasure.as}` : ''
-  }`;
-  copiedConfig.renderSelect = `plot_scatter_2d(${param}, '${vega}')`;
-  copiedConfig.renderAs = `rect(${as.join(' , ')})`;
   return copiedConfig;
 };
-
-const onAfterSqlCreate = (sql: string, config: any): string =>
-  `SELECT ${config.renderSelect} from (${sql}) as ${config.renderAs}`;
 
 const settings = makeSetting({
   type: 'ScatterChart',
@@ -133,7 +116,6 @@ const settings = makeSetting({
   ],
   enable: true,
   configHandler: scatterConfigHandler,
-  onAfterSqlCreate,
 });
 
 export default settings;

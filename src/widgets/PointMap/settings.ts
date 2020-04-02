@@ -2,10 +2,7 @@ import {makeSetting} from '../../utils/Setting';
 import {orFilterGetter} from '../../utils/Filters';
 import {CONFIG, COLUMN_TYPE, RequiredType} from '../../utils/Consts';
 import {cloneObj} from '../../utils/Helpers';
-import {
-  getColType,
-  // isTextCol
-} from '../../utils/ColTypes';
+import {getColType} from '../../utils/ColTypes';
 import {queryDistinctValues, MeasureParams, parseTocolorItems} from '../Utils/settingHelper';
 import {DEFAULT_MAX_POINTS_NUM, KEY} from '../Utils/Map';
 import {measureGetter} from '../../utils/WidgetHelpers';
