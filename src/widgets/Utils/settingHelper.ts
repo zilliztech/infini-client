@@ -6,7 +6,8 @@ import {DEFAULT_SORT} from '../../components/settingComponents/Sort';
 import {isRecordExist, QueryCount} from '../../utils/EditorHelper';
 import {dimensionGetter} from '../../utils/WidgetHelpers';
 import {color} from '../../utils/Colors';
-import {toSQL} from '../../core/parser/reducer';
+import {SqlParser} from 'infinivis-core';
+
 import {Dimension, Measure, ColorItem, WidgetConfig} from '../../types';
 type BaseParams = {
   config: WidgetConfig; // or other WidgetSpecialConfig
@@ -133,7 +134,7 @@ const _distinctSqlGetter = (
   source: string,
   limit: number = QueryCount
 ) => {
-  return toSQL({
+  return SqlParser.toSQL({
     select: [`${dimension.value}`, `count (*) as countval`],
     from: source,
     groupby: [dimension.value],
