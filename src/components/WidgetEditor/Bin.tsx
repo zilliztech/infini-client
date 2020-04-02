@@ -1,6 +1,8 @@
 import React, {FC, useState, useEffect, useRef, useContext} from 'react';
 import {useTheme, makeStyles} from '@material-ui/core/styles';
 import {queryContext} from '../../contexts/QueryContext';
+import {queryMegaWiseContext} from '../../contexts/QueryMegaWiseContext';
+import {rootContext} from '../../contexts/RootContext';
 import {I18nContext} from '../../contexts/I18nContext';
 import {BinProps} from '../../types';
 import Spinner from '../common/Spinner';
@@ -14,6 +16,7 @@ import {timeBinMap} from '../../utils/Time';
 import {isDateCol} from '../../utils/ColTypes';
 import {
   genRangeQuery,
+  getRangeSql,
   changeInputBox,
   changeSlider,
   changeRangeSliderInputBox,
@@ -29,11 +32,13 @@ const MaxbinsRange = [2, 250];
 
 const useStyles = makeStyles(BinStyles as any);
 const Bin: FC<BinProps> = props => {
+  const {isArctern} = useContext(rootContext);
   const {getData} = useContext(queryContext);
+  const {binRangeRequest} = useContext(queryMegaWiseContext);
   const {nls} = useContext(I18nContext);
   const theme = useTheme();
   const classes = useStyles(theme);
-  const {dimension, addDimension, source, onAdd, staticRange = []} = props;
+  const {dimension, addDimension, source, onAdd, staticRange = [], id} = props;
   const {
     min: currMin = 0,
     max: currMax = 100,
@@ -73,22 +78,46 @@ const Bin: FC<BinProps> = props => {
     if (!isDateType) {
       return;
     }
-    const params = genRangeQuery(dimension.value, source);
-    getData(params).then((res: any) => {
-      const {minimum = 0, maximum = 200} = res[0] || {};
-      addDimension(
-        {
-          ...cloneDimension,
-          min: cloneDimension.currMin,
-          max: cloneDimension.currMax,
-        },
-        onAdd
-      );
+    if (isArctern) {
+      const params = genRangeQuery(dimension.value, source);
+      getData(params).then((res: any) => {
+        const {minimum = 0, maximum = 200} = res[0] || {};
+        addDimension(
+          {
+            ...cloneDimension,
+            min: cloneDimension.currMin,
+            max: cloneDimension.currMax,
+          },
+          onAdd
+        );
 
-      setIsLoading(false);
-      setRange([minimum, maximum]);
-    });
+        setIsLoading(false);
+        setRange([minimum, maximum]);
+      });
+    } else {
+      const sql = getRangeSql(dimension.value, source);
+      binRangeRequest({
+        query: [
+          {
+            sql: sql,
+            id,
+          },
+        ],
+      }).then((res: any) => {
+        const {minimum = 0, maximum = 200} = res || {};
+        addDimension(
+          {
+            ...cloneDimension,
+            min: cloneDimension.currMin,
+            max: cloneDimension.currMax,
+          },
+          onAdd
+        );
 
+        setIsLoading(false);
+        setRange([minimum, maximum]);
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dimension.timeBin, dimension.extract, isDateCol(dimension.type)]);
 
