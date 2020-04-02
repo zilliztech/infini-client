@@ -9,10 +9,7 @@ import {queryMegaWiseContext} from '../contexts/QueryMegaWiseContext';
 import EmptyChart from '../components/common/EmptyWidget';
 import {getDefaultConfig, getWidgetSql} from '../utils/Configs';
 import {DataQuery, getLinkData} from '../utils/Query';
-import {
-  DataQuery as DataQueryMegaWise,
-  getLinkData as getLinkDataMegaWise,
-} from '../utils/QueryMegaWise';
+import {DataQuery as DataQueryMegaWise} from '../utils/QueryMegaWise';
 import {cloneObj} from '../utils/Helpers';
 import {MODE, DASH_ACTIONS} from '../utils/Consts';
 import {fullLayoutWidth, fullLayoutHeight} from '../utils/Layout';

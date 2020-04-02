@@ -24,6 +24,7 @@ const configsReducer = (configs: WidgetConfig[], action: ConfigsAction) => {
       return copiedConfigs.filter((config: WidgetConfig) => config.id !== action.payload.id);
     case CONFIG.CLEARALL_FILTER:
       return action.payload.map((config: WidgetConfig) => {
+        delete config.draws;
         config.filter = {};
         return config;
       });

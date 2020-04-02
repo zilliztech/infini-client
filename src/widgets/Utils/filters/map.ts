@@ -1,7 +1,7 @@
 import {measureGetter, dimensionGetter} from '../../../utils/WidgetHelpers';
 import {MapChartConfig} from '../../common/MapChart.type';
 import {cloneObj} from '../../../utils/Helpers';
-import {KEY, checkIsDraw} from '../Map';
+import {KEY} from '../Map';
 
 export const mapUpdateConfigHandler = (
   config: MapChartConfig,

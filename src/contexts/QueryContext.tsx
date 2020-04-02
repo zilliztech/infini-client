@@ -97,7 +97,7 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
   const getData = (params: Params) => {
     let url = URL.Query;
     return axiosInstance
-      .post(url, {id: DB && DB.id, query: params}, getAxiosConfig())
+      .post(url, {id: DB && DB.id.toString(), query: params}, getAxiosConfig())
       .then((res: any) => {
         return res.data && res.data.data && res.data.data.result;
       })
@@ -108,7 +108,7 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
     let url = URL.Query;
     let params = {type: 'sql', sql};
     return axiosInstance
-      .post(url, {id: DB && DB.id, query: params}, getAxiosConfig())
+      .post(url, {id: DB && DB.id.toString(), query: params}, getAxiosConfig())
       .then((res: any) => {
         return res && res.data;
       })
@@ -129,7 +129,7 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
     const sources = await getAvaliableTables();
     const options: any[] = await Promise.all(
       sources.map(async (source: string) => {
-        const [id, table] = [DB && DB.id, source];
+        const [id, table] = [DB && DB.id.toString(), source];
         let res = await axiosInstance.post(url, {id, table}, getAxiosConfig());
         return res && res.data.data;
       })
@@ -165,7 +165,7 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
   const getAvaliableTables = () => {
     let url = URL.GET_TABLE_LIST;
     return axiosInstance
-      .post(url, {id: DB && DB.id}, getAxiosConfig())
+      .post(url, {id: DB && DB.id.toString()}, getAxiosConfig())
       .then((res: any) => {
         return res && res.data.data;
       })
@@ -210,7 +210,7 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
     const sql = `SELECT ${lng}, ${lat} FROM ${table} WHERE ${lng} IS NOT NULL AND ${lat} IS NOT NULL LIMIT 1`;
     let params: Params = {type: QueryType.sql, sql};
     return axiosInstance
-      .post(url, {id: DB && DB.id, query: params}, getAxiosConfig())
+      .post(url, {id: DB && DB.id.toString(), query: params}, getAxiosConfig())
       .then((res: any) => {
         const lngLat = res && res.data && res.data.data.result;
         if (lngLat.length > 0) {

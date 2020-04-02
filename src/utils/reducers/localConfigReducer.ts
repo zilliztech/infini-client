@@ -78,6 +78,7 @@ export const singleConfigHandler = (config: WidgetConfig, action: ConfigAction) 
       return copiedConfig;
     case CONFIG.CLEAR_FILTER:
       copiedConfig.filter = {};
+      delete copiedConfig.draws;
       return copiedConfig;
     case CONFIG.ADD_SORT:
       copiedConfig.sort = action.payload;
