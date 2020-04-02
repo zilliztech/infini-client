@@ -21,17 +21,19 @@ export const mapUpdateConfigHandler = (
 
 export const drawUpdateConfigHandler = (config: MapChartConfig, draws: any) => {
   const copiedConfig = cloneObj(config);
-  const {filter = {}} = copiedConfig;
+  let {filter = {}} = copiedConfig;
   // get required lon, lat
   const lon = dimensionGetter(config, KEY.LONGTITUDE) || measureGetter(config, KEY.LONGTITUDE);
   const lat = dimensionGetter(config, KEY.LATITUDE) || measureGetter(config, KEY.LATITUDE);
 
   // clear all draws
-  Object.keys(filter).forEach((f: any) => {
-    if (checkIsDraw(filter[f])) {
-      delete filter[f];
-    }
-  });
+  // TODO: any other type draw in PointMap?
+  // Object.keys(filter).forEach((f: any) => {
+  //   if (checkIsDraw(filter[f])) {
+  //     delete filter[f];
+  //   }
+  // });
+  filter = {};
 
   draws.forEach((draw: any) => {
     if (draw.data.properties.isCircle) {
