@@ -9,6 +9,10 @@ import {queryMegaWiseContext} from '../contexts/QueryMegaWiseContext';
 import EmptyChart from '../components/common/EmptyWidget';
 import {getDefaultConfig, getWidgetSql} from '../utils/Configs';
 import {DataQuery, getLinkData} from '../utils/Query';
+import {
+  DataQuery as DataQueryMegaWise,
+  getLinkData as getLinkDataMegaWise,
+} from '../utils/QueryMegaWise';
 import {cloneObj} from '../utils/Helpers';
 import {MODE, DASH_ACTIONS} from '../utils/Consts';
 import {fullLayoutWidth, fullLayoutHeight} from '../utils/Layout';
@@ -99,12 +103,18 @@ const Dashboard: FC<DashboardProps> = ({dashboard, setDashboard}) => {
       return copiedMeta;
     });
   };
-  const dataQueryCache = useRef<DataQuery>(
-    new DataQuery({
-      requester: isArctern ? getData : getMegaWiseData,
-      onRequest: isArctern ? onRequest : onMegaWiseRequest,
-      onResponse: isArctern ? onResponse : onMegaWiseResponse,
-    })
+  const dataQueryCache = useRef<any>(
+    isArctern
+      ? new DataQuery({
+          requester: getData,
+          onRequest: onRequest,
+          onResponse: onResponse,
+        })
+      : new DataQueryMegaWise({
+          requester: getMegaWiseData,
+          onRequest: onMegaWiseRequest,
+          onResponse: onMegaWiseResponse,
+        })
   );
 
   // Edit mode or normal mode
