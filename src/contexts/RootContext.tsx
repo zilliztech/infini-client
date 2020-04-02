@@ -98,7 +98,12 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
       }
     });
   } else {
-    ['PointMap, GeoHeatMap, ChoroplethMap'].forEach((key: string) => delete widgetSettings[key]);
+    widgetSettings.PointMap = widgetSettings.PointMegaWiseMap;
+    widgetSettings.GeoHeatMap = widgetSettings.PointMegaWiseMap;
+    widgetSettings.ChoroplethMap = widgetSettings.PointMegaWiseMap;
+    ['PointMegaWiseMap', 'GeoHeatMegaWiseMap', 'ChoroplethMegaWiseMap'].forEach(
+      (key: string) => delete widgetSettings[key]
+    );
   }
   useEffect(() => {
     if (_tooltipWrapper.current) {
