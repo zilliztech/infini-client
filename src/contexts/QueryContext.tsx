@@ -110,7 +110,7 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
     return axiosInstance
       .post(url, {id: DB && DB.id, query: params}, getAxiosConfig())
       .then((res: any) => {
-        return res && res.data.data[0] && res.data.data[0].result;
+        return res && res.data;
       })
       .catch(errorParser);
   };
