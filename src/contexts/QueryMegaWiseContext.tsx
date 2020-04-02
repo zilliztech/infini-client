@@ -16,7 +16,7 @@ const QueryMegaProvider: FC<{children: ReactNode}> = ({children}) => {
   const {setUnauthStatus, setAuthStatus} = useContext(authContext);
   const {widgetSettings, setDialog, setSnackbar, globalConfig} = useContext(rootContext);
   const {nls} = useContext(I18nContext);
-  const [dbSetting, setDBSetting] = useState<DBSetting | -1>();
+  const [dbSetting, setDBSetting] = useState<DBSetting | false>();
   // ref: https://stackoverflow.com/questions/41515732/hide-401-console-error-in-chrome-dev-tools-getting-401-on-fetch-call/42986081#42986081
   // in chrome, 401 can not be catched
   // so it will be shown on the console
@@ -46,7 +46,7 @@ const QueryMegaProvider: FC<{children: ReactNode}> = ({children}) => {
         open: true,
         content: errContent,
         onConfirm: () => {
-          setDBSetting(-1);
+          setDBSetting(false);
         },
       });
     }

@@ -11,7 +11,7 @@ import Select from '@material-ui/core/Select';
 import Spinner from '../components/common/Spinner';
 import {authContext} from '../contexts/AuthContext';
 import {I18nContext} from '../contexts/I18nContext';
-import {queryContext} from '../contexts/QueryContext';
+import {queryMegaWiseContext} from '../contexts/QueryMegaWiseContext';
 import {rootContext} from '../contexts/RootContext';
 import {DBSetting} from '../types';
 
@@ -64,7 +64,9 @@ const useStyles = makeStyles(() => ({
 const DbSetting: FC<RouteComponentProps> = props => {
   const classes = useStyles();
   const {auth} = useContext(authContext);
-  const {dbSetting = -1, changeDBConfig, setDBSetting, setConnId} = useContext(queryContext);
+  const {dbSetting = false, changeDBConfig, setDBSetting, setConnId} = useContext(
+    queryMegaWiseContext
+  );
   const {setDialog, globalConfig} = useContext(rootContext);
   const {nls} = useContext(I18nContext);
   const DEFAULT_MEGACONFIG_LIST = globalConfig.DEFAULT_MEGACONFIG_LIST;
@@ -80,7 +82,7 @@ const DbSetting: FC<RouteComponentProps> = props => {
   const checkIsValid = () => {
     const {host, database, username, password, port} = localDbSetting;
     return [host, database, username, password, port].every(
-      (str: any) => str.toString().length > 0
+      (str: any) => str && str.toString().length > 0
     );
   };
 

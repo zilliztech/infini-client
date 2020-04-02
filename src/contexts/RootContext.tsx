@@ -76,7 +76,7 @@ const {Provider} = rootContext;
 // put global singletons here: dialog, tooltip...
 const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
   // database type
-  const isArctern = true;
+  const isArctern = false;
   // color theme
   const auth = window.localStorage.getItem(namespace(['login'], 'userAuth'));
   const currTheme = (auth && JSON.parse(auth).theme) || themes[0];

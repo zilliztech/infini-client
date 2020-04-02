@@ -1,7 +1,6 @@
 import {makeSetting} from '../../utils/Setting';
 import {cloneObj} from '../../utils/Helpers';
 import {measureGetter} from '../../utils/WidgetHelpers';
-import {vegaPointGen, vegaGen, vegaPointWeihtedGen} from '../Utils/Vega';
 import {DEFAULT_MAX_POINTS_NUM} from '../Utils/Map';
 import {CONFIG, RequiredType, COLUMN_TYPE} from '../../utils/Consts';
 import {
@@ -9,7 +8,7 @@ import {
   addSelfFilter,
   parseTocolorItems,
 } from '../../widgets/Utils/settingHelper';
-import {getColType, isTextCol} from '../../utils/ColTypes';
+import {getColType} from '../../utils/ColTypes';
 import {queryDistinctValues} from '../Utils/settingHelper';
 
 export const getColorTypes = (colorMeasure: any) => {
