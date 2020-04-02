@@ -103,6 +103,19 @@ export const getValidColumns = (columns: Column[] = [], columnTypes: COLUMN_TYPE
   });
 };
 
+export const getValidMegaWiseColumns = (columns: any[], columnTypes: COLUMN_TYPE[]): Column[] => {
+  return columns
+    .filter((column: any) => {
+      return columnTypes.some(
+        (validType: COLUMN_TYPE) => validType === getColType(column.dataType)
+      );
+    })
+    .map((column: any) => ({
+      col_name: column.colName,
+      data_type: column.dataType,
+    }));
+};
+
 export const genRangeQuery = (colName: string, source: string): Params => {
   let v = colName;
   const sql = `SELECT MIN(${v}) AS minimum, MAX(${v}) AS maximum FROM ${source}`;
