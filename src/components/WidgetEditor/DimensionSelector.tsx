@@ -182,7 +182,7 @@ const DimensionSelector: FC<DimensionSelectorProps> = (props: DimensionSelectorP
       onReceiveInvalidBinRange();
       return;
     }
-    addDimension(_addBinRange(newDimension, res[0]), onAdd);
+    addDimension(_addBinRange(newDimension, res), onAdd);
     afterColumnSelected();
   };
 
