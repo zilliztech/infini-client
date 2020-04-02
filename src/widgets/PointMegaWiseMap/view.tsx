@@ -20,9 +20,10 @@ import {
 import {CONFIG} from '../../utils/Consts';
 import {cloneObj} from '../../utils/Helpers';
 import {delayRunFunc} from '../../utils/EditorHelper';
-import {markerPosGetter, KEY} from '../Utils/Map';
+import {drawsGlGetter, markerPosGetter, KEY} from '../Utils/Map';
 import {mapUpdateConfigHandler, drawUpdateConfigHandler} from '../Utils/filters/map';
 import {DEFAULT_COLOR, genColorGetter, isGradientType} from '../../utils/Colors';
+
 const PointMapNormal: FC<PointMapProps> = props => {
   const theme = useTheme();
   const {getRowBySql} = useContext(queryContext);
@@ -36,6 +37,7 @@ const PointMapNormal: FC<PointMapProps> = props => {
   const marker = useRef<any>(null);
   const pointRequest = useRef<any>(null);
   // get draws
+  const draws = drawsGlGetter(config);
   const copiedConfig = cloneObj(config);
   const {popupItems = [], measures = []} = copiedConfig;
   const [allowPopUp, setAllowPopUp] = useState(popupItems.length + measures.length > 0);
@@ -94,14 +96,14 @@ const PointMapNormal: FC<PointMapProps> = props => {
     const lat = measureGetter(config, KEY.LATITUDE)!;
     const color = measureGetter(config, KEY.COLOR);
     const pointExpr = {
-      type: 'st_distance',
+      type: 'circle',
       fromlon: center.lng,
       fromlat: center.lat,
       tolon: lon.value,
       tolat: lat.value,
       distance: pointCircleR * 1000,
     };
-    const filters = dataMeta && dataMeta.params.sql.match(/.*SELECT.*WHERE(.*)LIMIT .*\) as.*$/);
+    const filters = dataMeta && dataMeta.sql.match(/.*SELECT.*WHERE(.*)LIMIT .*\) as.*$/);
     let AND = '';
     if (filters && filters.length === 2) {
       AND = `AND (${filters[1]})`;
@@ -126,56 +128,52 @@ const PointMapNormal: FC<PointMapProps> = props => {
         const center = {lng: e.lngLat.lng, lat: e.lngLat.lat};
         const pointCircleR = _disPerPixelGetter(map, container, distance) * pointSize!;
         const pointSql = _genPointMapPointSql(center, pointCircleR, dataMeta, config);
-        getRowBySql(pointSql).then(
-          (rows: any) => {
-            console.info(rows);
-            if (rows && rows.length) {
-              const html =
-                popupContentGetter(config, rows[0]) +
-                `<button class="view-all" data-id="view-all">${nls.label_view_all}</button>`;
-              // create marker
-              let el = document.createElement('div');
-              el.className = 'marker';
-              el.style.backgroundColor = getPointColor(config, rows[0]);
-              el.style.cursor = 'initial';
-              const size = '14px';
-              el.style.width = size;
-              el.style.height = size;
-              if (popup.current) {
-                popup.current.remove();
-              }
+        getRowBySql(pointSql).then((rows: any) => {
+          if (rows && rows.length) {
+            const html =
+              popupContentGetter(config, rows[0]) +
+              `<button class="view-all" data-id="view-all">${nls.label_view_all}</button>`;
+            // create marker
+            let el = document.createElement('div');
+            el.className = 'marker';
+            el.style.backgroundColor = getPointColor(config, rows[0]);
+            el.style.cursor = 'initial';
+            const size = '14px';
+            el.style.width = size;
+            el.style.height = size;
+            if (popup.current) {
+              popup.current.remove();
+            }
+            if (marker.current) {
+              marker.current.remove();
+            }
+            // get marker pos
+            let markerPos = markerPosGetter(config, rows[0], center);
+            marker.current = new mapboxgl.Marker(el).setLngLat(markerPos).addTo(map);
+            // create pop up
+            popup.current = new mapboxgl.Popup({offset: 20, maxWidth: '600px'})
+              .setLngLat(markerPos)
+              .setHTML(html)
+              .addTo(map);
+
+            const popupEl = popup.current.getElement();
+            const _onClicked = (e: any) => {
+              _onPopupClicked(e, rows[0], popup.current);
+            };
+            if (popupEl) {
+              popupEl.addEventListener('click', _onClicked);
+            }
+            // bind popup event
+            popup.current.on('close', () => {
+              popupEl.removeEventListener('click', _onClicked);
+              popup.current = null;
               if (marker.current) {
                 marker.current.remove();
+                marker.current = null;
               }
-              // get marker pos
-              let markerPos = markerPosGetter(config, rows[0], center);
-              marker.current = new mapboxgl.Marker(el).setLngLat(markerPos).addTo(map);
-              // create pop up
-              popup.current = new mapboxgl.Popup({offset: 20, maxWidth: '600px'})
-                .setLngLat(markerPos)
-                .setHTML(html)
-                .addTo(map);
-
-              const popupEl = popup.current.getElement();
-              const _onClicked = (e: any) => {
-                _onPopupClicked(e, rows[0], popup.current);
-              };
-              if (popupEl) {
-                popupEl.addEventListener('click', _onClicked);
-              }
-              // bind popup event
-              popup.current.on('close', () => {
-                popupEl.removeEventListener('click', _onClicked);
-                popup.current = null;
-                if (marker.current) {
-                  marker.current.remove();
-                  marker.current = null;
-                }
-              });
-            }
-          },
-          () => {}
-        );
+            });
+          }
+        });
       },
       600
     );
@@ -218,9 +216,9 @@ const PointMapNormal: FC<PointMapProps> = props => {
         {...props}
         onMapUpdate={onMapUpdate}
         onDrawUpdate={onDrawUpdate}
-        // onMouseMove={onMouseMove}
+        onMouseMove={onMouseMove}
         onMouseOut={onMouseOut}
-        draws={config.draws || []}
+        draws={draws}
         allowPopUp={allowPopUp}
       />
       <Paper className="z-map-info-container" ref={paperRef}>
