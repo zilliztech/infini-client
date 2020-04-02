@@ -82,9 +82,10 @@ const Nav: FC<any> = (props: any) => {
         </div>
         <div>
           <div className={clsx(classes.wrapper, classes.hover)}>
-            <IconButton disabled={isDemo} onClick={() => props.history.push('/config')}>
-              <SettingsIcon classes={{root: classes.settingIcon}} />
-            </IconButton>
+            <SettingsIcon
+              classes={{root: classes.settingIcon}}
+              onClick={() => props.history.push('/config')}
+            />
           </div>
           <div className={clsx(classes.wrapper, classes.hover)}>
             <AccountBoxIcon onClick={onAvatarClick} classes={{root: classes.settingIcon}} />
