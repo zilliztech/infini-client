@@ -1,14 +1,24 @@
 ### Arctern GUI/Client
 > An Interactive Dashboard built with D3, React, Typescript
+
 > Still in early phase
 ## Quick Start
+* change endpoint to your server address
 ```
 vim src/utils/Endpoints.ts
 ```
-* change endpoint to your server address
+* Install dependencies
 ```
 npm/yarn install
+
+* start the server
+```
 npm/yarn start
+```
+
+* Build
+```
+yarn build
 ```
 
 ## Support Database
@@ -62,6 +72,3 @@ npm/yarn start
 - widgets                     //  our widgets(charts) components
 ```
 
-## How To
-* How to add my own widget/chart
-* How to support my own database
