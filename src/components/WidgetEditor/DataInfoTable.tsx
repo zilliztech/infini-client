@@ -20,6 +20,9 @@ const DataInfoTable = (props: any) => {
     {field: 'col_name', name: nls.label_colName},
     {field: 'data_type', name: nls.label_column_type},
   ];
+  const data = isArctern
+    ? sourceOptions[title]
+    : sourceOptions[title].map((item: any) => ({col_name: item.colName, data_type: item.dataType}));
   return (
     <div ref={baseInfoNode} className={`${classes.colNamePreview}`}>
       <div className={classes.baseInfo}>
@@ -29,7 +32,9 @@ const DataInfoTable = (props: any) => {
         </div>
         <div className={classes.baseInfoWrapper}>
           <div className={classes.baseInfoTitle}>{nls.label_dataList_abstract_numRows}</div>
-          <h1 className={classes.baseInfoDetail}>{totals[title]}</h1>
+          <h1 className={classes.baseInfoDetail}>
+            {isArctern ? totals[title] : sourceOptions[`${title}rowCount`]}
+          </h1>
         </div>
         <div className={classes.baseInfoWrapper}>
           <div className={classes.baseInfoTitle}>{nls.label_dataList_abstract_columns}</div>
@@ -38,7 +43,7 @@ const DataInfoTable = (props: any) => {
       </div>
       <div className={classes.colNames}>
         <Table
-          data={sourceOptions[title] || []}
+          data={data || []}
           def={def}
           length={(sourceOptions[title] || []).length}
           isUsePagination={false}
