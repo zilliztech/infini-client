@@ -212,7 +212,7 @@ const ChoroplethMapView: FC<ChoroplethMapProps> = props => {
         {...props}
         onMapUpdate={onMapUpdate}
         onDrawUpdate={onDrawUpdate}
-        onMouseMove={onMouseMove}
+        // onMouseMove={onMouseMove}
         onMouseOut={onMouseOut}
         draws={config.draws || []}
         allowPopUp={true}
