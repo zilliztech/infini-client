@@ -8,7 +8,7 @@ import Clear from '@material-ui/icons/Clear';
 import {solidOpts, color} from '../../utils/Colors';
 import {genEffectClickOutside} from '../../utils/EditorHelper';
 import {dimensionGetter, measureGetter} from '../../utils/WidgetHelpers';
-import {toSQL} from '../../core/parser/reducer';
+import {SqlParser} from 'infinivis-core';
 import {
   titleMarginBottom,
   subTitleMarginBottom,
@@ -186,7 +186,7 @@ const VisualDataMapping = (props: any) => {
     const existOpts = colorItems.map((item: any) => `'${item.as}'`).join(', ');
     const NotIn = existOpts ? `${colorTarget!.value} NOT IN (${existOpts})` : '';
     const Like = typingText ? `${colorTarget!.value} LIKE '%${typingText}%'` : '';
-    const sql = toSQL({
+    const sql = SqlParser.toSQL({
       select: [`DISTINCT ${colorTarget!.value}`],
       from: source,
       where: [NotIn, Like].filter((str: string) => !!str),

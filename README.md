@@ -1,18 +1,32 @@
 ### Arctern GUI/Client
 > An Interactive Dashboard built with D3, React, Typescript
+
+> Still in early phase
 ## Quick Start
+* change endpoint to your server address
 ```
 vim src/utils/Endpoints.ts
 ```
-* change endpoint to your server address
+* Install dependencies
 ```
 npm/yarn install
+```
+
+* start the server
+```
 npm/yarn start
 ```
 
+* Build
+```
+yarn build
+```
+
 ## Support Database
-* postgres
-* mysql
+* postgres (partial support)
+* mysql (not yet)
+* arctern (connecting)
+* magewise
 
 ## Folder and Files structure
 ```js
@@ -25,10 +39,6 @@ npm/yarn start
   |- I18nContext.tsx          //  dectect language and set i18n string
   |- QueryContext.tsx         //  defines query
   |- RootContext.tsx          //  global context, 
-- core
-  |- helpers                  //  helpers for creating sql transforms and expressions
-  |- infini                   //  infini node, see ./core/infini/README.md
-  |- parser                   //  sql parsers, see ./core/parser/README.md
 - i18n                        //  i18n strings
   |- en-US
   |- zh-CN
@@ -63,6 +73,3 @@ npm/yarn start
 - widgets                     //  our widgets(charts) components
 ```
 
-## How To
-* How to add my own widget/chart
-* How to support my own database
