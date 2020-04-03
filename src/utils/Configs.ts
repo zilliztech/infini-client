@@ -22,6 +22,7 @@ import {
   Filters,
   WidgetSettings,
 } from '../types';
+import {restoreSource} from './Helpers';
 
 // define a dataNode type
 type dataNode = {
@@ -222,7 +223,6 @@ export const prefixFilter = (prefix: string, name: string): string => {
   return `${prefix}_${name}`;
 };
 
-const restoreSource = (source: string) => `global_temp.${source}`;
 // create cross filter and generate sql for each widget
 export const getWidgetSql = (
   configs: WidgetConfig[],

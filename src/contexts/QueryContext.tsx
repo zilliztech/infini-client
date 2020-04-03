@@ -5,7 +5,7 @@ import * as URL_M from '../utils/EndpointsMegawise';
 import {authContext} from './AuthContext';
 import {I18nContext} from './I18nContext';
 import {rootContext} from './RootContext';
-import {namespace, formatSource} from '../utils/Helpers';
+import {namespace, formatSource, restoreSource} from '../utils/Helpers';
 import {DB_TYPE, Params, QueryType} from '../types';
 import {isDashboardReady, getDashboardById} from '../utils/Dashboard';
 
@@ -355,6 +355,9 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
       };
   const binRangeRequest = isArctern
     ? async (sql: string) => {
+        const arr = sql.split('FROM ');
+        const [head, rest] = [arr[0], restoreSource(arr[1])];
+        sql = `${head} FROM ${rest}`;
         const params = {sql, type: QueryType.sql};
         const res = await getData(params);
         return res[0];
