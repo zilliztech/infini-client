@@ -57,6 +57,7 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
         open: true,
         content: errContent,
         onConfirm: () => {
+          window.localStorage.clear();
           _setDB(false);
         },
       });
@@ -248,7 +249,6 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
       }
     : async () => {
         let url = URL.GET_TABLE_LIST;
-
         return axiosInstance
           .post(url, {id: getConnId()}, getAxiosConfig())
           .then((res: any) => {

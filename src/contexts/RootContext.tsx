@@ -38,6 +38,7 @@ function importAllWidgets(r: any) {
     const m = r(key);
     const defaultM = m.default;
     if (defaultM && defaultM.enable) {
+      // console.info(defaultM)
       widgetSettings[defaultM.type] = defaultM;
     }
   });
@@ -79,14 +80,14 @@ export const rootContext = React.createContext<IRootContext>({
   showTooltip: () => {},
   hideTooltip: () => {},
   globalConfig: {},
-  widgetSettings: widgetSettings,
+  widgetSettings: {},
 });
 const {Provider} = rootContext;
 
 // put global singletons here: dialog, tooltip...
 const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
   // database type
-  const isArctern = true;
+  const isArctern = false;
   // color theme
   const auth = window.localStorage.getItem(namespace(['login'], 'userAuth'));
   const currTheme = (auth && JSON.parse(auth).theme) || themes[0];
@@ -100,7 +101,23 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
   const _tooltipContent = useRef<HTMLDivElement>(null);
   const _tooltipWrapper = useRef<HTMLDivElement>(null);
   const _timeout: any = useRef(null);
-
+  if (!isArctern) {
+    if (widgetSettings.PointMegaWiseMap) {
+      widgetSettings.PointMap = widgetSettings.PointMegaWiseMap;
+      widgetSettings.PointMap.type = 'PointMap';
+    }
+    if (widgetSettings.GeoHeatMegaWiseMap) {
+      widgetSettings.GeoHeatMap = widgetSettings.GeoHeatMegaWiseMap;
+      widgetSettings.GeoHeatMap.type = 'GeoHeatMap';
+    }
+    if (widgetSettings.ChoroplethMegaWiseMap) {
+      widgetSettings.ChoroplethMap = widgetSettings.ChoroplethMegaWiseMap;
+      widgetSettings.ChoroplethMap.type = 'ChoroplethMap';
+    }
+    ['ChoroplethMegaWiseMap', 'GeoHeatMegaWiseMap', 'PointMegaWiseMap'].forEach(
+      (key: string) => delete widgetSettings[key]
+    );
+  }
   useEffect(() => {
     if (_tooltipWrapper.current) {
       _tooltipWrapper.current.style.left = `-999999px`;
@@ -168,7 +185,6 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
       }
     }, timeout);
   };
-
   return (
     <Provider
       value={{
