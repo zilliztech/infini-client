@@ -77,6 +77,7 @@ const geoHeatMapConfigHandler: ConfigHandler<GeoHeatMapConfig> = config => {
 
 const settings = makeSetting<GeoHeatMapConfig>({
   type: 'GeoHeatMegaWiseMap',
+  dbTypes:['megawise'],
   dimensions: [
     {
       type: RequiredType.REQUIRED,

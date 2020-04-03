@@ -56,6 +56,16 @@ function importThemes(r: any) {
 }
 importThemes(require.context('../themes', false, /Theme\.ts$/));
 
+const filterValidWidgets = (widgetSettings: any, dbType: string) => {
+  const keys = Object.keys(widgetSettings);
+  keys.forEach((key: string) => {
+    if (widgetSettings[key].dbTypes.indexOf(dbType) === -1) {
+      delete widgetSettings[key];
+    }
+  });
+  return widgetSettings;
+};
+
 export const rootContext = React.createContext<IRootContext>({
   isArctern: true,
   theme: {},
@@ -90,21 +100,7 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
   const _tooltipContent = useRef<HTMLDivElement>(null);
   const _tooltipWrapper = useRef<HTMLDivElement>(null);
   const _timeout: any = useRef(null);
-  const keys = Object.keys(widgetSettings);
-  if (isArctern) {
-    keys.forEach((key: string) => {
-      if (key.indexOf('MegaWise') !== -1) {
-        delete widgetSettings[key];
-      }
-    });
-  } else {
-    widgetSettings.PointMap = widgetSettings.PointMegaWiseMap;
-    widgetSettings.GeoHeatMap = widgetSettings.PointMegaWiseMap;
-    widgetSettings.ChoroplethMap = widgetSettings.PointMegaWiseMap;
-    ['PointMegaWiseMap', 'GeoHeatMegaWiseMap', 'ChoroplethMegaWiseMap'].forEach(
-      (key: string) => delete widgetSettings[key]
-    );
-  }
+
   useEffect(() => {
     if (_tooltipWrapper.current) {
       _tooltipWrapper.current.style.left = `-999999px`;
@@ -188,7 +184,7 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
         showTooltip,
         hideTooltip,
         globalConfig,
-        widgetSettings,
+        widgetSettings: filterValidWidgets(widgetSettings, isArctern ? 'arctern' : 'megawise'),
       }}
     >
       {children}

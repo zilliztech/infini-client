@@ -90,6 +90,7 @@ const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapCo
 
 const settings = makeSetting<ChoroplethMapConfig>({
   type: 'ChoroplethMap',
+  dbTypes:['arctern'],
   dimensions: [
     {
       type: RequiredType.REQUIRED,

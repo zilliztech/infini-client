@@ -147,6 +147,8 @@ export type CurrSetting = DimensionSetting | MeasureSetting;
 export type InitSetting<T = WidgetConfig> = {
   // widget Type
   type: string;
+  // support database type
+  dbTypes?: string[];
   // is this widget enabled
   enable?: boolean;
   // is widget rendered by server

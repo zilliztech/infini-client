@@ -71,6 +71,7 @@ const geoHeatMapConfigHandler: ConfigHandler<GeoHeatMapConfig> = config => {
 
 const settings = makeSetting<GeoHeatMapConfig>({
   type: "GeoHeatMap",
+  dbTypes:['arctern'],
   dimensions: [
     {
       type: RequiredType.REQUIRED,

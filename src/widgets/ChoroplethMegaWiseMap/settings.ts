@@ -106,6 +106,7 @@ const vegaChoroplethMapGen = (config: ChoroplethMapConfig) => {
 
 const settings = makeSetting<ChoroplethMapConfig>({
   type: 'ChoroplethMegaWiseMap',
+  dbTypes:['megawise'],
   dimensions: [
     {
       type: RequiredType.REQUIRED,

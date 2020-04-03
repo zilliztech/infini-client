@@ -108,6 +108,7 @@ const pointMapConfigHandler = (config: any) => {
 
 const settings = makeSetting({
   type: 'PointMap',
+  dbTypes:['arctern'],
   dimensions: [],
   measures: [
     {
