@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
 import AuthContextProvider from './contexts/AuthContext';
 import QueryProvider from './contexts/QueryContext';
-import QueryMegaProvider from './contexts/QueryMegaWiseContext';
 import I18nProvider from './contexts/I18nContext';
 import RootProvider from './contexts/RootContext';
 import RootContainer from './pages/containers/RootContainer';
@@ -17,9 +16,7 @@ const App: FC = () => {
       <RootProvider>
         <AuthContextProvider>
           <QueryProvider>
-            <QueryMegaProvider>
-              <RootContainer />
-            </QueryMegaProvider>
+            <RootContainer />
           </QueryProvider>
         </AuthContextProvider>
       </RootProvider>

@@ -5,37 +5,23 @@ import Spinner from '../../components/common/Spinner';
 import {DASH_ACTIONS} from '../../utils/Consts';
 import {Dashboard as DashboardType} from '../../types';
 import {dashboardReducer} from '../../utils/reducers/dashboardReducer';
-import {rootContext} from '../../contexts/RootContext';
 import {queryContext} from '../../contexts/QueryContext';
-import {queryMegaWiseContext} from '../../contexts/QueryMegaWiseContext';
 
 type DashboardPageProps = RouteComponentProps<{id?: string}>;
 
 const Bi: FC<DashboardPageProps> = ({match}) => {
-  const {isArctern} = useContext(rootContext);
   const {getDashBoard, saveDashboard} = useContext(queryContext);
-  const {getDashBoard: getMegaWiseDashboard} = useContext(queryMegaWiseContext);
   const [loading, setLoading] = useState<boolean>(true);
   const [dashboard, setDashboard] = useReducer(dashboardReducer, null);
   const id = Number(match.params.id);
 
   useEffect(() => {
-    if (isArctern) {
       getDashBoard(id).then((dashboard: DashboardType) => {
         if (dashboard) {
           setDashboard({type: DASH_ACTIONS.UPDATE, payload: dashboard});
           setLoading(false);
         }
       });
-    } else {
-      getMegaWiseDashboard(id).then((dashboard: DashboardType) => {
-        if (dashboard) {
-          setDashboard({type: DASH_ACTIONS.UPDATE, payload: dashboard});
-          setLoading(false);
-        }
-      });
-    }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 

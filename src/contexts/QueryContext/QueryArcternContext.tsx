@@ -1,22 +1,30 @@
 import React, {FC, createContext, useContext, ReactNode, useState} from 'react';
 import axios, {AxiosRequestConfig} from 'axios';
-import * as URL from '../utils/EndpointsMegawise';
-import {authContext} from './AuthContext';
-import {I18nContext} from './I18nContext';
-import {rootContext} from './RootContext';
-import {namespace} from '../utils/Helpers';
-import {DBSetting} from '../types';
-import {isDashboardReady, getDashboardById} from '../utils/Dashboard';
+import * as URL from '../../utils/Endpoints';
+import {authContext} from '../AuthContext';
+import {I18nContext} from '../I18nContext';
+import {rootContext} from '../RootContext';
+import {namespace} from '../../utils/Helpers';
+import {DB_TYPE, Params, QueryType} from '../../types';
+import {isDashboardReady, getDashboardById} from '../../utils/Dashboard';
 
 const axiosInstance = axios.create();
-export const queryMegaWiseContext = createContext<any>({});
+export const queryContext = createContext<any>({});
 
-const {Provider} = queryMegaWiseContext;
-const QueryMegaProvider: FC<{children: ReactNode}> = ({children}) => {
+const {Provider} = queryContext;
+const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
   const {setUnauthStatus, setAuthStatus} = useContext(authContext);
   const {widgetSettings, setDialog, setSnackbar, globalConfig} = useContext(rootContext);
   const {nls} = useContext(I18nContext);
-  const [dbSetting, setDBSetting] = useState<DBSetting | false>();
+  const getDB = () => {
+    const db = window.localStorage.getItem(namespace(['query'], 'db'));
+    return db ? JSON.parse(db) : false;
+  };
+  const [DB, _setDB] = useState<DB_TYPE | false>(getDB());
+  const setDB = (db: DB_TYPE) => {
+    window.localStorage.setItem(namespace(['query'], 'db'), JSON.stringify(db));
+    _setDB(db);
+  };
   // ref: https://stackoverflow.com/questions/41515732/hide-401-console-error-in-chrome-dev-tools-getting-401-on-fetch-call/42986081#42986081
   // in chrome, 401 can not be catched
   // so it will be shown on the console
@@ -46,7 +54,7 @@ const QueryMegaProvider: FC<{children: ReactNode}> = ({children}) => {
         open: true,
         content: errContent,
         onConfirm: () => {
-          setDBSetting(false);
+          _setDB(false);
         },
       });
     }
@@ -58,9 +66,8 @@ const QueryMegaProvider: FC<{children: ReactNode}> = ({children}) => {
     let userAuth = JSON.parse(
       window.localStorage.getItem(namespace(['login'], 'userAuth')) || '{}'
     );
-
     return {
-      headers: {Authorization: `Bearer ${userAuth && userAuth.token}`, ...params},
+      headers: {Authorization: `Token ${userAuth && userAuth.token}`, ...params},
     };
   };
 
@@ -87,96 +94,78 @@ const QueryMegaProvider: FC<{children: ReactNode}> = ({children}) => {
       .catch(errorParser);
   };
 
-  const getData = (params: any) => {
-    let url = URL.GET_DATA;
+  const getData = (params: Params) => {
+    let url = URL.Query;
     return axiosInstance
-      .post(url, {id: getConnId(), query: params}, getAxiosConfig())
+      .post(url, {id: DB && DB.id.toString(), query: params}, getAxiosConfig())
       .then((res: any) => {
-        return res.data && res.data.data && res.data.data[0];
+        return res.data && res.data.data && res.data.data.result;
       })
       .catch(errorParser);
   };
 
   const getRowBySql = (sql: string) => {
-    let url = URL.GET_DATA;
-    let params = [{id: 'getRowBySql', sql: sql}];
+    let url = URL.Query;
+    let params = {type: 'sql', sql};
     return axiosInstance
-      .post(url, {id: getConnId(), query: params}, getAxiosConfig())
+      .post(url, {id: DB && DB.id.toString(), query: params}, getAxiosConfig())
       .then((res: any) => {
-        return res && res.data.data[0] && res.data.data[0].result;
-      })
-      .catch(errorParser);
-  };
-
-  const binRangeRequest = (params: any) => {
-    let url = URL.GET_DATA;
-    return axiosInstance
-      .post(url, {id: getConnId(), ...params}, getAxiosConfig())
-      .then((res: any) => {
-        if (res && res.data.data[0] && res.data.data[0].err) {
-          return {};
-        }
-        return res && res.data.data[0] && res.data.data[0].result && res.data.data[0].result[0];
+        return res && res.data;
       })
       .catch(errorParser);
   };
 
   const numMinMaxValRequest = (colName: string, source: string) => {
-    let url = URL.GET_DATA;
-    let sql = `SELECT MIN(${colName}), MAX(${colName}) FROM ${source}`;
-
-    return axiosInstance
-      .post(url, {id: getConnId(), query: [{id: 'distinct', sql}]}, getAxiosConfig())
+    let sql = `SELECT MIN(${colName}) as min , MAX(${colName}) as max FROM ${source}`;
+    return getData({type: QueryType.sql, sql})
       .then((res: any) => {
-        return res && res.data.data[0] && res.data.data[0].result && res.data.data[0].result[0];
+        return res[0];
       })
       .catch(errorParser);
   };
-  const getDashBoard = (id: number) => {
+  const getDashBoard = async (id: number) => {
     let dashboard: any = getDashboardById(id);
     const url = URL.POST_TABLES_DETAIL;
-
-    return getAvaliableTables().then(sources => {
-      return axiosInstance
-        .post(url, {id: getConnId(), tables: sources}, getAxiosConfig())
-        .then((res: any) => {
-          const sourceOptions = res.data && res.data.data;
-          let _sourceOptions: any = {};
-          sources.forEach((source: any) => {
-            let options = sourceOptions.filter((s: any) => s.name === source)[0];
-            _sourceOptions[source] =
-              options &&
-              options.columnDefs.sort((item1: any, item2: any) =>
-                item1.colName > item2.colName ? 1 : -1
-              );
-            if (options) {
-              _sourceOptions[`${source}rowCount`] = options.rowCount;
-            }
-          });
-          // final
-          dashboard.sources = sources;
-          dashboard.sourceOptions = _sourceOptions;
-          return dashboard;
-        })
-        .catch(errorParser);
+    const sources = await getAvaliableTables();
+    const options: any[] = await Promise.all(
+      sources.map(async (source: string) => {
+        const [id, table] = [DB && DB.id.toString(), source];
+        let res = await axiosInstance.post(url, {id, table}, getAxiosConfig());
+        return res && res.data.data;
+      })
+    );
+    const totals = await Promise.all(
+      sources.map(async (source: string) => {
+        const params = {type: QueryType.sql, sql: `select count(*) from ${source}`};
+        const res = await getData(params);
+        const key = Object.keys(res[0])[0];
+        return res[0][key];
+      })
+    );
+    let sourceOptions: any = {};
+    let sourceTotal: any = {};
+    sources.forEach((source: string, i: number) => {
+      sourceOptions[source] = options[i].sort((item1: any, item2: any) =>
+        item1.col_name > item2.col_name ? 1 : -1
+      );
+      sourceTotal[source] = totals[i];
     });
+
+    // final
+    dashboard.sources = sources;
+    dashboard.sourceOptions = sourceOptions;
+    dashboard.totals = sourceTotal;
+    return dashboard;
   };
 
   const getTxtDistinctVal = (sql: string) => {
-    let url = URL.GET_DATA;
-    return axiosInstance
-      .post(url, {id: getConnId(), query: [{id: 'distinct', sql}]}, getAxiosConfig())
-      .then((res: any) => {
-        return res && res.data.data[0] && res.data.data[0].result;
-      })
-      .catch(errorParser);
+    return getData({sql, type: QueryType.sql});
   };
 
   const getAvaliableTables = () => {
     let url = URL.GET_TABLE_LIST;
-
     return axiosInstance
-      .post(url, {id: getConnId()}, getAxiosConfig())
+      .post(url, {id: DB && DB.id.toString()}, getAxiosConfig())
       .then((res: any) => {
         return res && res.data.data;
       })
@@ -197,7 +186,6 @@ const QueryMegaProvider: FC<{children: ReactNode}> = ({children}) => {
         }
       }
     });
-
     return Promise.resolve([...dashboards]);
   };
 
@@ -210,26 +198,21 @@ const QueryMegaProvider: FC<{children: ReactNode}> = ({children}) => {
     setSnackbar({open: true, message: nls.tip_remove_dashboard_success});
   };
 
-  const getDBConfig = async (dbId: string = '') => {
-    let url = URL.GET_DB_CONFIG + (dbId ? `/${dbId}` : '');
+  const getDBs = async () => {
+    let url = URL.GET_DBS;
     return await axiosInstance.get(url, getAxiosConfig()).catch(errorParser);
-  };
-
-  const changeDBConfig = async (params: any) => {
-    let url = URL.POST_DB_CONFIG;
-    return await axiosInstance.post(url, params, getAxiosConfig()).catch(e => errorParser(e));
   };
 
   // reverse geocoding to find the country,
   // so that we can make the map bound to that country
   const getMapBound = (lng: string, lat: string, table: string) => {
-    let url = URL.GET_DATA;
+    let url = URL.Query;
     const sql = `SELECT ${lng}, ${lat} FROM ${table} WHERE ${lng} IS NOT NULL AND ${lat} IS NOT NULL LIMIT 1`;
-    let params = [{id: 'lonLatReq', sql: sql}];
+    let params: Params = {type: QueryType.sql, sql};
     return axiosInstance
-      .post(url, {id: getConnId(), query: params}, getAxiosConfig())
+      .post(url, {id: DB && DB.id.toString(), query: params}, getAxiosConfig())
       .then((res: any) => {
-        const lngLat = res && res.data.data[0] && res.data.data[0].result;
+        const lngLat = res && res.data && res.data.data.result;
         if (lngLat.length > 0) {
           const geocodingUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lngLat[0][lng]},${lngLat[0][lat]}.json?access_token=${globalConfig.MAPBOX_ACCESS_TOKEN}`;
 
@@ -240,18 +223,11 @@ const QueryMegaProvider: FC<{children: ReactNode}> = ({children}) => {
           });
         }
         return Promise.resolve(true);
-      })
-      .catch(errorParser);
+      });
   };
 
-  const generalRequest = ({id, sql}: any) => {
-    let url = URL.GET_DATA;
-    return axiosInstance
-      .post(url, {id: getConnId(), query: [{id, sql}]}, getAxiosConfig())
-      .then((res: any) => {
-        return res && res.data && res.data.data[0] && res.data.data[0].result;
-      })
-      .catch(errorParser);
+  const generalRequest = (sql: string) => {
+    return getData({sql, type: QueryType.sql});
   };
 
   // check if the browser is firefox
@@ -265,7 +241,6 @@ const QueryMegaProvider: FC<{children: ReactNode}> = ({children}) => {
         login,
         getData,
         getRowBySql,
-        binRangeRequest,
         numMinMaxValRequest,
         getTxtDistinctVal,
         getDashBoard,
@@ -273,11 +248,11 @@ const QueryMegaProvider: FC<{children: ReactNode}> = ({children}) => {
         saveDashboard,
         removeDashboard,
         getAvaliableTables,
-        dbSetting,
-        setDBSetting,
-        getDBConfig,
+        DB,
+        getDB,
+        setDB,
+        getDBs,
         getMapBound,
-        changeDBConfig,
         isFirefox,
         generalRequest,
       }}
@@ -286,4 +261,4 @@ const QueryMegaProvider: FC<{children: ReactNode}> = ({children}) => {
     </Provider>
   );
 };
-export default QueryMegaProvider;
+export default QueryProvider;

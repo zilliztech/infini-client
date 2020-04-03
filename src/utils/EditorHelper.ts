@@ -7,8 +7,6 @@ import {
   MeasureSetting,
   WidgetConfig,
   Setting,
-  Params,
-  QueryType,
 } from '../types';
 import {Status} from '../types/Editor';
 import {getColType} from './ColTypes';
@@ -116,13 +114,6 @@ export const getValidMegaWiseColumns = (columns: any[], columnTypes: COLUMN_TYPE
     }));
 };
 
-export const genRangeQuery = (colName: string, source: string): Params => {
-  let v = colName;
-  const sql = `SELECT MIN(${v}) AS minimum, MAX(${v}) AS maximum FROM ${source}`;
-  return {sql, type: QueryType.sql};
-};
-
-// TODO: delete later;
 const _initConfig = (widgetType: string, config: any) => {
   const initConfig: any = {
     id: config.id || '',

@@ -8,14 +8,12 @@ import Input from '@material-ui/core/Input';
 import AccessTime from '@material-ui/icons/AccessTime';
 import Clear from '@material-ui/icons/Clear';
 import {rootContext} from '../../contexts/RootContext';
-import {queryMegaWiseContext} from '../../contexts/QueryMegaWiseContext';
 import {queryContext} from '../../contexts/QueryContext';
 import {I18nContext} from '../../contexts/I18nContext';
 import {DimensionSelectorProps, Dimension} from '../../types';
 import {TimeBin, timeBinMap} from '../../utils/Time';
 import {
   calStatus,
-  genRangeQuery,
   getRangeSql,
   filterColumns,
   genEffectClickOutside,
@@ -43,8 +41,7 @@ type NewColumn = {
 const useStyles = makeStyles(theme => genDimensionSelectorStyles(theme) as any) as Function;
 
 const DimensionSelector: FC<DimensionSelectorProps> = (props: DimensionSelectorProps) => {
-  const {getData} = useContext(queryContext);
-  const {binRangeRequest} = useContext(queryMegaWiseContext);
+  const {getData, binRangeRequest} = useContext(queryContext);
   const {nls} = useContext(I18nContext);
   const {setDialog, isArctern} = useContext(rootContext);
   const theme = useTheme();
@@ -161,22 +158,8 @@ const DimensionSelector: FC<DimensionSelectorProps> = (props: DimensionSelectorP
       );
       return;
     }
-    const params = genRangeQuery(col_name, source);
-    let res: any;
-    if (isArctern) {
-      res = await getData(params);
-      res = res[0];
-    } else {
-      const rangeSql = getRangeSql(col_name, source);
-      res = await binRangeRequest({
-        query: [
-          {
-            sql: rangeSql,
-            id,
-          },
-        ],
-      });
-    }
+    const rangeSql = getRangeSql(col_name, source);
+    const res = await binRangeRequest(rangeSql);
     const {minimum, maximum} = res;
     if (minimum === null || minimum === undefined || maximum === null || maximum === undefined) {
       onReceiveInvalidBinRange();

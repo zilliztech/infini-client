@@ -29,7 +29,6 @@ import {getWidgetSql} from '../../utils/Configs';
 import {exportCsv} from '../../utils/Export';
 import {isReadyToRender} from '../../utils/EditorHelper';
 import {queryContext} from '../../contexts/QueryContext';
-import {queryMegaWiseContext} from '../../contexts/QueryMegaWiseContext';
 import {I18nContext} from '../../contexts/I18nContext';
 import {rootContext} from '../../contexts/RootContext';
 import localConfigReducer from '../../utils/reducers/localConfigReducer';

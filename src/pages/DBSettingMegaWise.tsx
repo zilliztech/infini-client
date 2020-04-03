@@ -11,7 +11,7 @@ import Select from '@material-ui/core/Select';
 import Spinner from '../components/common/Spinner';
 import {authContext} from '../contexts/AuthContext';
 import {I18nContext} from '../contexts/I18nContext';
-import {queryMegaWiseContext} from '../contexts/QueryMegaWiseContext';
+import {queryContext} from '../contexts/QueryContext';
 import {rootContext} from '../contexts/RootContext';
 import {DBSetting} from '../types';
 
@@ -65,7 +65,7 @@ const DbSetting: FC<RouteComponentProps> = props => {
   const classes = useStyles();
   const {auth} = useContext(authContext);
   const {dbSetting = false, changeDBConfig, setDBSetting, setConnId} = useContext(
-    queryMegaWiseContext
+    queryContext
   );
   const {setDialog, globalConfig} = useContext(rootContext);
   const {nls} = useContext(I18nContext);

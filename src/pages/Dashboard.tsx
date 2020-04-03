@@ -5,26 +5,14 @@ import Header from './containers/Header';
 import WidgetWrapper from './containers/WidgetWrapper';
 import {rootContext} from '../contexts/RootContext';
 import {queryContext} from '../contexts/QueryContext';
-import {queryMegaWiseContext} from '../contexts/QueryMegaWiseContext';
 import EmptyChart from '../components/common/EmptyWidget';
 import {getDefaultConfig, getWidgetSql, getMegaWiseWidgetSql} from '../utils/Configs';
 import {DataQuery, getLinkData} from '../utils/Query';
-import {DataQuery as DataQueryMegaWise} from '../utils/QueryMegaWise';
 import {cloneObj} from '../utils/Helpers';
 import {MODE, DASH_ACTIONS} from '../utils/Consts';
 import {fullLayoutWidth, fullLayoutHeight} from '../utils/Layout';
 import configsReducer from '../utils/reducers/configsReducer';
-import {
-  WidgetConfig,
-  DashboardProps,
-  Mode,
-  Layout,
-  Query,
-  MegaWiseQuery,
-  Data,
-  DataCache,
-  Meta,
-} from '../types';
+import {WidgetConfig, DashboardProps, Mode, Layout, Query, Data, DataCache, Meta} from '../types';
 import 'react-grid-layout/css/styles.css';
 import './Dashboard.scss';
 const useStyles = makeStyles(theme => ({
@@ -44,7 +32,6 @@ const _getLayouts = (configs: WidgetConfig[]) =>
 const Dashboard: FC<DashboardProps> = ({dashboard, setDashboard}) => {
   const {configs, id, demo, sources} = dashboard;
   const {getData, isFirefox} = useContext(queryContext);
-  const {getData: getMegaWiseData} = useContext(queryMegaWiseContext);
   const {widgetSettings, isArctern} = useContext(rootContext);
   const theme = useTheme();
   // get sourceOptions like dimensions options, measures options
@@ -52,66 +39,36 @@ const Dashboard: FC<DashboardProps> = ({dashboard, setDashboard}) => {
   const [meta, setMeta] = useState<Meta>({});
   const [sourceData, setSourceData] = useState<DataCache>({});
   const dataCache = useRef<DataCache>({});
-  const onRequest = (query: Query | MegaWiseQuery) => {
+  const onRequest = (query: Query) => {
     setMeta((meta: Meta) => {
       const copiedMeta = cloneObj(meta);
-      const {params, id} = query as Query;
+      const {id} = query as Query;
       if (sources.includes(id)) {
         return meta;
       }
-      copiedMeta[query.id] = {params, id, loading: true};
+      copiedMeta[query.id] = {id, loading: true, query};
       return copiedMeta;
     });
   };
-  const onMegaWiseRequest = (query: Query | MegaWiseQuery) => {
-    setMeta((meta: Meta) => {
-      const copiedMeta = cloneObj(meta);
-      const {sql, id} = query as MegaWiseQuery;
-      if (sources.includes(id)) {
-        return meta;
-      }
-      copiedMeta[query.id] = {sql, id, loading: true};
-      return copiedMeta;
-    });
-  };
-  const onResponse = (query: Query | MegaWiseQuery, data: Data) => {
+  const onResponse = (query: Query, data: Data) => {
     dataCache.current[query.id] = data;
     setMeta((meta: Meta) => {
       const copiedMeta = cloneObj(meta);
-      const {params, id} = query as Query;
+      const {id} = query as Query;
       if (sources.includes(id)) {
         setSourceData((prev: any) => ({...prev, [id]: data}));
         return meta;
       }
-      copiedMeta[query.id] = {params, id, loading: false};
-      return copiedMeta;
-    });
-  };
-  const onMegaWiseResponse = (query: Query | MegaWiseQuery, data: Data) => {
-    dataCache.current[query.id] = data;
-    setMeta((meta: Meta) => {
-      const copiedMeta = cloneObj(meta);
-      const {sql, id} = query as MegaWiseQuery;
-      if (sources.includes(id)) {
-        setSourceData((prev: any) => ({...prev, [id]: data}));
-        return meta;
-      }
-      copiedMeta[query.id] = {sql, id, loading: false};
+      copiedMeta[query.id] = {query, id, loading: false};
       return copiedMeta;
     });
   };
   const dataQueryCache = useRef<any>(
-    isArctern
-      ? new DataQuery({
-          requester: getData,
-          onRequest: onRequest,
-          onResponse: onResponse,
-        })
-      : new DataQueryMegaWise({
-          requester: getMegaWiseData,
-          onRequest: onMegaWiseRequest,
-          onResponse: onMegaWiseResponse,
-        })
+    new DataQuery({
+      requester: getData,
+      onRequest: onRequest,
+      onResponse: onResponse,
+    })
   );
 
   // Edit mode or normal mode
