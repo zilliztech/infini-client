@@ -5,7 +5,6 @@ import {CONFIG, COLUMN_TYPE, RequiredType} from '../../utils/Consts';
 import {KEY as MAPKEY} from '../Utils/Map';
 import {measureGetter, dimensionGetter, getExpression} from '../../utils/WidgetHelpers';
 import {ChoroplethMapConfig} from './types';
-import {MapMeasure} from '../common/MapChart.type';
 import {MeasureParams} from '../Utils/settingHelper';
 const onAddChoroplethMapColor = async ({measure, config, setConfig, reqContext}: MeasureParams) => {
   const buildDimension = dimensionGetter(config, 'wkt');
@@ -48,8 +47,6 @@ const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapCo
       },
     };
   }
-  let lon = measureGetter(newConfig, MAPKEY.LONGTITUDE) as MapMeasure;
-  let lat = measureGetter(newConfig, MAPKEY.LATITUDE) as MapMeasure;
   const wkt = newConfig.dimensions[0];
   let colorM = measureGetter(newConfig, 'w');
   if (!newConfig.bounds) {
@@ -69,7 +66,10 @@ const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapCo
   const px = [_sw.lng, _sw.lng, _ne.lng, _ne.lng, _sw.lng];
   const py = [_sw.lat, _ne.lat, _ne.lat, _sw.lat, _sw.lat];
   const polygon = px.map((x: number, i: number) => `${x} ${py[i]}`).join(', ');
-  newConfig.selfFilter.bounds = `ST_Within(${wkt.value}, 'POLYGON((${polygon}))')`;
+  newConfig.selfFilter.bounds = {
+    type: 'filter',
+    expr: `ST_Within(${wkt.value}, 'POLYGON((${polygon}))')`,
+  };
   // newConfig.selfFilter.bounds = {
   //   type: 'filter',
   //   expr: {
