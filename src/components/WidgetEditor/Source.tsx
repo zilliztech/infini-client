@@ -1,16 +1,14 @@
-import React, {useContext} from 'react';
-import {rootContext} from '../../contexts/RootContext';
+import React from 'react';
 import {SimpleSelector as Selector} from '../common/selectors';
-import {cloneObj, formatSource} from '../../utils/Helpers';
+import {cloneObj} from '../../utils/Helpers';
 import {CONFIG} from '../../utils/Consts';
 
 const Source = (props: any) => {
-  const {isArctern} = useContext(rootContext);
   const {config, setConfig, options, onMouseOver} = props;
   const cloneConfig = cloneObj(config);
-  const selectorOpts = options.map((o: any) => {
+  const selectorOpts = options.map((o: string) => {
     return {
-      label: isArctern ? formatSource(o) : o,
+      label: o,
       value: o,
     };
   });
@@ -34,7 +32,7 @@ const Source = (props: any) => {
   return (
     <Selector
       currOpt={{
-        label: isArctern ? formatSource(config.source) : config.source,
+        label: config.source,
         value: config.source,
       }}
       options={selectorOpts}

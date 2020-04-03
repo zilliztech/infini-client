@@ -8,12 +8,10 @@ import {
 } from '@material-ui/icons';
 import WidgetEditor from '../../components/WidgetEditor';
 import {DataQuery, getLinkData} from '../../utils/Query';
-import {DataQuery as DataQueryMegaWise} from '../../utils/QueryMegaWise';
 import {
   DefaultWidgetProps,
   WidgetConfig,
   Query,
-  MegaWiseQuery,
   Data,
   Meta,
   Dimension,
@@ -62,7 +60,6 @@ const _deleteUnRelatedAttr = (config: WidgetConfig) => {
 };
 const WidgetWrapper: FC<DefaultWidgetProps> = props => {
   const {getData} = useContext(queryContext);
-  const {getData: getMegaWiseData} = useContext(queryMegaWiseContext);
   const {nls} = useContext(I18nContext);
   const theme = useTheme();
   const {widgetSettings, isArctern} = useContext(rootContext);
@@ -84,49 +81,27 @@ const WidgetWrapper: FC<DefaultWidgetProps> = props => {
   const onRequest = (query: Query) => {
     setLocalMeta((meta: Meta) => {
       const copiedMeta = cloneObj(meta);
-      const {params, id, timestamp} = query;
-      copiedMeta[query.id] = {params, id, timestamp, loading: true};
+      const {id, timestamp} = query;
+      copiedMeta[query.id] = {query, id, timestamp, loading: true};
       return copiedMeta;
     });
   };
   const onResponse = (query: Query, data: Data) => {
     dataCache.current[query.id] = data;
     setLocalMeta((meta: Meta) => {
-      const {params, id, timestamp} = query;
+      const {id, timestamp} = query;
       const copiedMeta = cloneObj(meta);
-      copiedMeta[id] = {params, id, timestamp, loading: false};
+      copiedMeta[id] = {query, id, timestamp, loading: false};
       return copiedMeta;
     });
   };
-  const onMegaWiseRequest =(query: MegaWiseQuery) => {
-    setLocalMeta((meta: Meta) => {
-      const copiedMeta = cloneObj(meta);
-      const {sql, id, timestamp} = query;
-      copiedMeta[query.id] = {sql, id, timestamp, loading: true};
-      return copiedMeta;
-    });
-  };
-  const onMegaWiseResponse = (query: MegaWiseQuery, data: Data) => {
-    dataCache.current[query.id] = data;
-    setLocalMeta((meta: Meta) => {
-      const {sql, id, timestamp} = query;
-      const copiedMeta = cloneObj(meta);
-      copiedMeta[id] = {sql, id, timestamp, loading: false};
-      return copiedMeta;
-    });
-  };
+
   const dataQueryCache = useRef<any>(
-    isArctern
-      ? new DataQuery({
-          requester: getData,
-          onRequest: onRequest,
-          onResponse: onResponse,
-        })
-      : new DataQueryMegaWise({
-          requester: getMegaWiseData,
-          onRequest: onMegaWiseRequest,
-          onResponse: onMegaWiseResponse,
-        })
+    new DataQuery({
+      requester: getData,
+      onRequest: onRequest,
+      onResponse: onResponse,
+    })
   );
   const [localMeta, setLocalMeta] = useState<Meta>({});
   const [isHover, setHover] = useState<boolean>(false);
