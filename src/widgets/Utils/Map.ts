@@ -119,7 +119,7 @@ export const shapeFileGetter = (config: any) => {
 };
 
 export const onMapLoaded = (config: MapChartConfig, getMapBound: Function) => {
-  if (!config.bounds) {
+  if (!config.bounds && config.type !== 'ChoroplethMap') {
     const lon = (measureGetter(config, 'lon') || dimensionGetter(config, 'lon'))!;
     const lat = (measureGetter(config, 'lat') || dimensionGetter(config, 'lat'))!;
     return getMapBound(lon.value, lat.value, config.source);

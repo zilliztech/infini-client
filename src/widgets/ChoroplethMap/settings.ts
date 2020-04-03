@@ -1,6 +1,7 @@
 import {cloneObj} from '../../utils/Helpers';
 import {orFilterGetter} from '../../utils/Filters';
 import {makeSetting} from '../../utils/Setting';
+import {restoreSource} from '../../utils/Helpers';
 import {CONFIG, COLUMN_TYPE, RequiredType} from '../../utils/Consts';
 import {measureGetter, dimensionGetter, getExpression} from '../../utils/WidgetHelpers';
 import {ChoroplethMapConfig} from './types';
@@ -11,8 +12,12 @@ const onAddChoroplethMapColor = async ({measure, config, setConfig, reqContext}:
     const {as} = measure;
     let expression = getExpression(measure);
     // cause megawise is not working for text group subQuery at the moment, change to one Query when it's ready;
-    const minSql = `SELECT ${expression} FROM ${config.source} GROUP BY ${buildDimension.value} ORDER BY ${as} ASC LIMIT 1`;
-    const maxSql = `SELECT ${expression} FROM ${config.source} GROUP BY ${buildDimension.value} ORDER BY ${as} DESC LIMIT 1`;
+    const minSql = `SELECT ${expression} FROM ${restoreSource(config.source)} GROUP BY ${
+      buildDimension.value
+    } ORDER BY ${as} ASC LIMIT 1`;
+    const maxSql = `SELECT ${expression} FROM ${restoreSource(config.source)} GROUP BY ${
+      buildDimension.value
+    } ORDER BY ${as} DESC LIMIT 1`;
     const rulerBaseMin = await reqContext.generalRequest(minSql);
     const rulerBaseMax = await reqContext.generalRequest(maxSql);
     const ruler = {min: rulerBaseMin[0][as], max: rulerBaseMax[0][as]};
