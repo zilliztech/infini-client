@@ -2,7 +2,6 @@ import {cloneObj} from '../../utils/Helpers';
 import {orFilterGetter} from '../../utils/Filters';
 import {makeSetting} from '../../utils/Setting';
 import {CONFIG, COLUMN_TYPE, RequiredType} from '../../utils/Consts';
-import {KEY as MAPKEY} from '../Utils/Map';
 import {measureGetter, dimensionGetter, getExpression} from '../../utils/WidgetHelpers';
 import {ChoroplethMapConfig} from './types';
 import {MeasureParams} from '../Utils/settingHelper';
@@ -70,16 +69,6 @@ const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapCo
     type: 'filter',
     expr: `ST_Within(${wkt.value}, 'POLYGON((${polygon}))')`,
   };
-  // newConfig.selfFilter.bounds = {
-  //   type: 'filter',
-  //   expr: {
-  //     type: 'st_within',
-  //     x: lon.value,
-  //     y: lat.value,
-  //     px: [_sw.lng, _sw.lng, _ne.lng, _ne.lng, _sw.lng],
-  //     py: [_sw.lat, _ne.lat, _ne.lat, _sw.lat, _sw.lat],
-  //   },
-  // };
 
   newConfig.filter = orFilterGetter(newConfig.filter);
 
@@ -90,7 +79,7 @@ const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapCo
 
 const settings = makeSetting<ChoroplethMapConfig>({
   type: 'ChoroplethMap',
-  dbTypes:['arctern'],
+  dbTypes: ['arctern'],
   dimensions: [
     {
       type: RequiredType.REQUIRED,
@@ -102,20 +91,20 @@ const settings = makeSetting<ChoroplethMapConfig>({
     },
   ],
   measures: [
-    {
-      type: RequiredType.REQUIRED,
-      key: MAPKEY.LONGTITUDE,
-      short: 'longtitude',
-      expressions: ['project'],
-      columnTypes: [COLUMN_TYPE.NUMBER],
-    },
-    {
-      type: RequiredType.REQUIRED,
-      key: MAPKEY.LATITUDE,
-      short: 'latitude',
-      expressions: ['project'],
-      columnTypes: [COLUMN_TYPE.NUMBER],
-    },
+    // {
+    //   type: RequiredType.REQUIRED,
+    //   key: MAPKEY.LONGTITUDE,
+    //   short: 'longtitude',
+    //   expressions: ['project'],
+    //   columnTypes: [COLUMN_TYPE.NUMBER],
+    // },
+    // {
+    //   type: RequiredType.REQUIRED,
+    //   key: MAPKEY.LATITUDE,
+    //   short: 'latitude',
+    //   expressions: ['project'],
+    //   columnTypes: [COLUMN_TYPE.NUMBER],
+    // },
     {
       type: RequiredType.REQUIRED,
       key: 'w',

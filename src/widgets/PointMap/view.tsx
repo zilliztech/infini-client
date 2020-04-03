@@ -18,7 +18,7 @@ import {
   parseExpression,
 } from '../../utils/WidgetHelpers';
 import {CONFIG} from '../../utils/Consts';
-import {cloneObj} from '../../utils/Helpers';
+import {cloneObj, restoreSource} from '../../utils/Helpers';
 import {delayRunFunc} from '../../utils/EditorHelper';
 import {markerPosGetter, KEY} from '../Utils/Map';
 import {mapUpdateConfigHandler, drawUpdateConfigHandler} from '../Utils/filters/map';
@@ -101,7 +101,8 @@ const PointMapNormal: FC<PointMapProps> = props => {
       tolat: lat.value,
       distance: pointCircleR * 1000,
     };
-    const filters = dataMeta && dataMeta.params.sql.match(/.*SELECT.*WHERE(.*)LIMIT .*\) as.*$/);
+    const filters =
+      dataMeta && dataMeta.query.params.sql.match(/.*SELECT.*WHERE(.*)LIMIT .*\) as.*$/);
     let AND = '';
     if (filters && filters.length === 2) {
       AND = `AND (${filters[1]})`;
@@ -111,9 +112,9 @@ const PointMapNormal: FC<PointMapProps> = props => {
       .filter((item: any) => item.isCustom)
       .map((item: any) => `${item.value} as ${item.as}`)
       .join(', ');
-    const pointSql = `select * ${columns && `,${columns}`} from ${
+    const pointSql = `select * ${columns && `,${columns}`} from ${restoreSource(
       config.source
-    } where ${parseExpression(pointExpr)} ${AND} ${
+    )} where ${parseExpression(pointExpr)} ${AND} ${
       color ? `ORDER BY ${color.value} DESC` : ''
     } limit 1`;
     return pointSql;

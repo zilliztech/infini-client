@@ -300,7 +300,9 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
   const getMapBound = isArctern
     ? async (lng: string, lat: string, table: string) => {
         let url = URL.Query;
-        const sql = `SELECT ${lng}, ${lat} FROM ${table} WHERE ${lng} IS NOT NULL AND ${lat} IS NOT NULL LIMIT 1`;
+        const sql = `SELECT ${lng}, ${lat} FROM ${restoreSource(
+          table
+        )} WHERE ${lng} IS NOT NULL AND ${lat} IS NOT NULL LIMIT 1`;
         let params: Params = {type: QueryType.sql, sql};
         return axiosInstance
           .post(url, {id: DB && DB.id.toString(), query: params}, getAxiosConfig())
