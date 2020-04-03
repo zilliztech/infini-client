@@ -115,10 +115,10 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
       }
     : async (params: any) => {
         let url = URL.Query;
-        console.info(params)
         return axiosInstance
           .post(url, {id: getConnId(), query: params}, getAxiosConfig())
           .then((res: any) => {
+            console.log(res.data && res.data.data && res.data.data[0]);
             return res.data && res.data.data && res.data.data[0];
           })
           .catch(errorParser);
