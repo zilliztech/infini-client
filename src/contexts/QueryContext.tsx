@@ -139,7 +139,9 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
 
   const numMinMaxValRequest = isArctern
     ? async (colName: string, source: string) => {
-        let sql = `SELECT MIN(${colName}) as min , MAX(${colName}) as max FROM ${source}`;
+        let sql = `SELECT MIN(${colName}) as min , MAX(${colName}) as max FROM ${restoreSource(
+          source
+        )}`;
         return getData({type: QueryType.sql, sql})
           .then((res: any) => {
             return res[0];
