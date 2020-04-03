@@ -101,20 +101,28 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
       .catch(errorParser);
   };
 
-  const getData = (params: Params) => {
-    let url = URL.Query;
-    const bodyA = {id: DB && DB.id.toString(), query: params};
-    const bodyM = {id: getConnId(), query: params};
-    const body = isArctern ? bodyA : bodyM;
-    return axiosInstance
-      .post(url, {...body}, getAxiosConfig())
-      .then((res: any) => {
-        return isArctern
-          ? res.data && res.data.data && res.data.data.result
-          : res.data && res.data.data && res.data.data[0];
-      })
-      .catch(errorParser);
-  };
+  const getData = isArctern
+    ? async (params: any) => {
+        let url = URL.Query;
+        const body = {id: DB && DB.id.toString(), query: params};
+        console.info(params, body);
+        return axiosInstance
+          .post(url, {...body}, getAxiosConfig())
+          .then((res: any) => {
+            return res.data && res.data.data && res.data.data.result;
+          })
+          .catch(errorParser);
+      }
+    : async (params: any) => {
+        let url = URL.Query;
+        console.info(params)
+        return axiosInstance
+          .post(url, {id: getConnId(), query: params}, getAxiosConfig())
+          .then((res: any) => {
+            return res.data && res.data.data && res.data.data[0];
+          })
+          .catch(errorParser);
+      };
 
   const getRowBySql = isArctern
     ? async (sql: string) => {

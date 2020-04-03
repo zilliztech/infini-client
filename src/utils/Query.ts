@@ -1,8 +1,8 @@
-import {WidgetConfig, Query, Params, Data, DataCache} from '../types';
+import {WidgetConfig, Query, Data, DataCache} from '../types';
 import {cloneObj} from './Helpers';
 
 // requester
-type Requester = (query: Params) => Promise<Data>;
+type Requester = (query: any) => Promise<Data>;
 
 // local types
 type Cache = Map<
@@ -80,7 +80,7 @@ export class DataQuery implements IQuery {
       // delete cache
       this.cache.delete(cacheKey);
       // send the request
-      const queryPromise = this.requester(query.params).then((data: any) => {
+      const queryPromise = this.requester(query.params ? query.params : [query]).then((data: any) => {
         this.cache.set(cacheKey, {
           expire: Date.now() + this.cacheExpiresIn,
           data,

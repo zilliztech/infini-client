@@ -32,7 +32,7 @@ const _getLayouts = (configs: WidgetConfig[]) =>
 const Dashboard: FC<DashboardProps> = ({dashboard, setDashboard}) => {
   const {configs, id, demo, sources} = dashboard;
   const {getData, isFirefox} = useContext(queryContext);
-  const {widgetSettings} = useContext(rootContext);
+  const {widgetSettings, isArctern} = useContext(rootContext);
   const theme = useTheme();
   // get sourceOptions like dimensions options, measures options
   const classes = useStyles(theme);
@@ -90,7 +90,7 @@ const Dashboard: FC<DashboardProps> = ({dashboard, setDashboard}) => {
       isFirstRun.current = false;
     }
     // parse configs to querys, create cross filter nodes and sqls
-    let querys = getWidgetSql(widgetConfigs, sources, widgetSettings);
+    let querys = getWidgetSql(widgetConfigs, sources, widgetSettings, isArctern);
     // send to the backend
     dataQueryCache.current.q(querys);
     // eslint-disable-next-line react-hooks/exhaustive-deps

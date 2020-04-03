@@ -1,7 +1,7 @@
 import React from 'react';
 import {SORT_ORDER, MODE, WIDGET, RequiredType, COLUMN_TYPE} from '../utils/Consts';
 import {DashboardAction} from '../utils/reducers/dashboardReducer';
-import {Filter as coreFilter, Expression as coreExpression} from '../core/types';
+import {Filter as coreFilter, Expression as coreExpression} from 'infinivis-core';
 import {TimeBin, ExtractBin} from '../utils/Time';
 
 ///////////// Database settings for Megawise /////////////
@@ -43,7 +43,7 @@ export type Query = {
   // widget identity
   id: string;
   // sql and related params
-  params: Params;
+  params?: Params;
   // query time
   timestamp?: number;
   [propName: string]: any;

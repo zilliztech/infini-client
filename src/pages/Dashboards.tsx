@@ -199,7 +199,6 @@ const Dashboards: FC<RouteComponentProps> = props => {
 
   // do the import
   const importDashboard = (obj: any) => {
-    console.info(obj, widgetSettings)
     if (!isDashboardReady(obj, widgetSettings)) {
       setDialog({
         open: true,

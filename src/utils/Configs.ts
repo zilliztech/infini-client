@@ -370,10 +370,18 @@ export const getWidgetSql = (
     if (type !== QueryType.sql) {
       query.params = params;
     }
-    widgetQuerys.push({
-      id: dataNode.id,
-      params: query,
-    });
+    widgetQuerys.push(
+      isArctern
+        ? {
+            id: dataNode.id,
+            params: query,
+          }
+        : {
+            id: dataNode.id,
+            type: dataNode.type,
+            sql,
+          }
+    );
     if (!config.isServerRender && hasFilter) {
       // recover current fitler
       xfilterNode.setTransform((transforms: Transform[]) => {
