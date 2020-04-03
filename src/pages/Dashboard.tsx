@@ -6,7 +6,7 @@ import WidgetWrapper from './containers/WidgetWrapper';
 import {rootContext} from '../contexts/RootContext';
 import {queryContext} from '../contexts/QueryContext';
 import EmptyChart from '../components/common/EmptyWidget';
-import {getDefaultConfig, getWidgetSql, getMegaWiseWidgetSql} from '../utils/Configs';
+import {getDefaultConfig, getWidgetSql} from '../utils/Configs';
 import {DataQuery, getLinkData} from '../utils/Query';
 import {cloneObj} from '../utils/Helpers';
 import {MODE, DASH_ACTIONS} from '../utils/Consts';
@@ -32,7 +32,7 @@ const _getLayouts = (configs: WidgetConfig[]) =>
 const Dashboard: FC<DashboardProps> = ({dashboard, setDashboard}) => {
   const {configs, id, demo, sources} = dashboard;
   const {getData, isFirefox} = useContext(queryContext);
-  const {widgetSettings, isArctern} = useContext(rootContext);
+  const {widgetSettings} = useContext(rootContext);
   const theme = useTheme();
   // get sourceOptions like dimensions options, measures options
   const classes = useStyles(theme);
@@ -90,11 +90,7 @@ const Dashboard: FC<DashboardProps> = ({dashboard, setDashboard}) => {
       isFirstRun.current = false;
     }
     // parse configs to querys, create cross filter nodes and sqls
-    let querys = (isArctern ? getWidgetSql : getMegaWiseWidgetSql)(
-      widgetConfigs,
-      sources,
-      widgetSettings
-    );
+    let querys = getWidgetSql(widgetConfigs, sources, widgetSettings);
     // send to the backend
     dataQueryCache.current.q(querys);
     // eslint-disable-next-line react-hooks/exhaustive-deps

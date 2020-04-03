@@ -5,7 +5,7 @@ import * as URL_M from '../utils/EndpointsMegawise';
 import {authContext} from './AuthContext';
 import {I18nContext} from './I18nContext';
 import {rootContext} from './RootContext';
-import {namespace} from '../utils/Helpers';
+import {namespace, formatSource} from '../utils/Helpers';
 import {DB_TYPE, Params, QueryType} from '../types';
 import {isDashboardReady, getDashboardById} from '../utils/Dashboard';
 
@@ -161,7 +161,7 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
     ? async (id: number) => {
         let dashboard: any = getDashboardById(id);
         const url = URL.POST_TABLES_DETAIL;
-        const sources = await getAvaliableTables();
+        let sources = await getAvaliableTables();
         const options: any[] = await Promise.all(
           sources.map(async (source: string) => {
             const [id, table] = [DB && DB.id.toString(), source];
@@ -179,14 +179,14 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
         );
         let sourceOptions: any = {};
         sources.forEach((source: string, i: number) => {
-          sourceOptions[source] = options[i].sort((item1: any, item2: any) =>
+          sourceOptions[formatSource(source)] = options[i].sort((item1: any, item2: any) =>
             item1.col_name > item2.col_name ? 1 : -1
           );
-          sourceOptions[`${source}rowCount`] = totals[i];
+          sourceOptions[`${formatSource(source)}rowCount`] = totals[i];
         });
 
         // final
-        dashboard.sources = sources;
+        dashboard.sources = sources.map((s: string) => formatSource(s));
         dashboard.sourceOptions = sourceOptions;
         return dashboard;
       }

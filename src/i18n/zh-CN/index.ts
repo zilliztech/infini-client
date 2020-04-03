@@ -36,7 +36,7 @@ const nls = {
   label_info: base.label_info,
   label_import_dashboard: '导入仪表盘',
   // Login Page
-  label_title: '登录Sulidae',
+  label_title: '登录Arctern',
   label_username: '邮件地址',
   label_username_placeholder: 'name@company.com',
   label_password: '密码',
