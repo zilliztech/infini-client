@@ -25,6 +25,11 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Setup Time Zone
+        uses: zcong1993/setup-timezone@master
+        with:
+          timezone: Asia/Shanghai
+
       - name: Setup Node.js enviroment
         uses: actions/setup-node@v1.1.0
         with:
