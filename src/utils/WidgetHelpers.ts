@@ -835,7 +835,7 @@ export const popupContentBuilder = (
   return content + `</ul>`;
 };
 
-export const getWidgetTitle = (config: WidgetConfig, nls: any, isArctern: boolean=true) => {
+export const getWidgetTitle = (config: WidgetConfig, nls: any, isArctern: boolean = true) => {
   const {title, source, measures = []} = config;
   if (title) {
     return title;
@@ -846,4 +846,20 @@ export const getWidgetTitle = (config: WidgetConfig, nls: any, isArctern: boolea
   }
 
   return isArctern ? formatSource(source) : source;
+};
+
+export const getView = (type: string, isArctern: boolean = true) => {
+  if (isArctern) {
+    return type;
+  }
+  switch (type) {
+    case 'PointMap':
+      return 'PointMegaWiseMap';
+    case 'GeoHeatMap':
+      return 'GeoHeatMegaWiseMap';
+    case 'ChoroplethMap':
+      return 'ChoroplethMegaWiseMap';
+    default:
+      return type;
+  }
 };

@@ -133,6 +133,8 @@ const _parseConfigToTransform = (config: WidgetConfig, isArctern: Boolean = true
 
   // agg
   let measures: any[] = config.measures.map((m: Measure) => ({
+    // don't delete ...m if you wanna use megawise, for ServerRender requests will neet to use some params pushed in configHandler
+    ...m,
     type: m.expression,
     field: m.value,
     as: m.as,

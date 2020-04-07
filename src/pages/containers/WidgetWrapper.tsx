@@ -30,7 +30,8 @@ import {queryContext} from '../../contexts/QueryContext';
 import {I18nContext} from '../../contexts/I18nContext';
 import {rootContext} from '../../contexts/RootContext';
 import localConfigReducer from '../../utils/reducers/localConfigReducer';
-import {getWidgetTitle} from '../../utils/WidgetHelpers';
+import {getWidgetTitle, getView} from '../../utils/WidgetHelpers';
+
 
 // component cache
 const widgetsMap = new Map();
@@ -87,7 +88,6 @@ const WidgetWrapper: FC<DefaultWidgetProps> = props => {
     });
   };
   const onResponse = (query: Query, data: Data) => {
-    // console.info(JSON.stringify(data))
     dataCache.current[query.id] = data;
     setLocalMeta((meta: Meta) => {
       const {id, timestamp} = query;
@@ -157,7 +157,7 @@ const WidgetWrapper: FC<DefaultWidgetProps> = props => {
   if (widgetsMap.has(widgetKey)) {
     Widget = widgetsMap.get(widgetKey);
   } else {
-    Widget = React.lazy(() => import(`../../widgets/${widgetType}/view`));
+    Widget = React.lazy(() => import(`../../widgets/${getView(widgetType, isArctern)}/view`));
     widgetsMap.set(widgetKey, Widget);
   }
 

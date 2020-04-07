@@ -103,7 +103,7 @@ const PointMapNormal: FC<PointMapProps> = props => {
       tolat: lat.value,
       distance: pointCircleR * 1000,
     };
-    const filters = dataMeta && dataMeta.sql.match(/.*SELECT.*WHERE(.*)LIMIT .*\) as.*$/);
+    const filters = dataMeta && dataMeta.query.sql.match(/.*SELECT.*WHERE(.*)LIMIT .*\) as.*$/);
     let AND = '';
     if (filters && filters.length === 2) {
       AND = `AND (${filters[1]})`;
