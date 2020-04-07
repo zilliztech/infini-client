@@ -163,9 +163,7 @@ export const drawsGlGetter = (config: any) => {
   const filterKeys = Object.keys(config.filter || {});
   const draws: any = [];
   filterKeys.forEach((f: any) => {
-    if (checkIsDraw(config.filter[f])) {
-      draws.push({data: config.filter[f]});
-    }
+    draws.push({data: config.filter[f]});
   });
   return draws;
 };

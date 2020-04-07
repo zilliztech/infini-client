@@ -43,7 +43,7 @@ const featuresGetter = (drawTools: any) => {
 
 const MapboxGlDraw: FC<any> = props => {
   const {isArctern} = useContext(rootContext);
-  const {map, onDrawUpdate, draws} = props;
+  const {map, onDrawUpdate, draws=[]} = props;
   // console.info(draws);
   const drawToolCache = useRef<any>();
 

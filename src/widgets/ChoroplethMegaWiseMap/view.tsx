@@ -9,11 +9,14 @@ import {CONFIG} from '../../utils/Consts';
 import {formatterGetter} from '../../utils/Formatters';
 import {delayRunFunc} from '../../utils/EditorHelper';
 import {dimensionGetter, measureGetter} from '../../utils/WidgetHelpers';
+import {drawsGlGetter} from '../Utils/Map';
 import {id as genID} from '../../utils/Helpers';
 import {ChoroplethMapProps} from './types';
+import {rootContext} from '../../contexts/RootContext';
 const wkx = require('wkx');
 
 const ChoroplethMapView: FC<ChoroplethMapProps> = props => {
+  const {isArctern} = useContext(rootContext);
   const theme = useTheme();
   const {getRowBySql, generalRequest} = useContext(queryContext);
   const {config, setConfig} = props;
@@ -21,6 +24,7 @@ const ChoroplethMapView: FC<ChoroplethMapProps> = props => {
   const detailRef = useRef<any>();
   const pointRequest = useRef<any>(null);
   const popup = useRef<any>(null);
+  const draws = drawsGlGetter(config);
 
   // map update on bounds change
   const onMapUpdate = (map: any, container: any) => {
@@ -42,7 +46,7 @@ const ChoroplethMapView: FC<ChoroplethMapProps> = props => {
   const onDrawUpdate = (draws: any) => {
     setConfig({
       type: CONFIG.UPDATE,
-      payload: drawUpdateConfigHandler(config, draws),
+      payload: drawUpdateConfigHandler(config, draws, isArctern),
     });
   };
   const _preSql = (center: any) => {
@@ -214,7 +218,7 @@ const ChoroplethMapView: FC<ChoroplethMapProps> = props => {
         onDrawUpdate={onDrawUpdate}
         onMouseMove={onMouseMove}
         onMouseOut={onMouseOut}
-        draws={config.draws || []}
+        draws={draws || []}
         allowPopUp={true}
         showRuler={false}
       />
