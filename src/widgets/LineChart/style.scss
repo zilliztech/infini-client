@@ -1,6 +1,6 @@
 .z-chart {
   position: relative;
-  background: rgba(229, 229, 229, 1);
+  // background: rgba(229, 229, 229, 1);
 }
 
 .z-line-chart {
@@ -20,14 +20,14 @@
     right: 5px;
     top: 5px;
     padding: 5px;
-    color: #000;
+    // color: #000;
   }
   .legend {
     position: absolute;
     right: 20px;
     top: 50px;
-    color: #000;
-    background: #999;
+    color: #fff;
+    background: #333;
     .title {
       cursor: pointer;
       border-bottom: 1px #444 solid;
@@ -50,7 +50,7 @@
       stroke: #777;
     }
     text {
-      fill: #000;
+      fill: #fff;
     }
     .grid-line {
       path,

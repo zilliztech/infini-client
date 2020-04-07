@@ -1,104 +1,95 @@
 {
-  "id": 1,
+  "id": 5,
   "demo": true,
-  "title": "上海绿化和市容管理局-渣土车辆GPS点位信息",
-  "userId": "zilliz",
+  "title": "渣土车数据分析",
+  "userId": "infini",
   "configs": [
     {
-      "id": "id_qlkoi9cd2l",
-      "type": "TableChart",
-      "source": "environment",
+      "type": "PointMap",
+      "title": "",
+      "source": "sha_truck",
       "layout": {
-        "w": 8,
-        "h": 9,
-        "x": 22,
-        "y": 7,
-        "i": "id_qlkoi9cd2l",
-        "minW": 3,
-        "minH": 5,
-        "moved": false,
-        "static": false
-      },
-      "dimensions": [],
-      "measures": [
-        {
-          "type": "text",
-          "name": "m0",
-          "value": "plate_number",
-          "label": "plate_number",
-          "as": "measure_8otmtmdlymr",
-          "format": "auto",
-          "isCustom": false,
-          "expression": "unique",
-          "color": "#E690D1"
-        }
-      ],
-      "sort": {"name": "measure_8otmtmdlymr"},
-      "filter": {},
-      "offset": 0,
-      "selfFilter": {},
-      "length": 25
-    },
-    {
-      "id": "id_038e9ypqobyy",
-      "type": "NumberChart",
-      "source": "environment",
-      "dimensions": [],
-      "measures": [
-        {
-          "type": "text",
-          "name": "value",
-          "value": "plate_number",
-          "label": "plate_number",
-          "as": "value",
-          "format": "auto",
-          "isCustom": false,
-          "expression": "unique",
-          "color": "#9d96f5"
-        }
-      ],
-      "layout": {
-        "w": 6,
-        "h": 9,
-        "x": 16,
-        "y": 7,
-        "i": "id_038e9ypqobyy",
-        "minW": 3,
-        "minH": 5,
-        "moved": false,
-        "static": false
-      },
-      "colorKey": "#37A2DA"
-    },
-    {
-      "id": "id_2qgcv6avaoy",
-      "type": "LineChart",
-      "source": "environment",
-      "layout": {
-        "w": 14,
-        "h": 7,
-        "x": 16,
+        "w": 15,
+        "h": 30,
+        "x": 0,
         "y": 0,
-        "i": "id_2qgcv6avaoy",
+        "i": "id_od033ljvl8i",
         "minW": 3,
-        "minH": 5,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "dimensions": [],
+      "measures": [
+        {
+          "type": "float8",
+          "value": "pos_longitude",
+          "label": "pos_longitude",
+          "as": "lon",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "gis_mapping_lon",
+          "name": "y0"
+        },
+        {
+          "type": "float8",
+          "value": "pos_latitude",
+          "label": "pos_latitude",
+          "as": "lat",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "gis_mapping_lat",
+          "name": "y1"
+        }
+      ],
+      "colorItems": [],
+      "filter": {},
+      "selfFilter": {},
+      "width": 762,
+      "height": 1092.666748046875,
+      "isServerRender": true,
+      "mapTheme": "mapbox://styles/mapbox/dark-v9",
+      "zoom": 9.238244784868408,
+      "pointSize": 3,
+      "points": 1000000,
+      "popupItems": [],
+      "id": "id_od033ljvl8i",
+      "colorKey": "#37A2DA",
+      "center": {"lng": 121.448405072779, "lat": 31.122219513496447},
+      "bounds": {
+        "_sw": {"lng": 121.00482837044382, "lat": 30.57598151136871},
+        "_ne": {"lng": 121.89198177511469, "lat": 31.665331327762544}
+      }
+    },
+    {
+      "type": "LineChart",
+      "title": "",
+      "source": "sha_truck",
+      "layout": {
+        "w": 15,
+        "h": 15,
+        "x": 15,
+        "y": 0,
+        "i": "id_iurgth4e0k",
+        "minW": 3,
+        "minH": 1,
         "moved": false,
         "static": false
       },
       "dimensions": [
         {
-          "name": "x",
-          "format": "auto",
-          "type": "DATE",
-          "value": "pos_time",
           "label": "pos_time",
+          "short": "xaxis",
+          "value": "pos_time",
+          "type": "timestamp",
+          "format": "auto",
+          "as": "x",
           "isBinned": true,
           "extract": false,
-          "as": "x",
           "min": "Tue Oct 16 00:00:00 2018",
-          "currMin": "Tue Oct 16 00:00:00 2018",
           "max": "Tue Oct 16 23:59:54 2018",
-          "currMax": "Tue Oct 16 23:59:54 2018",
           "extent": ["Tue Oct 16 00:00:00 2018", "Tue Oct 16 23:59:54 2018"],
           "staticRange": ["Tue Oct 16 00:00:00 2018", "Tue Oct 16 23:59:54 2018"],
           "timeBin": "hour",
@@ -107,95 +98,101 @@
       ],
       "measures": [
         {
-          "type": "number",
-          "name": "m0",
+          "type": "int",
           "value": "*",
           "label": "Records",
           "as": "countval",
           "format": "auto",
           "isCustom": false,
-          "expression": "count",
           "isRecords": true,
-          "color": "#8378EA"
+          "expression": "count",
+          "name": "y0"
         }
+      ],
+      "colorItems": [
+        {"color": "#37A2DA", "as": "countval", "label": "Records", "isRecords": true, "value": "*"}
       ],
       "filter": {},
-      "selfFilter": {
-        "xDomain": {
-          "type": "filter",
-          "expr": {
-            "type": "between",
-            "originField": "pos_time",
-            "field": "pos_time",
-            "left": "2018-10-16T00:00:00",
-            "right": "2018-10-16T23:59:54"
-          }
-        }
-      },
+      "selfFilter": {},
       "isShowRange": false,
-      "keep": ["xDomain"],
-      "colorItems": [
-        {"label": "记录数", "color": "#8378EA", "as": "countval", "isRecords": true}
-      ],
-      "sort": {"name": "x"}
+      "id": "id_iurgth4e0k"
     },
     {
-      "id": "id_zt0dk8zfig",
-      "type": "PointMap",
-      "source": "environment",
+      "id": "id_s9tqr73xco",
+      "type": "TableChart",
+      "source": "sha_truck",
+      "dimensions": [
+        {
+          "format": "auto",
+          "type": "text",
+          "value": "plate_number",
+          "label": "plate_number",
+          "as": "plate_number_isxwvfyklwi",
+          "expression": ""
+        }
+      ],
+      "measures": [],
       "layout": {
-        "w": 16,
-        "h": 16,
-        "x": 0,
-        "y": 0,
-        "i": "id_zt0dk8zfig",
-        "minW": 1,
-        "minH": 5,
+        "w": 7.5,
+        "h": 15,
+        "x": 15,
+        "y": 15,
+        "i": "id_s9tqr73xco",
+        "minW": 3,
+        "minH": 1,
         "moved": false,
         "static": false
       },
+      "colorKey": "#37A2DA",
+      "filter": {
+        "plate_number_isxwvfyklwi": {
+          "type": "filter",
+          "expr": {"type": "in", "set": ["沪DF9093"], "expr": "plate_number"}
+        }
+      },
+      "selfFilter": {},
+      "offset": 0,
+      "limit": 25,
+      "sort": {"name": "", "order": "descending"},
+      "title": "渣土车数据分析"
+    },
+    {
+      "id": "id_sk38rvdxkk",
+      "title": "渣土车数量",
+      "filter": {},
+      "selfFilter": {},
+      "type": "NumberChart",
+      "source": "sha_truck",
       "dimensions": [],
       "measures": [
         {
-          "type": "float8",
-          "name": "lon",
-          "value": "pos_longitude",
-          "label": "pos_longitude",
-          "as": "lon",
+          "type": "int",
+          "value": "*",
+          "label": "Records",
+          "as": "value",
           "format": "auto",
           "isCustom": false,
-          "color": "#ff9f7f"
-        },
-        {
-          "type": "float8",
-          "name": "lat",
-          "value": "pos_latitude",
-          "label": "pos_latitude",
-          "as": "lat",
-          "format": "auto",
-          "isCustom": false,
-          "color": "#E062AE"
+          "isRecords": true,
+          "expression": "count",
+          "name": "y0"
         }
       ],
-      "filter": {},
-      "width": 599,
-      "selfFilter": {},
-      "height": 682,
-      "isServerRender": true,
-      "mapTheme": "mapbox://styles/mapbox/dark-v10",
-      "zoom": 7.24828230851405,
-      "ruler": {"min": 0, "max": 1000},
-      "rulerBase": {"min": 0, "max": 1000},
-      "colorKey": "#37A2DA",
-      "center": {"lng": 121.1448297837378, "lat": 31.0540080203441},
-      "bounds": {
-        "_sw": {"lng": 119.75973665559098, "lat": 29.693497316687882},
-        "_ne": {"lng": 122.5299229118819, "lat": 32.39534102976482}
+      "layout": {
+        "w": 7.5,
+        "h": 15,
+        "x": 22.5,
+        "y": 15,
+        "i": "id_sk38rvdxkk",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
       },
-      "title": "上海渣土车营运地图"
+      "colorKey": "#37A2DA",
+      "isServerRender": false
     }
   ],
   "createdAt": "Thu Jun  6 12:12:12 2019",
-  "modifyAt": "Thu Jun  6 12:12:13 2019",
-  "sources": ["environment"]
+  "modifyAt": "Thu Jun  6 12:12:12 2019",
+  "sources": ["sha_truck", "szx_vehicles", "nyc_taxi"]
 }

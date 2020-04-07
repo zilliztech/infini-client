@@ -34,13 +34,6 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  table: {
-    minWidth: 650,
-  },
-  link: {
-    color: 'white',
-    textDecoration: 'none',
-  },
 }));
 
 // table format
@@ -293,7 +286,7 @@ const Dashboards: FC<RouteComponentProps> = props => {
             onChange={onImportChange}
             hidden
           />
-          <Button variant="contained" color="default" onClick={onImportClicked}>
+          <Button variant="outlined" color="default" onClick={onImportClicked}>
             <InsertDriveFileIcon className={classes.marginRight} fontSize="small" />
             {nls.label_import_dashboard}
           </Button>

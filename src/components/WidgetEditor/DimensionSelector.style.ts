@@ -27,7 +27,7 @@ const genDimensionSelectorStyles = (theme: any) => {
       width: '50px',
       borderTopLeftRadius: '5px',
       borderBottomLeftRadius: '5px',
-      backgroundColor: theme.palette.grey[400],
+      backgroundColor: theme.palette.grey[800],
       fontSize: '12px',
       textTransform: 'uppercase',
       textAlign: 'center',

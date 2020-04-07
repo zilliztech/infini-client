@@ -15,7 +15,7 @@ export const genWidgetWrapperStyle = (theme: any) => ({
     position: 'relative',
     width: '100%',
     padding: theme.spacing(0.5),
-    backgroundColor: '#fff',
+    backgroundColor: '#333',
     '& h3': {
       padding: theme.spacing(0.5, 3),
       overflow: 'hidden',

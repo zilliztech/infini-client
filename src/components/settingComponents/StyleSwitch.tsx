@@ -25,14 +25,14 @@ const StyleSwitch = (props: any) => {
       <p className={classes.title}>{nls.label_chart_style}</p>
       <Button
         size="medium"
-        variant={config.isArea ? undefined : 'contained'}
+        variant={config.isArea ? undefined : 'outlined'}
         onClick={handleChange}
       >
         {nls.label_chart_style_line}
       </Button>
       <Button
         size="medium"
-        variant={!config.isArea ? undefined : 'contained'}
+        variant={!config.isArea ? undefined : 'outlined'}
         onClick={handleChange}
       >
         {nls.label_chart_style_area}

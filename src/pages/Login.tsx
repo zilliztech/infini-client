@@ -20,7 +20,7 @@ const genTheme = (theme: any) => ({
     marginTop: theme.spacing(20),
     display: 'flex',
     flexDirection: 'column',
-    background: '#fff',
+    background: theme.palette.background.paper,
   },
   title: {
     padding: theme.spacing(4, 4, 0, 4),
