@@ -101,19 +101,6 @@ export const getValidColumns = (columns: Column[] = [], columnTypes: COLUMN_TYPE
   });
 };
 
-export const getValidMegaWiseColumns = (columns: any[], columnTypes: COLUMN_TYPE[]): Column[] => {
-  return columns
-    .filter((column: any) => {
-      return columnTypes.some(
-        (validType: COLUMN_TYPE) => validType === getColType(column.dataType)
-      );
-    })
-    .map((column: any) => ({
-      col_name: column.colName,
-      data_type: column.dataType,
-    }));
-};
-
 const _initConfig = (widgetType: string, config: any) => {
   const initConfig: any = {
     id: config.id || '',

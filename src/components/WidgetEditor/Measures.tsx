@@ -6,7 +6,7 @@ import MeasureSelector from './MeasureSelector';
 import NoSelector from './NoSelector';
 import {MeasuresProps} from '../../types';
 import {RequiredType} from '../../utils/Consts';
-import {Column, getValidColumns, getValidMegaWiseColumns} from '../../utils/EditorHelper';
+import {Column, getValidColumns} from '../../utils/EditorHelper';
 import {WIDGET, CONFIG} from '../../utils/Consts';
 import {dimensionGetter, measureGetter} from '../../utils/WidgetHelpers';
 
@@ -55,17 +55,14 @@ const Measures: FC<MeasuresProps> = props => {
     }
   };
 
-  let validColumns: Column[] = isArctern
-    ? getValidColumns(options, firstMeasureSetting.columnTypes!)
-    : getValidMegaWiseColumns(options, firstMeasureSetting.columnTypes!);
+  let validColumns: Column[] = getValidColumns(options, firstMeasureSetting.columnTypes!);
+  console.info(options, firstMeasureSetting.columnTypes)
   switch (firstMeasureSettingType) {
     case RequiredType.REQUIRED:
       return (
         <div className="measuresAll">
           {measuresSetting.map((requiredMeasure: any) => {
-            const validColumns = isArctern
-              ? getValidColumns(options, requiredMeasure.columnTypes)
-              : getValidMegaWiseColumns(options, requiredMeasure.columnTypes);
+            const validColumns = getValidColumns(options, requiredMeasure.columnTypes);
             const measure = measureGetter(config, requiredMeasure.key);
             return (
               <Fragment key={requiredMeasure.key}>

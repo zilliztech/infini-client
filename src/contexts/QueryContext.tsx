@@ -215,9 +215,9 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
                 let options = sourceOptions.filter((s: any) => s.name === source)[0];
                 _sourceOptions[source] =
                   options &&
-                  options.columnDefs.sort((item1: any, item2: any) =>
-                    item1.colName > item2.colName ? 1 : -1
-                  );
+                  options.columnDefs
+                    .sort((item1: any, item2: any) => (item1.colName > item2.colName ? 1 : -1))
+                    .map((item: any) => ({col_name: item.colName, data_type: item.type}));
                 if (options) {
                   _sourceOptions[`${source}rowCount`] = options.rowCount;
                 }
