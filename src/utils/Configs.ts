@@ -23,6 +23,7 @@ import {
   WidgetSettings,
 } from '../types';
 import {restoreSource} from './Helpers';
+import {dateTruncParser, extractParser} from './MegaWiseParser';
 
 // define a dataNode type
 type dataNode = {
@@ -111,7 +112,7 @@ export const getDefaultConfig = (source: string, existLayouts: Layout[]): Widget
   };
 };
 
-const _parseConfigToTransform = (config: WidgetConfig): Transform[] => {
+const _parseConfigToTransform = (config: WidgetConfig, isArctern: Boolean = true): Transform[] => {
   let transform: Transform[] = [];
   let aggTransform: Transform;
   let sortTransform: Transform;
@@ -159,16 +160,23 @@ const _parseConfigToTransform = (config: WidgetConfig): Transform[] => {
       return Helper.bin(as, value, extent as number[], maxbins);
     });
 
+    // TODO: put these parsers to one file later
   const timeBinDimsExprs = timeBinDims.map(t => {
     if (t.extract) {
       return Helper.alias(
         t.as,
-        t.timeBin === 'isodow' ? `date_format(${t.value}, 'e')` : `${t.timeBin}(${t.value})`
+        isArctern
+          ? (t.timeBin === 'isodow' ? `date_format(${t.value}, 'e')` : `${t.timeBin}(${t.value})`)
+          : `extract('${t.timeBin}' from ${t.value})`
       );
     }
     return Helper.alias(
       t.as,
-      t.timeBin === 'day' ? `date(${t.value})` : `trunc(${t.value}, '${t.timeBin}')`
+      isArctern
+        ? t.timeBin === 'day'
+          ? `date(${t.value})`
+          : `trunc(${t.value}, '${t.timeBin}')`
+        : `date_trunc('${t.timeBin}', ${t.value})`
     );
   });
 
@@ -230,6 +238,10 @@ export const getWidgetSql = (
   widgetSettings: WidgetSettings,
   isArctern: boolean = true
 ) => {
+  if (!isArctern) {
+    SqlParser.SQLParser.registerExpression('date_trunc', dateTruncParser);
+    SqlParser.SQLParser.registerExpression('extract', extractParser);
+  }
   // create a config map
   const configMap: Map<string, WidgetConfig> = new Map();
   // add count table
@@ -274,7 +286,7 @@ export const getWidgetSql = (
   // loop our widget's configs
   configMap.forEach((config: WidgetConfig) => {
     // get transform for the config
-    let transform = _parseConfigToTransform(config);
+    let transform = _parseConfigToTransform(config, isArctern);
     // get current cross filtering node by source
     let xfilterNode: InfiniNode<Transform> = xfilterNodes.get(config.source)!;
     // if we have the cross filtering node set, get it
