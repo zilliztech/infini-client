@@ -113,7 +113,7 @@ export const getDefaultConfig = (source: string, existLayouts: Layout[]): Widget
   };
 };
 
-const _parseConfigToTransform = (config: WidgetConfig, isArctern: Boolean = true): Transform[] => {
+const _parseConfigToTransform = (config: WidgetConfig, isArctern: boolean = true): Transform[] => {
   let transform: Transform[] = [];
   let aggTransform: Transform;
   let sortTransform: Transform;
@@ -133,13 +133,19 @@ const _parseConfigToTransform = (config: WidgetConfig, isArctern: Boolean = true
   }
 
   // agg
-  let measures: any[] = config.measures.map((m: Measure) => ({
-    // don't delete ...m if you wanna use megawise, for ServerRender requests will neet to use some params pushed in configHandler
-    ...m,
-    type: m.expression,
-    field: m.value,
-    as: m.as,
-  }));
+  let measures: any[] = config.measures.map((m: Measure) => {
+    return isArctern
+      ? {type: m.expression, field: m.value, as: m.as}
+      : {
+          // don't delete ...m, width, height if you wanna use megawise, for ServerRender requests will neet to use some params pushed in configHandler
+          ...m,
+          width: config.width,
+          height: config.height,
+          type: m.expression,
+          field: m.value,
+          as: m.as,
+        };
+  });
 
   // non-bins groups
   const nonBinDimsExprs = config.dimensions
@@ -228,6 +234,7 @@ export const getWidgetSql = (
   widgetSettings: WidgetSettings,
   isArctern: boolean = true
 ) => {
+  // register custom bin or expression parser for Arctern or MegaWise
   if (!isArctern) {
     SqlParser.SQLParser.registerExpression('date_trunc', dateTruncParser);
     SqlParser.SQLParser.registerExpression('extract', extractParser);

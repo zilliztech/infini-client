@@ -112,7 +112,7 @@ const ScatterChartView: FC<ScatterChartConfig> = props => {
   const _sqlGetter = ({config, xLen, yLen, dataMeta}: any) => {
     const circleR = _getValidCircle();
     const exprs = config.measures.map((m: Measure) => `${m.value} as ${m.as}`).join(', ');
-    const where = dataMeta.sql.split('WHERE')[1];
+    const where = dataMeta.query.sql.split('WHERE')[1];
     const globalFilter = where ? where.split('LIMIT')[0] : '';
     const filter = _singlePointFilterGetter({circleR, x: xLen, y: yLen});
     return `SELECT *, ${exprs} FROM ${config.source} WHERE (${filter}${

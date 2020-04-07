@@ -114,9 +114,15 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
       widgetSettings.ChoroplethMap = widgetSettings.ChoroplethMegaWiseMap;
       widgetSettings.ChoroplethMap.type = 'ChoroplethMap';
     }
-    ['ChoroplethMegaWiseMap', 'GeoHeatMegaWiseMap', 'PointMegaWiseMap'].forEach(
-      (key: string) => delete widgetSettings[key]
-    );
+    if (widgetSettings.ScatterMegaWiseChart) {
+      widgetSettings.ScatterChart = widgetSettings.ScatterMegaWiseChart;
+      widgetSettings.GeoHeatMap.type = 'ScatterChart';
+    }
+    [
+      'ChoroplethMegaWiseMap',
+      'GeoHeatMegaWiseMap',
+      'PointMegaWiseMap, ScatterMegaWiseChart',
+    ].forEach((key: string) => delete widgetSettings[key]);
   }
   useEffect(() => {
     if (_tooltipWrapper.current) {

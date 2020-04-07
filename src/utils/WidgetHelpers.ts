@@ -859,6 +859,8 @@ export const getView = (type: string, isArctern: boolean = true) => {
       return 'GeoHeatMegaWiseMap';
     case 'ChoroplethMap':
       return 'ChoroplethMegaWiseMap';
+    case 'ScatterChart':
+      return 'ScatterMegaWiseChart' 
     default:
       return type;
   }
