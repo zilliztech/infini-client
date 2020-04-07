@@ -31,6 +31,8 @@ jobs:
     steps:
       - name: Checkout out
       - uses: actions/checkout@v2
+      
+      - name: Setup Node.js enviroment
       - uses: actions/setup-node@v1.1.0
         with:
           version: '12.x'
