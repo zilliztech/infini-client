@@ -52,7 +52,7 @@
       ],
       "width": 688,
       "height": 1125.666748046875,
-      "popupItems": ["VendorID", "passenger_count"],
+      "popupItems": ["vendor_id", "passenger_count"],
       "pointSize": 3,
       "points": 1000000,
       "measures": [
@@ -128,7 +128,7 @@
       "selfFilter": {
         "selfFilter_color": {
           "type": "filter",
-          "expr": {"type": "in", "set": ["VTS", "CMT", "DDS"], "expr": "VendorID"}
+          "expr": {"type": "in", "set": ["VTS", "CMT", "DDS"], "expr": "vendor_id"}
         }
       },
       "isShowRange": false,
@@ -293,7 +293,7 @@
         "moved": false,
         "static": false
       },
-      "dimensions": [{"type": "text", "value": "VendorID", "as": "d_i070fo8kbnd"}],
+      "dimensions": [{"type": "text", "value": "vendor_id", "as": "d_i070fo8kbnd"}],
       "measures": [
         {
           "type": "float",
@@ -429,7 +429,7 @@
         "type": "timestamp"
       },
       {"colName": "trip_distance", "dataType": "double precision", "type": "float8"},
-      {"colName": "VendorID", "dataType": "text", "type": "text"}
+      {"colName": "vendor_id", "dataType": "text", "type": "text"}
     ],
     "nyc_taxirowCount": 500000,
     "wuxian_wifi": [

@@ -91,7 +91,7 @@ const columns = [
     type: 'float8',
   },
   {
-    colName: 'VendorID',
+    colName: 'vendor_id',
     data_type: 'text',
     type: 'text',
   },
