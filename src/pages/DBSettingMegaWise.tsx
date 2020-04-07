@@ -61,17 +61,15 @@ const useStyles = makeStyles(() => ({
   submit: {},
 }));
 
-const DbSetting: FC<RouteComponentProps> = props => {
+const DbMegaWiseSetting: FC<RouteComponentProps> = props => {
   const classes = useStyles();
   const {auth} = useContext(authContext);
-  const {dbSetting = false, changeDBConfig, setDBSetting, setConnId} = useContext(
-    queryContext
-  );
+  const {DB = false, changeDBConfig, setDB, setConnId} = useContext(queryContext);
   const {setDialog, globalConfig} = useContext(rootContext);
   const {nls} = useContext(I18nContext);
   const DEFAULT_MEGACONFIG_LIST = globalConfig.DEFAULT_MEGACONFIG_LIST;
   const [loading, setLoading] = useState(false);
-  const [localDbSetting, setLocalDbSetting] = useState<DBSetting>(dbSetting);
+  const [localDbSetting, setLocalDbSetting] = useState<DBSetting>(DB);
 
   const handleSetSuccess = () => {
     props.history.push('/');
@@ -101,7 +99,7 @@ const DbSetting: FC<RouteComponentProps> = props => {
     changeDBConfig(localDbSetting).then((res: any) => {
       setLoading(false);
       if (res.data.status === 'success') {
-        setDBSetting(localDbSetting);
+        setDB(localDbSetting);
         setConnId(res.data.data.id);
         setDialog({
           open: true,
@@ -124,9 +122,9 @@ const DbSetting: FC<RouteComponentProps> = props => {
   };
 
   useEffect(() => {
-    setLocalDbSetting(dbSetting);
+    setLocalDbSetting(DB);
     //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(dbSetting)]);
+  }, [JSON.stringify(DB)]);
 
   if (auth.userId === 'guest') {
     return <Redirect to="/login" />;
@@ -236,4 +234,4 @@ const DbSetting: FC<RouteComponentProps> = props => {
   );
 };
 
-export default DbSetting;
+export default DbMegaWiseSetting;

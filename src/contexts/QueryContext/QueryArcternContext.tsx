@@ -4,23 +4,23 @@ import * as URL from '../../utils/Endpoints';
 import {authContext} from '../AuthContext';
 import {I18nContext} from '../I18nContext';
 import {rootContext} from '../RootContext';
-import {namespace} from '../../utils/Helpers';
+import {namespace, formatSource, restoreSource} from '../../utils/Helpers';
 import {DB_TYPE, Params, QueryType} from '../../types';
 import {isDashboardReady, getDashboardById} from '../../utils/Dashboard';
 
 const axiosInstance = axios.create();
-export const queryContext = createContext<any>({});
+export const queryArcternContext = createContext<any>({});
+const Provider = queryArcternContext.Provider;
 
-const {Provider} = queryContext;
-const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
+const _getDB = () => {
+  const db = window.localStorage.getItem(namespace(['query'], 'db'));
+  return db ? JSON.parse(db) : false;
+};
+const QueryArcternProvider: FC<{children: ReactNode}> = ({children}) => {
   const {setUnauthStatus, setAuthStatus} = useContext(authContext);
   const {widgetSettings, setDialog, setSnackbar, globalConfig} = useContext(rootContext);
   const {nls} = useContext(I18nContext);
-  const getDB = () => {
-    const db = window.localStorage.getItem(namespace(['query'], 'db'));
-    return db ? JSON.parse(db) : false;
-  };
-  const [DB, _setDB] = useState<DB_TYPE | false>(getDB());
+  const [DB, _setDB] = useState<any>(_getDB());
   const setDB = (db: DB_TYPE) => {
     window.localStorage.setItem(namespace(['query'], 'db'), JSON.stringify(db));
     _setDB(db);
@@ -54,6 +54,7 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
         open: true,
         content: errContent,
         onConfirm: () => {
+          window.localStorage.clear();
           _setDB(false);
         },
       });
@@ -67,7 +68,10 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
       window.localStorage.getItem(namespace(['login'], 'userAuth')) || '{}'
     );
     return {
-      headers: {Authorization: `Token ${userAuth && userAuth.token}`, ...params},
+      headers: {
+        Authorization: `Token ${userAuth && userAuth.token}`,
+        ...params,
+      },
     };
   };
 
@@ -94,17 +98,24 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
       .catch(errorParser);
   };
 
-  const getData = (params: Params) => {
+  const getData = async (params: any) => {
     let url = URL.Query;
+    const {configID} = params;
+    delete params.configID;
+    const body = {id: DB && DB.id.toString(), query: params};
     return axiosInstance
-      .post(url, {id: DB && DB.id.toString(), query: params}, getAxiosConfig())
+      .post(url, {...body}, getAxiosConfig())
       .then((res: any) => {
-        return res.data && res.data.data && res.data.data.result;
+        const result = res.data && res.data.data && res.data.data.result;
+        if (result) {
+          result.id = configID;
+        }
+        return result;
       })
       .catch(errorParser);
   };
 
-  const getRowBySql = (sql: string) => {
+  const getRowBySql = async (sql: string) => {
     let url = URL.Query;
     let params = {type: 'sql', sql};
     return axiosInstance
@@ -115,18 +126,21 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
       .catch(errorParser);
   };
 
-  const numMinMaxValRequest = (colName: string, source: string) => {
-    let sql = `SELECT MIN(${colName}) as min , MAX(${colName}) as max FROM ${source}`;
+  const numMinMaxValRequest = async (colName: string, source: string) => {
+    let sql = `SELECT MIN(${colName}) as min , MAX(${colName}) as max FROM ${restoreSource(
+      source
+    )}`;
     return getData({type: QueryType.sql, sql})
       .then((res: any) => {
         return res[0];
       })
       .catch(errorParser);
   };
+
   const getDashBoard = async (id: number) => {
     let dashboard: any = getDashboardById(id);
     const url = URL.POST_TABLES_DETAIL;
-    const sources = await getAvaliableTables();
+    let sources = await getAvaliableTables();
     const options: any[] = await Promise.all(
       sources.map(async (source: string) => {
         const [id, table] = [DB && DB.id.toString(), source];
@@ -143,26 +157,24 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
       })
     );
     let sourceOptions: any = {};
-    let sourceTotal: any = {};
     sources.forEach((source: string, i: number) => {
-      sourceOptions[source] = options[i].sort((item1: any, item2: any) =>
+      sourceOptions[formatSource(source)] = options[i].sort((item1: any, item2: any) =>
         item1.col_name > item2.col_name ? 1 : -1
       );
-      sourceTotal[source] = totals[i];
+      sourceOptions[`${formatSource(source)}rowCount`] = totals[i];
     });
 
     // final
-    dashboard.sources = sources;
+    dashboard.sources = sources.map((s: string) => formatSource(s));
     dashboard.sourceOptions = sourceOptions;
-    dashboard.totals = sourceTotal;
     return dashboard;
   };
 
-  const getTxtDistinctVal = (sql: string) => {
+  const getTxtDistinctVal = async (sql: string) => {
     return getData({sql, type: QueryType.sql});
   };
 
-  const getAvaliableTables = () => {
+  const getAvaliableTables = async () => {
     let url = URL.GET_TABLE_LIST;
     return axiosInstance
       .post(url, {id: DB && DB.id.toString()}, getAxiosConfig())
@@ -199,15 +211,21 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
   };
 
   const getDBs = async () => {
-    let url = URL.GET_DBS;
+    let url = URL.GET_DBS as string;
     return await axiosInstance.get(url, getAxiosConfig()).catch(errorParser);
   };
 
+  // const getDBConfig = async (dbId: string = '') => {
+  //   let url = URL.POST_DB_CONFIG + (dbId ? `/${dbId}` : '');
+  //   return await axiosInstance.get(url, getAxiosConfig()).catch(errorParser);
+  // };
   // reverse geocoding to find the country,
   // so that we can make the map bound to that country
-  const getMapBound = (lng: string, lat: string, table: string) => {
+  const getMapBound = async (lng: string, lat: string, table: string) => {
     let url = URL.Query;
-    const sql = `SELECT ${lng}, ${lat} FROM ${table} WHERE ${lng} IS NOT NULL AND ${lat} IS NOT NULL LIMIT 1`;
+    const sql = `SELECT ${lng}, ${lat} FROM ${restoreSource(
+      table
+    )} WHERE ${lng} IS NOT NULL AND ${lat} IS NOT NULL LIMIT 1`;
     let params: Params = {type: QueryType.sql, sql};
     return axiosInstance
       .post(url, {id: DB && DB.id.toString(), query: params}, getAxiosConfig())
@@ -226,13 +244,21 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
       });
   };
 
-  const generalRequest = (sql: string) => {
+  const generalRequest = async (sql: string) => {
     return getData({sql, type: QueryType.sql});
+  };
+
+  const binRangeRequest = async (sql: string) => {
+    const arr = sql.split('FROM ');
+    const [head, rest] = [arr[0], restoreSource(arr[1])];
+    sql = `${head} FROM ${rest}`;
+    const params = {sql, type: QueryType.sql};
+    const res = await getData(params);
+    return res[0];
   };
 
   // check if the browser is firefox
   const isFirefox = /firefox/i.test(navigator.userAgent);
-
   return (
     <Provider
       value={{
@@ -248,8 +274,9 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
         saveDashboard,
         removeDashboard,
         getAvaliableTables,
+        binRangeRequest,
         DB,
-        getDB,
+        getDB: _getDB,
         setDB,
         getDBs,
         getMapBound,
@@ -261,4 +288,5 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
     </Provider>
   );
 };
-export default QueryProvider;
+
+export default QueryArcternProvider;
