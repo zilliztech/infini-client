@@ -13,7 +13,7 @@ import Tab from '@material-ui/core/Tab';
 import {timeBinMap} from '../../utils/Time';
 import {isDateCol} from '../../utils/ColTypes';
 import {
-  genRangeQuery,
+  getRangeSql,
   changeInputBox,
   changeSlider,
   changeRangeSliderInputBox,
@@ -29,7 +29,7 @@ const MaxbinsRange = [2, 250];
 
 const useStyles = makeStyles(BinStyles as any);
 const Bin: FC<BinProps> = props => {
-  const {getData} = useContext(queryContext);
+  const {binRangeRequest} = useContext(queryContext);
   const {nls} = useContext(I18nContext);
   const theme = useTheme();
   const classes = useStyles(theme);
@@ -73,9 +73,9 @@ const Bin: FC<BinProps> = props => {
     if (!isDateType) {
       return;
     }
-    const params = genRangeQuery(dimension.value, source);
-    getData(params).then((res: any) => {
-      const {minimum = 0, maximum = 200} = res[0] || {};
+    const sql = getRangeSql(dimension.value, source);
+    binRangeRequest(sql).then((res: any) => {
+      const {minimum = 0, maximum = 200} = res || {};
       addDimension(
         {
           ...cloneDimension,
@@ -88,7 +88,6 @@ const Bin: FC<BinProps> = props => {
       setIsLoading(false);
       setRange([minimum, maximum]);
     });
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dimension.timeBin, dimension.extract, isDateCol(dimension.type)]);
 

@@ -4,8 +4,12 @@ import {COLUMN_TYPE, EXPRESSION_OPTIONS, DefaultExpressionOption, RequiredType} 
 export const defaultConfigHandler: ConfigHandler = config => cloneObj(config);
 
 const defaultOnAfterSqlCreate = (sql: string): string => sql;
+const allDBTypes: string[] = ['mysql', 'postgres', 'megawise', 'arctern'];
 const DEFAULT_COLUMN_TYPES = [COLUMN_TYPE.NUMBER, COLUMN_TYPE.DATE, COLUMN_TYPE.TEXT];
 export function makeSetting<T extends WidgetConfig>(setting: InitSetting<T>): Setting<T> {
+  if (!setting.dbTypes) {
+    setting.dbTypes = allDBTypes;
+  }
   if (setting.dimensions.length === 0) {
     setting.dimensions = [{type: RequiredType.NONE_REQUIRED, columnTypes: DEFAULT_COLUMN_TYPES}];
   }

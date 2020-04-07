@@ -6,6 +6,7 @@ import {namespace} from '../utils/Helpers';
 
 // interface
 interface IRootContext {
+  isArctern?: boolean;
   theme: any;
   saveTheme: Function;
   themes: string[];
@@ -37,6 +38,7 @@ function importAllWidgets(r: any) {
     const m = r(key);
     const defaultM = m.default;
     if (defaultM && defaultM.enable) {
+      // console.info(defaultM)
       widgetSettings[defaultM.type] = defaultM;
     }
   });
@@ -55,7 +57,18 @@ function importThemes(r: any) {
 }
 importThemes(require.context('../themes', false, /Theme\.ts$/));
 
+const filterValidWidgets = (widgetSettings: any, dbType: string) => {
+  const keys = Object.keys(widgetSettings);
+  keys.forEach((key: string) => {
+    if (widgetSettings[key].dbTypes.indexOf(dbType) === -1) {
+      delete widgetSettings[key];
+    }
+  });
+  return widgetSettings;
+};
+
 export const rootContext = React.createContext<IRootContext>({
+  isArctern: true,
   theme: {},
   themes: [],
   themeMap: {},
@@ -67,12 +80,14 @@ export const rootContext = React.createContext<IRootContext>({
   showTooltip: () => {},
   hideTooltip: () => {},
   globalConfig: {},
-  widgetSettings: widgetSettings,
+  widgetSettings: {},
 });
 const {Provider} = rootContext;
 
 // put global singletons here: dialog, tooltip...
 const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
+  // database type
+  const isArctern = false;
   // color theme
   const auth = window.localStorage.getItem(namespace(['login'], 'userAuth'));
   const currTheme = (auth && JSON.parse(auth).theme) || themes[0];
@@ -86,7 +101,34 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
   const _tooltipContent = useRef<HTMLDivElement>(null);
   const _tooltipWrapper = useRef<HTMLDivElement>(null);
   const _timeout: any = useRef(null);
-
+  if (!isArctern) {
+    if (widgetSettings.PointMegaWiseMap) {
+      widgetSettings.PointMap = widgetSettings.PointMegaWiseMap;
+      widgetSettings.PointMap.type = 'PointMap';
+    }
+    if (widgetSettings.GeoHeatMegaWiseMap) {
+      widgetSettings.GeoHeatMap = widgetSettings.GeoHeatMegaWiseMap;
+      widgetSettings.GeoHeatMap.type = 'GeoHeatMap';
+    }
+    if (widgetSettings.ChoroplethMegaWiseMap) {
+      widgetSettings.ChoroplethMap = widgetSettings.ChoroplethMegaWiseMap;
+      widgetSettings.ChoroplethMap.type = 'ChoroplethMap';
+    }
+    if (widgetSettings.ScatterMegaWiseChart) {
+      widgetSettings.ScatterChart = widgetSettings.ScatterMegaWiseChart;
+      widgetSettings.GeoHeatMap.type = 'ScatterChart';
+    }
+    [
+      'ChoroplethMegaWiseMap',
+      'GeoHeatMegaWiseMap',
+      'PointMegaWiseMap, ScatterMegaWiseChart',
+    ].forEach((key: string) => delete widgetSettings[key]);
+  }
+  useEffect(() => {
+    if (_tooltipWrapper.current) {
+      _tooltipWrapper.current.style.left = `-999999px`;
+    }
+  }, []);
   const saveTheme = (theme: string) => {
     const auth = window.localStorage.getItem(namespace(['login'], 'userAuth'));
     if (auth) {
@@ -97,7 +139,6 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
     }
     setTheme(theme);
   };
-
   // tooltip is kind special component in React World
   // most time we need to keep updating the tooltip on mouse moving
   // but we don't want react to keep rerending the whole app
@@ -150,15 +191,10 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
       }
     }, timeout);
   };
-  useEffect(() => {
-    if (_tooltipWrapper.current) {
-      _tooltipWrapper.current.style.left = `-999999px`;
-    }
-  }, []);
-
   return (
     <Provider
       value={{
+        isArctern,
         theme,
         themes,
         themeMap,
@@ -170,7 +206,7 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
         showTooltip,
         hideTooltip,
         globalConfig,
-        widgetSettings,
+        widgetSettings: filterValidWidgets(widgetSettings, isArctern ? 'arctern' : 'megawise'),
       }}
     >
       {children}

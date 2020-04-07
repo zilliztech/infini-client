@@ -1,10 +1,20 @@
 import React from 'react';
 import {SORT_ORDER, MODE, WIDGET, RequiredType, COLUMN_TYPE} from '../utils/Consts';
 import {DashboardAction} from '../utils/reducers/dashboardReducer';
-import {Filter as coreFilter, Expression as coreExpression} from '../core/types';
+import {Filter as coreFilter, Expression as coreExpression} from 'infinivis-core';
 import {TimeBin, ExtractBin} from '../utils/Time';
 
-///////////// Database settings /////////////
+///////////// Database settings for Megawise /////////////
+export type DBSetting = {
+  type: 'megawise' | 'postgres' | 'mysql';
+  host: string;
+  username: string;
+  password: string;
+  database: string;
+  port: number;
+};
+
+///////////// Database settings for Arctern /////////////
 export type DB_TYPE = {
   type: string;
   id: string;
@@ -15,7 +25,8 @@ export type DB_TYPE = {
 // it should be array of object
 export type Data = any[];
 // each key is config id, value is its data
-export type DataCache = {[key: string]: Data};
+// export type DataCache = {[key: string]: Data};
+export type DataCache = any;
 
 export enum QueryType {
   sql = 'sql',
@@ -33,9 +44,10 @@ export type Query = {
   // widget identity
   id: string;
   // sql and related params
-  params: Params;
+  params?: Params;
   // query time
   timestamp?: number;
+  [propName: string]: any;
 };
 
 // store request information
@@ -127,6 +139,8 @@ export type CurrSetting = DimensionSetting | MeasureSetting;
 export type InitSetting<T = WidgetConfig> = {
   // widget Type
   type: string;
+  // support database type
+  dbTypes?: string[];
   // is this widget enabled
   enable?: boolean;
   // is widget rendered by server

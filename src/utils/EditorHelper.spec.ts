@@ -6,7 +6,10 @@ import {
   measureUsePopUp,
   filterColumns,
   getDefaultTitle,
+  Column,
 } from './EditorHelper';
+import {WidgetConfig} from '../types';
+import {COLUMN_TYPE} from '../utils/Consts';
 import {PointConfigLackLonMeasure, BarConfig, PieConfigLackDimension} from './SpecHelper';
 import PointSetting from '../widgets/PointMap/settings';
 import BarSetting from '../widgets/BarChart/settings';
@@ -88,15 +91,15 @@ const columns = [
     type: 'float8',
   },
   {
-    colName: 'VendorID',
+    colName: 'vendor_id',
     data_type: 'text',
     type: 'text',
   },
 ];
 test('isReadyToRender', () => {
   const PointReady = isReadyToRender(PointConfigLackLonMeasure, PointSetting);
-  const BarReady = isReadyToRender(BarConfig, BarSetting);
-  const PieReady = isReadyToRender(PieConfigLackDimension, PieSetting);
+  const BarReady = isReadyToRender(BarConfig as WidgetConfig, BarSetting);
+  const PieReady = isReadyToRender(PieConfigLackDimension as WidgetConfig, PieSetting);
 
   expect(PointReady).toStrictEqual({
     sourceReady: {isReady: true},
@@ -127,16 +130,20 @@ test('isReadyToRender', () => {
 });
 test('isRecordExist', () => {
   expect(isRecordExist(PointConfigLackLonMeasure)).toBe(false);
-  expect(isRecordExist(BarConfig)).toBe(false);
-  expect(isRecordExist(PieConfigLackDimension)).toBe(false);
+  expect(isRecordExist(BarConfig as WidgetConfig)).toBe(false);
+  expect(isRecordExist(PieConfigLackDimension as WidgetConfig)).toBe(false);
 });
 test('getValidColumns', () => {
-  const numRes = getValidColumns(columns, ['number']);
-  const dateRes = getValidColumns(columns, ['date']);
-  const textRes = getValidColumns(columns, ['text']);
-  const numDateRes = getValidColumns(columns, ['number', 'date']);
-  const invalidRes = getValidColumns(columns, ['lalallallala']);
-  const allRes = getValidColumns(columns, ['number', 'date', 'text']);
+  const numRes = getValidColumns(columns as Column[], [COLUMN_TYPE.NUMBER]);
+  const dateRes = getValidColumns(columns as Column[], [COLUMN_TYPE.DATE]);
+  const textRes = getValidColumns(columns as Column[], [COLUMN_TYPE.TEXT]);
+  const numDateRes = getValidColumns(columns as Column[], [COLUMN_TYPE.NUMBER, COLUMN_TYPE.DATE]);
+  const invalidRes = getValidColumns(columns as Column[], ['lalallallala' as COLUMN_TYPE]);
+  const allRes = getValidColumns(columns as Column[], [
+    COLUMN_TYPE.NUMBER,
+    COLUMN_TYPE.DATE,
+    COLUMN_TYPE.TEXT,
+  ]);
 
   expect(numRes.length).toBe(11);
   expect(dateRes.length).toBe(2);

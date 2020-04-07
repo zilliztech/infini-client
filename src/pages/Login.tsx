@@ -14,7 +14,6 @@ import {I18nContext} from '../contexts/I18nContext';
 import {queryContext} from '../contexts/QueryContext';
 import {rootContext} from '../contexts/RootContext';
 import InfoDialog from '../components/common/Dialog';
-// const MD5 = require('md5-es').default;
 
 const genTheme = (theme: any) => ({
   paper: {
@@ -48,7 +47,6 @@ const Login: FC = () => {
   const [password, setPassword] = useState('demo');
   const classes = makeStyles(genTheme as any)() as any;
   const isIn = auth.userId !== 'guest';
-
   if (isIn) {
     return <Redirect to="/" />;
   }
@@ -62,13 +60,10 @@ const Login: FC = () => {
         onConfirm: handleDialogClose,
       });
     } else {
-      //TODO: add MD5 later
-      // login({username: email, password: MD5.hash(password)}).then(
       login({username: email, password}).then(
         (res: any) => {
-          // const curr = new Date().getTime() / 1000;
-          const {token, expired} = res.data;
-          setAuthStatus({userId: email, token, expired});
+          const {token, expired, connId} = res.data;
+          setAuthStatus({userId: email, token, expired, connId});
         },
         () => {
           setDialog({

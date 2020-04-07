@@ -2,6 +2,33 @@
 export const MAPBOX_ACCESS_TOKEN =
   'pk.eyJ1Ijoic2VlbnllYSIsImEiOiJjanJ6eTlvamsxZHVkNDlsdm40MnVoejc4In0.AzM2YIBfmI47aJQLfoO8zg';
 
+export const DEFAULT_MEGACONFIG_LIST = [
+  // {
+  //   type: 'megawise',
+  //   host: '127.0.0.1',
+  //   username: 'zilliz',
+  //   password: 'zilliz',
+  //   database: 'aalocal',
+  //   port: '5432',
+  // },
+  {
+    type: 'megawise',
+    host: '192.168.1.169',
+    username: 'gis_user',
+    password: 'gis_passwd',
+    database: 'postgres',
+    port: '5432',
+  },
+  {
+    type: 'megawsise',
+    host: '192.168.2.26',
+    username: 'gis_user',
+    password: 'gis_passwd',
+    database: 'postgres',
+    port: '5432',
+  },
+];
+
 // column typs definition
 const MYSQL_INTEGER: string[] = ['TINYINT', 'SMALLINT', 'MEDIUMINT', 'INT', 'BIGINT'];
 const MYSQL_FLOAT: string[] = ['FLOAT', 'DOUBLE'];

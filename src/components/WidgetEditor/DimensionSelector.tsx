@@ -14,13 +14,13 @@ import {DimensionSelectorProps, Dimension} from '../../types';
 import {TimeBin, timeBinMap} from '../../utils/Time';
 import {
   calStatus,
-  genRangeQuery,
+  getRangeSql,
   filterColumns,
   genEffectClickOutside,
 } from '../../utils/EditorHelper';
 import {COLUMN_TYPE} from '../../utils/Consts';
 import {getValidTimeBinOpts} from '../../utils/Binning';
-import {cloneObj, id as genID} from '../../utils/Helpers';
+import {cloneObj, id as genID, isValidValue} from '../../utils/Helpers';
 import {isDateCol, isTextCol, isNumCol} from '../../utils/ColTypes';
 import {Status} from '../../types/Editor';
 import Bin from './Bin';
@@ -41,7 +41,7 @@ type NewColumn = {
 const useStyles = makeStyles(theme => genDimensionSelectorStyles(theme) as any) as Function;
 
 const DimensionSelector: FC<DimensionSelectorProps> = (props: DimensionSelectorProps) => {
-  const {getData} = useContext(queryContext);
+  const {binRangeRequest} = useContext(queryContext);
   const {nls} = useContext(I18nContext);
   const {setDialog} = useContext(rootContext);
   const theme = useTheme();
@@ -158,14 +158,14 @@ const DimensionSelector: FC<DimensionSelectorProps> = (props: DimensionSelectorP
       );
       return;
     }
-    const params = genRangeQuery(col_name, source);
-    const res = await getData(params);
-    const {minimum, maximum} = res[0];
-    if (minimum === null || minimum === undefined || maximum === null || maximum === undefined) {
+    const rangeSql = getRangeSql(col_name, source);
+    const res = await binRangeRequest(rangeSql);
+    const {minimum, maximum} = res;
+    if (isValidValue(minimum) && isValidValue(maximum)) {
       onReceiveInvalidBinRange();
       return;
     }
-    addDimension(_addBinRange(newDimension, res[0]), onAdd);
+    addDimension(_addBinRange(newDimension, res), onAdd);
     afterColumnSelected();
   };
 
@@ -195,14 +195,22 @@ const DimensionSelector: FC<DimensionSelectorProps> = (props: DimensionSelectorP
     if (isNotUseBin) {
       addDimension({...newDimension, isBinned: false}, onAdd);
     } else {
-      const params = genRangeQuery(expression, source);
-      const res = await getData(params);
-      const {minimum, maximum} = res[0];
+      let _res: any;
+      const rangeSql = getRangeSql(expression, source);
+      _res = await binRangeRequest({
+        query: [
+          {
+            sql: rangeSql,
+            id,
+          },
+        ],
+      });
+      const {minimum, maximum} = _res;
       if (typeof minimum !== 'number' || typeof maximum !== 'number') {
         onReceiveInvalidBinRange();
         return;
       }
-      addDimension(_addBinRange(newDimension, res[0]), onAdd);
+      addDimension(_addBinRange(newDimension, _res), onAdd);
     }
   };
 

@@ -1,5 +1,7 @@
 import {measureGetter, dimensionGetter} from '../../utils/WidgetHelpers';
 import {MapChartConfig} from '../common/MapChart.type';
+import {SqlParser} from 'infinivis-core';
+const parseExpression = SqlParser.parseExpression;
 
 // Map related consts
 export const DEFAULT_MAP_POINT_SIZE = 3;
@@ -117,11 +119,51 @@ export const shapeFileGetter = (config: any) => {
 };
 
 export const onMapLoaded = (config: MapChartConfig, getMapBound: Function) => {
-  if (!config.bounds) {
+  if (!config.bounds && config.type !== 'ChoroplethMap') {
     const lon = (measureGetter(config, 'lon') || dimensionGetter(config, 'lon'))!;
     const lat = (measureGetter(config, 'lat') || dimensionGetter(config, 'lat'))!;
     return getMapBound(lon.value, lat.value, config.source);
   }
 
   return Promise.resolve(-1);
+};
+
+export const polygonFilterGetter = (filters: any = {}) => {
+  let newFilters: any = {},
+    mapDraws: any = [],
+    colorItems: any = [];
+
+  Object.keys(filters).forEach((f: any) => {
+    checkIsDraw(filters[f])
+      ? mapDraws.push(parseExpression(filters[f].expr))
+      : colorItems.push(parseExpression(filters[f].expr));
+  });
+  if (mapDraws.length > 0 && colorItems.length === 0) {
+    newFilters.polygon = {
+      type: 'filter',
+      expr: mapDraws.join(` OR `),
+    };
+  }
+  if (mapDraws.length === 0 && colorItems.length > 0) {
+    newFilters.polygon = {
+      type: 'filter',
+      expr: colorItems.join(` OR `),
+    };
+  }
+  if (mapDraws.length > 0 && colorItems.length > 0) {
+    newFilters.polygon = {
+      type: 'filter',
+      expr: `(${colorItems.join(` OR `)}) AND (${mapDraws.join(` OR `)})`,
+    };
+  }
+  return newFilters;
+};
+
+export const drawsGlGetter = (config: any) => {
+  const filterKeys = Object.keys(config.filter || {});
+  const draws: any = [];
+  filterKeys.forEach((f: any) => {
+    draws.push({data: config.filter[f]});
+  });
+  return draws;
 };

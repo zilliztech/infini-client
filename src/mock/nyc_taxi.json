@@ -37,7 +37,7 @@
       ],
       "width": 683,
       "height": 1110.666748046875,
-      "popupItems": ["VendorID", "passenger_count"],
+      "popupItems": ["vendor_id", "passenger_count"],
       "pointSize": 3,
       "points": 1000000,
       "measures": [
@@ -134,7 +134,7 @@
       "selfFilter": {
         "selfFilter_color": {
           "type": "filter",
-          "expr": {"type": "in", "set": ["VTS", "CMT", "DDS"], "expr": "VendorID"}
+          "expr": {"type": "in", "set": ["VTS", "CMT", "DDS"], "expr": "vendor_id"}
         }
       },
       "isShowRange": false,
@@ -298,7 +298,7 @@
         "moved": false,
         "static": false
       },
-      "dimensions": [{"type": "text", "value": "VendorID", "as": "d_i070fo8kbnd"}],
+      "dimensions": [{"type": "text", "value": "vendor_id", "as": "d_i070fo8kbnd"}],
       "measures": [
         {
           "type": "float",
@@ -316,7 +316,7 @@
       "colorKey": "ordinal4",
       "sort": {"name": "", "order": "descending"},
       "title": "出租车公司交易数量",
-      "filter": {"id_f9u26y3uq8v": {"type": "filter", "expr": "VendorID = 'CMT'"}},
+      "filter": {"id_f9u26y3uq8v": {"type": "filter", "expr": "vendor_id = 'CMT'"}},
       "selfFilter": {}
     },
     {
@@ -413,7 +413,7 @@
         "type": "timestamp"
       },
       {"colName": "trip_distance", "dataType": "double precision", "type": "float8"},
-      {"colName": "VendorID", "dataType": "text", "type": "text"}
+      {"colName": "vendor_id", "dataType": "text", "type": "text"}
     ],
     "nyc_taxirowCount": 500000
   }

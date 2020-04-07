@@ -16,12 +16,12 @@ const Bi: FC<DashboardPageProps> = ({match}) => {
   const id = Number(match.params.id);
 
   useEffect(() => {
-    getDashBoard(id).then((dashboard: DashboardType) => {
-      if (dashboard) {
-        setDashboard({type: DASH_ACTIONS.UPDATE, payload: dashboard});
-        setLoading(false);
-      }
-    });
+      getDashBoard(id).then((dashboard: DashboardType) => {
+        if (dashboard) {
+          setDashboard({type: DASH_ACTIONS.UPDATE, payload: dashboard});
+          setLoading(false);
+        }
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 

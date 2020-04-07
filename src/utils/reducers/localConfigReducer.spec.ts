@@ -215,7 +215,7 @@ test('Local Config Reducer', () => {
   let updateColorItems = localConfigReducer(config as any, {
     type: CONFIG.ADD_COLORITEMS,
     payload: [
-      {as: 'VTS', colName: 'VendorID', color: '#37A2DA', label: 'VTS', value: 'VTS'},
+      {as: 'VTS', colName: 'vendor_id', color: '#37A2DA', label: 'VTS', value: 'VTS'},
       {as: 'CMT', color: '#fff'},
     ],
   });

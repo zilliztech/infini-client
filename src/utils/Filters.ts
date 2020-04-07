@@ -26,7 +26,9 @@ export const orFilterGetter = (filters: Filters = {}, filterId: string = 'orFilt
   let newFilters: any = {};
   let or: any = [];
   Object.keys(filters).forEach((f: string) => {
-    or.push(parseExpression(filters[f].expr as string));
+    or.push(
+      typeof filters[f] === 'string' ? filters[f] : parseExpression(filters[f].expr as string)
+    );
   });
   if (or.length) {
     newFilters[filterId] = {

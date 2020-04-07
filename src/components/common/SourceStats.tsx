@@ -3,7 +3,6 @@ import {useTheme} from '@material-ui/core/styles';
 import {format} from 'd3';
 import {makeStyles} from '@material-ui/core/styles';
 import {customOptsStyle} from '../../utils/Theme';
-import {formatSource} from '../../utils/Helpers';
 import {Source, DataCache} from '../../types';
 
 const useStyles = makeStyles(theme => ({
@@ -24,11 +23,13 @@ const useStyles = makeStyles(theme => ({
 interface ISourceStats {
   data: DataCache;
   sources: Source[];
-  totals: number[];
+  sourceOptions: {
+    [propName: string]: any;
+  };
 }
 
 const SourceStats = (props: ISourceStats) => {
-  const {data, sources, totals} = props;
+  const {data, sources, sourceOptions} = props;
   const classes = useStyles() as any;
   const theme = useTheme();
   // selected counts
@@ -36,12 +37,12 @@ const SourceStats = (props: ISourceStats) => {
     .map((s: string) => {
       let count = data[s];
       if (count) {
-        let total: number = (totals as any)[s] || 0;
-        let c = count[0] && count[0].countval;
+        let total: number = sourceOptions[`${s}rowCount`] || 0;
+        let c = count.result ? count.result[0].countval : count[0] && count[0].countval;
         let label = (
           <span className={classes.wrapper}>
             <span style={{color: theme.palette.primary.main}}>{`${format(',.0f')(c || 0)}`}</span>
-            <span>{` of ${format(',.0f')(total)} · ${formatSource(s)}`}</span>
+            <span>{` of ${format(',.0f')(total)} · ${s}`}</span>
           </span>
         );
         return {

@@ -30,7 +30,7 @@ import {queryContext} from '../../contexts/QueryContext';
 import {I18nContext} from '../../contexts/I18nContext';
 import {rootContext} from '../../contexts/RootContext';
 import localConfigReducer from '../../utils/reducers/localConfigReducer';
-import {getWidgetTitle} from '../../utils/WidgetHelpers';
+import {getWidgetTitle, getView} from '../../utils/WidgetHelpers';
 
 // component cache
 const widgetsMap = new Map();
@@ -62,7 +62,7 @@ const WidgetWrapper: FC<DefaultWidgetProps> = props => {
   const {getData} = useContext(queryContext);
   const {nls} = useContext(I18nContext);
   const theme = useTheme();
-  const {widgetSettings} = useContext(rootContext);
+  const {widgetSettings, isArctern} = useContext(rootContext);
   const classes = useStyles();
   const container = useRef<HTMLDivElement>(null);
   const {
@@ -78,30 +78,32 @@ const WidgetWrapper: FC<DefaultWidgetProps> = props => {
     configs,
   } = props;
   const dataCache = useRef<DataCache>({});
-  const dataQueryCache = useRef<DataQuery>(
+  const onRequest = (query: Query) => {
+    setLocalMeta((meta: Meta) => {
+      const copiedMeta = cloneObj(meta);
+      const {id, timestamp} = query;
+      copiedMeta[query.id] = {query, id, timestamp, loading: true};
+      return copiedMeta;
+    });
+  };
+  const onResponse = (query: Query, data: Data) => {
+    dataCache.current[query.id] = data;
+    setLocalMeta((meta: Meta) => {
+      const {id, timestamp} = query;
+      const copiedMeta = cloneObj(meta);
+      copiedMeta[id] = {query, id, timestamp, loading: false};
+      return copiedMeta;
+    });
+  };
+
+  const dataQueryCache = useRef<any>(
     new DataQuery({
       requester: getData,
-      onRequest: (query: Query) => {
-        setLocalMeta((meta: Meta) => {
-          const copiedMeta = cloneObj(meta);
-          const {params, id, timestamp} = query;
-          copiedMeta[query.id] = {params, id, timestamp, loading: true};
-          return copiedMeta;
-        });
-      },
-      onResponse: (query: Query, data: Data) => {
-        dataCache.current[query.id] = data;
-        setLocalMeta((meta: Meta) => {
-          const {params, id, timestamp} = query;
-          const copiedMeta = cloneObj(meta);
-          copiedMeta[id] = {params, id, timestamp, loading: false};
-          return copiedMeta;
-        });
-      },
+      onRequest: onRequest,
+      onResponse: onResponse,
     })
   );
   const [localMeta, setLocalMeta] = useState<Meta>({});
-  const [isHover, setHover] = useState<boolean>(false);
   const [localConfig, _setLocalConfig] = useReducer(localConfigReducer, cloneObj(config));
 
   const calSize = () => {
@@ -153,7 +155,7 @@ const WidgetWrapper: FC<DefaultWidgetProps> = props => {
   if (widgetsMap.has(widgetKey)) {
     Widget = widgetsMap.get(widgetKey);
   } else {
-    Widget = React.lazy(() => import(`../../widgets/${widgetType}/view`));
+    Widget = React.lazy(() => import(`../../widgets/${getView(widgetType, isArctern)}/view`));
     widgetsMap.set(widgetKey, Widget);
   }
 
@@ -178,7 +180,7 @@ const WidgetWrapper: FC<DefaultWidgetProps> = props => {
     );
     if (sourceReady.isReady && dimensionsReady.isReady && measuresReady.isReady) {
       // generate sql
-      const querys = getWidgetSql(localConfigs, [], widgetSettings).filter(
+      const querys = getWidgetSql(localConfigs, [], widgetSettings, isArctern).filter(
         (c: any) => c.id === localConfig.id || c.id === localConfig.linkId
       );
 
@@ -197,14 +199,6 @@ const WidgetWrapper: FC<DefaultWidgetProps> = props => {
   // compute data
   const localData = dataCache.current[localConfig.id] || [];
   const localLinkData = getLinkData(dataCache.current, localConfig);
-
-  const onMouseEnter = () => {
-    setHover(true);
-  };
-
-  const onMouseLeave = () => {
-    setHover(false);
-  };
 
   // clear filter
   const onChartClearFilter = () => {
@@ -242,15 +236,10 @@ const WidgetWrapper: FC<DefaultWidgetProps> = props => {
     <>
       <Suspense fallback={<Spinner />}>
         {widgetMode === MODE.NORMAL && (
-          <div
-            ref={container}
-            className={classes.container}
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
+          <div ref={container} className={classes.container}>
             <div className={classes.header}>
               <h3>{getWidgetTitle(config, nls)}</h3>
-              <div className={clsx(classes.actions, isHover ? '' : classes.hidden)}>
+              <div className={clsx(classes.actions)}>
                 <span className={`${classes.link} ${isFilterExist ? '' : classes.hidden}`}>
                   <div
                     className={classes.icon}

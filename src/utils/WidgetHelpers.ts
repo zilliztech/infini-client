@@ -4,7 +4,7 @@ import {SqlParser as Parser} from 'infinivis-core';
 import {WidgetConfig, Data, Dimension, Measure, Filters} from '../types';
 import {OUT_OUT_CHART, COLUMN_TYPE, WIDGET} from './Consts';
 import {d3TimeTranslation} from './Time';
-import {cloneObj, isValidValue, formatSource} from './Helpers';
+import {cloneObj, isValidValue} from './Helpers';
 import {isDateCol, isNumCol} from './ColTypes';
 import {autoNumDimensionFormat} from './Formatters';
 import {TIME_BIN_INPUT_OPTIONS} from './Time';
@@ -845,5 +845,23 @@ export const getWidgetTitle = (config: WidgetConfig, nls: any) => {
     return `${nls[`label_widgetEditor_expression_${expression}`] || ''} ${label}`;
   }
 
-  return formatSource(source);
+  return source;
+};
+
+export const getView = (type: string, isArctern: boolean = true) => {
+  if (isArctern) {
+    return type;
+  }
+  switch (type) {
+    case 'PointMap':
+      return 'PointMegaWiseMap';
+    case 'GeoHeatMap':
+      return 'GeoHeatMegaWiseMap';
+    case 'ChoroplethMap':
+      return 'ChoroplethMegaWiseMap';
+    case 'ScatterChart':
+      return 'ScatterMegaWiseChart' 
+    default:
+      return type;
+  }
 };

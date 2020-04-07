@@ -1,4 +1,5 @@
-import React, {FC, useEffect, useRef} from 'react';
+import React, {FC, useEffect, useRef, useContext} from 'react';
+import {rootContext} from '../../contexts/RootContext';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 const {DragCircleMode, DirectMode, SimpleSelectMode} = require('mapbox-gl-draw-circle');
 
@@ -41,7 +42,8 @@ const featuresGetter = (drawTools: any) => {
 };
 
 const MapboxGlDraw: FC<any> = props => {
-  const {map, onDrawUpdate, draws} = props;
+  const {isArctern} = useContext(rootContext);
+  const {map, onDrawUpdate, draws=[]} = props;
   // console.info(draws);
   const drawToolCache = useRef<any>();
 
@@ -87,11 +89,11 @@ const MapboxGlDraw: FC<any> = props => {
     // add draws
     drawToolCache.current.deleteAll();
     draws.forEach((d: any) => {
-      drawToolCache.current.add(d.data);
+      drawToolCache.current.add(isArctern ? d.data : d.data.expr.geoJson);
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(draws.map((d: any) => d.id))]);
+  }, [JSON.stringify(draws.map((d: any) => (isArctern ? d.id : d.data.expr.geoJson.id)))]);
 
   const onCicleClicked = (e: any) => {
     drawToolCache.current.changeMode('drag_circle');

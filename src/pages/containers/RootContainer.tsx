@@ -13,11 +13,12 @@ import Spinner from '../../components/common/Spinner';
 import {rootContext} from '../../contexts/RootContext';
 import MainContainer from './MainContainer';
 import DbSetting from '../DbSetting';
+import DBSettingMegaWise from '../DBSettingMegaWise';
 
 const RootContainer: FC = () => {
   const {nls} = useContext(I18nContext);
   const {auth, setUnauthStatus} = useContext(authContext);
-  const {dialog, snakebar, theme, themeMap} = useContext(rootContext);
+  const {dialog, snakebar, theme, themeMap, isArctern} = useContext(rootContext);
   const classes = makeStyles({
     root: {
       display: 'flex',
@@ -42,7 +43,7 @@ const RootContainer: FC = () => {
           {isLogined && <Nav onAvatarClick={setUnauthStatus} />}
           <Switch>
             <Route path="/login" component={Login} />
-            <Route path="/config" component={DbSetting} />
+            <Route path="/config" component={isArctern ? DbSetting : DBSettingMegaWise} />
             <Route path="/" component={MainContainer} />
             <Route exact path="/bi">
               <Redirect to="/" />

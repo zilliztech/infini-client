@@ -29,8 +29,8 @@ export type ConfigAction =
   | {type: CONFIG.ADD_POPUP_ITEM; payload: string}
   | {type: CONFIG.DEL_POPUP_ITEM; payload: string}
   | {type: CONFIG.ADD_LIMIT; payload: {id: string; limit: number}}
-  | {type: CONFIG.UPDATE_POINTS; payload: number}
-  | {type: CONFIG.UPDATE_POINT_SIZE; payload: number}
+  | {type: CONFIG.UPDATE_POINTS; payload: {id: string; [propName: string]: any}}
+  | {type: CONFIG.UPDATE_POINT_SIZE; payload: {id: string; [propName: string]: any}}
   | {type: CONFIG.ADD_MAPTHEME; payload: WidgetConfig}
   | {type: CONFIG.ADD_STACKTYPE; payload: string}
   | {type: CONFIG.CHANGE_IS_AREA; payload: boolean}
@@ -78,6 +78,7 @@ export const singleConfigHandler = (config: WidgetConfig, action: ConfigAction) 
       return copiedConfig;
     case CONFIG.CLEAR_FILTER:
       copiedConfig.filter = {};
+      delete copiedConfig.draws;
       return copiedConfig;
     case CONFIG.ADD_SORT:
       copiedConfig.sort = action.payload;
@@ -120,10 +121,10 @@ export const singleConfigHandler = (config: WidgetConfig, action: ConfigAction) 
       copiedConfig.limit = action.payload.limit;
       return copiedConfig;
     case CONFIG.UPDATE_POINTS:
-      copiedConfig.points = action.payload;
+      copiedConfig.points = action.payload.points;
       return copiedConfig;
     case CONFIG.UPDATE_POINT_SIZE:
-      copiedConfig.pointSize = action.payload;
+      copiedConfig.pointSize = action.payload.pointSize;
       return copiedConfig;
     case CONFIG.ADD_MAPTHEME:
       copiedConfig.mapTheme = action.payload;

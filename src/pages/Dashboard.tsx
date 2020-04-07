@@ -32,40 +32,42 @@ const _getLayouts = (configs: WidgetConfig[]) =>
 const Dashboard: FC<DashboardProps> = ({dashboard, setDashboard}) => {
   const {configs, id, demo, sources} = dashboard;
   const {getData, isFirefox} = useContext(queryContext);
-  const {widgetSettings} = useContext(rootContext);
+  const {widgetSettings, isArctern} = useContext(rootContext);
   const theme = useTheme();
   // get sourceOptions like dimensions options, measures options
   const classes = useStyles(theme);
   const [meta, setMeta] = useState<Meta>({});
   const [sourceData, setSourceData] = useState<DataCache>({});
   const dataCache = useRef<DataCache>({});
-  const dataQueryCache = useRef<DataQuery>(
+  const onRequest = (query: Query) => {
+    setMeta((meta: Meta) => {
+      const copiedMeta = cloneObj(meta);
+      const {id} = query as Query;
+      if (sources.includes(id)) {
+        return meta;
+      }
+      copiedMeta[query.id] = {id, loading: true, query};
+      return copiedMeta;
+    });
+  };
+  const onResponse = (query: Query, data: Data) => {
+    dataCache.current[query.id] = data;
+    setMeta((meta: Meta) => {
+      const copiedMeta = cloneObj(meta);
+      const {id} = query as Query;
+      if (sources.includes(id)) {
+        setSourceData((prev: any) => ({...prev, [id]: data}));
+        return meta;
+      }
+      copiedMeta[query.id] = {query, id, loading: false};
+      return copiedMeta;
+    });
+  };
+  const dataQueryCache = useRef<any>(
     new DataQuery({
       requester: getData,
-      onRequest: (query: Query) => {
-        setMeta((meta: Meta) => {
-          const copiedMeta = cloneObj(meta);
-          const {params, id} = query;
-          if (sources.includes(id)) {
-            return meta;
-          }
-          copiedMeta[query.id] = {params, id, loading: true};
-          return copiedMeta;
-        });
-      },
-      onResponse: (query: Query, data: Data) => {
-        dataCache.current[query.id] = data;
-        setMeta((meta: Meta) => {
-          const copiedMeta = cloneObj(meta);
-          const {params, id} = query;
-          if (sources.includes(id)) {
-            setSourceData((prev: any) => ({...prev, [id]: data}));
-            return meta;
-          }
-          copiedMeta[query.id] = {params, id, loading: false};
-          return copiedMeta;
-        });
-      },
+      onRequest: onRequest,
+      onResponse: onResponse,
     })
   );
 
@@ -88,7 +90,8 @@ const Dashboard: FC<DashboardProps> = ({dashboard, setDashboard}) => {
       isFirstRun.current = false;
     }
     // parse configs to querys, create cross filter nodes and sqls
-    let querys = getWidgetSql(widgetConfigs, sources, widgetSettings);
+    let querys = getWidgetSql(widgetConfigs, sources, widgetSettings, isArctern);
+    // console.info(`the querys is: ${JSON.stringify(querys)}`); 
     // send to the backend
     dataQueryCache.current.q(querys);
     // eslint-disable-next-line react-hooks/exhaustive-deps

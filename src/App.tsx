@@ -1,10 +1,13 @@
-import React, { FC } from "react";
-import AuthContextProvider from "./contexts/AuthContext";
-import QueryProvider from "./contexts/QueryContext";
-import I18nProvider from "./contexts/I18nContext";
-import RootProvider from "./contexts/RootContext";
-import RootContainer from "./pages/containers/RootContainer";
-import "./App.scss";
+import React, {FC} from 'react';
+import AuthContextProvider from './contexts/AuthContext';
+import QueryNodeProvider from './contexts/QueryContext/QueryNodeContext';
+import QueryArcternProvider from './contexts/QueryContext/QueryArcternContext';
+
+import QueryProvider from './contexts/QueryContext';
+import I18nProvider from './contexts/I18nContext';
+import RootProvider from './contexts/RootContext';
+import RootContainer from './pages/containers/RootContainer';
+import './App.scss';
 
 // language is the first class
 // singletons such as tooltip, dialog are in root providers, and all charts settings are loaded here
@@ -15,9 +18,13 @@ const App: FC = () => {
     <I18nProvider>
       <RootProvider>
         <AuthContextProvider>
-          <QueryProvider>
-            <RootContainer />
-          </QueryProvider>
+          <QueryNodeProvider>
+            <QueryArcternProvider>
+              <QueryProvider>
+                <RootContainer />
+              </QueryProvider>
+            </QueryArcternProvider>
+          </QueryNodeProvider>
         </AuthContextProvider>
       </RootProvider>
     </I18nProvider>

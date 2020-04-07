@@ -7,10 +7,9 @@ import {
   Settings as SettingsIcon,
   AccountBox as AccountBoxIcon,
 } from '@material-ui/icons';
-import {Drawer, IconButton} from '@material-ui/core';
+import {Drawer} from '@material-ui/core';
 import Logo from '../../logo.svg';
 import {rootContext} from '../../contexts/RootContext';
-import {authContext} from '../../contexts/AuthContext';
 import {genBasicStyle} from '../../utils/Theme';
 const useStyles = makeStyles((theme: Theme) => ({
   ...genBasicStyle(theme.palette.primary.main),
@@ -55,11 +54,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const Nav: FC<any> = (props: any) => {
-  const {auth} = useContext(authContext);
   const {theme} = useContext(rootContext);
   const _theme = useTheme();
   const {onAvatarClick} = props;
-  const isDemo = auth.userId === 'demo';
   const classes = useStyles(_theme);
   let path = props.history.location.pathname;
 
@@ -82,9 +79,10 @@ const Nav: FC<any> = (props: any) => {
         </div>
         <div>
           <div className={clsx(classes.wrapper, classes.hover)}>
-            <IconButton disabled={isDemo} onClick={() => props.history.push('/config')}>
-              <SettingsIcon classes={{root: classes.settingIcon}} />
-            </IconButton>
+            <SettingsIcon
+              classes={{root: classes.settingIcon}}
+              onClick={() => props.history.push('/config')}
+            />
           </div>
           <div className={clsx(classes.wrapper, classes.hover)}>
             <AccountBoxIcon onClick={onAvatarClick} classes={{root: classes.settingIcon}} />
@@ -93,7 +91,7 @@ const Nav: FC<any> = (props: any) => {
       </div>
     </Drawer>
   );
-
+  // theme config, do not need right now
   // <NativeSelect
   //   classes={{root: classes.naveSelect}}
   //   value={theme}

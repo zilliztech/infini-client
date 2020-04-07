@@ -1,11 +1,10 @@
 import {cloneObj} from '../../utils/Helpers';
 import {orFilterGetter} from '../../utils/Filters';
 import {makeSetting} from '../../utils/Setting';
+import {restoreSource} from '../../utils/Helpers';
 import {CONFIG, COLUMN_TYPE, RequiredType} from '../../utils/Consts';
-import {KEY as MAPKEY} from '../Utils/Map';
 import {measureGetter, dimensionGetter, getExpression} from '../../utils/WidgetHelpers';
 import {ChoroplethMapConfig} from './types';
-import {MapMeasure} from '../common/MapChart.type';
 import {MeasureParams} from '../Utils/settingHelper';
 const onAddChoroplethMapColor = async ({measure, config, setConfig, reqContext}: MeasureParams) => {
   const buildDimension = dimensionGetter(config, 'wkt');
@@ -13,8 +12,12 @@ const onAddChoroplethMapColor = async ({measure, config, setConfig, reqContext}:
     const {as} = measure;
     let expression = getExpression(measure);
     // cause megawise is not working for text group subQuery at the moment, change to one Query when it's ready;
-    const minSql = `SELECT ${expression} FROM ${config.source} GROUP BY ${buildDimension.value} ORDER BY ${as} ASC LIMIT 1`;
-    const maxSql = `SELECT ${expression} FROM ${config.source} GROUP BY ${buildDimension.value} ORDER BY ${as} DESC LIMIT 1`;
+    const minSql = `SELECT ${expression} FROM ${restoreSource(config.source)} GROUP BY ${
+      buildDimension.value
+    } ORDER BY ${as} ASC LIMIT 1`;
+    const maxSql = `SELECT ${expression} FROM ${restoreSource(config.source)} GROUP BY ${
+      buildDimension.value
+    } ORDER BY ${as} DESC LIMIT 1`;
     const rulerBaseMin = await reqContext.generalRequest(minSql);
     const rulerBaseMax = await reqContext.generalRequest(maxSql);
     const ruler = {min: rulerBaseMin[0][as], max: rulerBaseMax[0][as]};
@@ -24,7 +27,15 @@ const onAddChoroplethMapColor = async ({measure, config, setConfig, reqContext}:
     setConfig({type: CONFIG.ADD_MEASURE, payload: measure});
   }
 };
-
+const onAddWkt = async ({dimension, setConfig}: any) => {
+  setConfig({
+    type: CONFIG.ADD_FILTER,
+    payload: {
+      fillEmpty: `${dimension.value}!=''`,
+    },
+  });
+  setConfig({type: CONFIG.ADD_DIMENSION, payload: {dimension}});
+};
 const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapConfig) => {
   let newConfig = cloneObj(config);
   // Start: handle map bound
@@ -40,16 +51,8 @@ const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapCo
       },
     };
   }
-  let lon = measureGetter(newConfig, MAPKEY.LONGTITUDE) as MapMeasure;
-  let lat = measureGetter(newConfig, MAPKEY.LATITUDE) as MapMeasure;
+  const wkt = newConfig.dimensions[0];
   let colorM = measureGetter(newConfig, 'w');
-  let wkt = dimensionGetter(newConfig, 'wkt')!;
-  const {value, as} = wkt;
-  let wktM = {
-    value,
-    as,
-    expression: 'project',
-  };
   if (!newConfig.bounds) {
     newConfig.bounds = {
       _sw: {
@@ -64,27 +67,24 @@ const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapCo
     // return newConfig;
   }
   const {_sw, _ne} = newConfig.bounds;
-  
+  const px = [_sw.lng, _sw.lng, _ne.lng, _ne.lng, _sw.lng];
+  const py = [_sw.lat, _ne.lat, _ne.lat, _sw.lat, _sw.lat];
+  const polygon = px.map((x: number, i: number) => `${x} ${py[i]}`).join(', ');
   newConfig.selfFilter.bounds = {
     type: 'filter',
-    expr: {
-      type: 'st_within',
-      x: lon.value,
-      y: lat.value,
-      px: [_sw.lng, _sw.lng, _ne.lng, _ne.lng, _sw.lng],
-      py: [_sw.lat, _ne.lat, _ne.lat, _sw.lat, _sw.lat],
-    },
+    expr: `ST_Within(${wkt.value}, 'POLYGON((${polygon}))')`,
   };
 
   newConfig.filter = orFilterGetter(newConfig.filter);
 
   // gen vega
-  newConfig.measures = [colorM, wktM];
+  newConfig.measures = [colorM];
   return newConfig;
 };
 
 const settings = makeSetting<ChoroplethMapConfig>({
   type: 'ChoroplethMap',
+  dbTypes: ['arctern'],
   dimensions: [
     {
       type: RequiredType.REQUIRED,
@@ -92,23 +92,24 @@ const settings = makeSetting<ChoroplethMapConfig>({
       short: 'building',
       isNotUseBin: true,
       columnTypes: [COLUMN_TYPE.NUMBER, COLUMN_TYPE.TEXT],
+      onAdd: onAddWkt,
     },
   ],
   measures: [
-    {
-      type: RequiredType.REQUIRED,
-      key: MAPKEY.LONGTITUDE,
-      short: 'longtitude',
-      expressions: ['project'],
-      columnTypes: [COLUMN_TYPE.NUMBER],
-    },
-    {
-      type: RequiredType.REQUIRED,
-      key: MAPKEY.LATITUDE,
-      short: 'latitude',
-      expressions: ['project'],
-      columnTypes: [COLUMN_TYPE.NUMBER],
-    },
+    // {
+    //   type: RequiredType.REQUIRED,
+    //   key: MAPKEY.LONGTITUDE,
+    //   short: 'longtitude',
+    //   expressions: ['project'],
+    //   columnTypes: [COLUMN_TYPE.NUMBER],
+    // },
+    // {
+    //   type: RequiredType.REQUIRED,
+    //   key: MAPKEY.LATITUDE,
+    //   short: 'latitude',
+    //   expressions: ['project'],
+    //   columnTypes: [COLUMN_TYPE.NUMBER],
+    // },
     {
       type: RequiredType.REQUIRED,
       key: 'w',

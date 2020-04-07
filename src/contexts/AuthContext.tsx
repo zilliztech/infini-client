@@ -5,6 +5,7 @@ export type UserAuth = {
   userId: string;
   token: string;
   expired: number;
+  connId?: any;
 };
 
 interface IAuthContext {

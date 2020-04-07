@@ -22,7 +22,7 @@ const NumberChart: FC<NumberChartProps> = props => {
   if (hasData && isValidValue(data[0][valueMeasure.as])) {
     const value = data[0][valueMeasure.as];
     const formatter = formatterGetter(valueMeasure);
-    dataV = formatter(Number.parseFloat(value.toFixed(4)));
+    dataV = formatter(Number.parseFloat(value).toFixed(4));
   }
 
   useEffect(() => {

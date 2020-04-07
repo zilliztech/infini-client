@@ -1,14 +1,14 @@
 import React from 'react';
 import {SimpleSelector as Selector} from '../common/selectors';
-import {cloneObj, formatSource} from '../../utils/Helpers';
+import {cloneObj} from '../../utils/Helpers';
 import {CONFIG} from '../../utils/Consts';
 
 const Source = (props: any) => {
   const {config, setConfig, options, onMouseOver} = props;
   const cloneConfig = cloneObj(config);
-  const selectorOpts = options.map((o: any) => {
+  const selectorOpts = options.map((o: string) => {
     return {
-      label: formatSource(o),
+      label: o,
       value: o,
     };
   });
@@ -31,7 +31,10 @@ const Source = (props: any) => {
 
   return (
     <Selector
-      currOpt={{label: formatSource(config.source), value: config.source}}
+      currOpt={{
+        label: config.source,
+        value: config.source,
+      }}
       options={selectorOpts}
       onOptionChange={onSourceChange}
       onMouseOver={onMouseOver}

@@ -176,7 +176,7 @@ export const HistogramConfig = {
   selfFilter: {
     selfFilter_color: {
       type: 'filter',
-      expr: {type: 'in', set: ['VTS', 'CMT', 'DDS'], expr: 'VendorID'},
+      expr: {type: 'in', set: ['VTS', 'CMT', 'DDS'], expr: 'vendor_id'},
     },
   },
   isShowRange: false,
@@ -358,7 +358,7 @@ export const PieConfigLackDimension = {
   colorKey: 'ordinal4',
   sort: {name: '', order: 'descending'},
   title: '出租车公司交易数量',
-  filter: {id_f9u26y3uq8v: {type: 'filter', expr: "VendorID = 'CMT'"}},
+  filter: {id_f9u26y3uq8v: {type: 'filter', expr: "vendor_id = 'CMT'"}},
   selfFilter: {},
 };
 export const NumberConfig = {

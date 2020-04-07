@@ -50,7 +50,7 @@ const Header: FC<HeaderProps> = props => {
     showRestoreBtn = true,
   } = props;
 
-  const {id, sources, totals, title} = dashboard;
+  const {id, sources, title, sourceOptions} = dashboard;
 
   let widgetMode: MODE = mode.mode === MODE.EDIT ? MODE.EDIT : MODE.NORMAL;
   const isEdit: Boolean = widgetMode === MODE.EDIT;
@@ -143,7 +143,11 @@ const Header: FC<HeaderProps> = props => {
         <div className={classes.root}>
           <div className={classes.title}>
             <EditableLabel onChange={onTitleChange} label={title} />
-            <SourceStats data={data!} sources={sources} totals={totals} />
+            <SourceStats
+              data={data!}
+              sources={sources}
+              sourceOptions={sourceOptions}
+            />
           </div>
           <div className={classes.editor}>
             <Button

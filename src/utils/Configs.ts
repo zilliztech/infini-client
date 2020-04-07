@@ -22,6 +22,9 @@ import {
   Filters,
   WidgetSettings,
 } from '../types';
+import {restoreSource} from './Helpers';
+import {dateTruncParser, extractParser, parseBin} from './MegaWiseParser';
+import {truncParser, extractParser as arcternExtractParser} from './ArcternParser';
 
 // define a dataNode type
 type dataNode = {
@@ -64,7 +67,7 @@ const _getQueryParams = (dataNode: dataNode) => {
           opacity: 0.5,
         },
       };
-    //TODO:
+    //TODO: put this into Widget Config
     case QueryType.heat:
       return {
         ...res,
@@ -110,7 +113,7 @@ export const getDefaultConfig = (source: string, existLayouts: Layout[]): Widget
   };
 };
 
-const _parseConfigToTransform = (config: WidgetConfig): Transform[] => {
+const _parseConfigToTransform = (config: WidgetConfig, isArctern: boolean = true): Transform[] => {
   let transform: Transform[] = [];
   let aggTransform: Transform;
   let sortTransform: Transform;
@@ -130,18 +133,26 @@ const _parseConfigToTransform = (config: WidgetConfig): Transform[] => {
   }
 
   // agg
-  let measures: any[] = config.measures.map((m: Measure) => ({
-    type: m.expression,
-    field: m.value,
-    as: m.as,
-  }));
+  let measures: any[] = config.measures.map((m: Measure) => {
+    return isArctern
+      ? {type: m.expression, field: m.value, as: m.as}
+      : {
+          // don't delete ...m, width, height if you wanna use megawise, for ServerRender requests will neet to use some params pushed in configHandler
+          ...m,
+          width: config.width,
+          height: config.height,
+          type: m.expression,
+          field: m.value,
+          as: m.as,
+        };
+  });
 
   // non-bins groups
   const nonBinDimsExprs = config.dimensions
     .filter(d => !d.isBinned)
     .map(d => ({
       type: 'project',
-      expr: d.expression ? {...d, type: d.expression} : d.value, //TODO:
+      expr: d.expression ? {...d, type: d.expression} : d.value,
       as: d.as,
     }));
 
@@ -157,15 +168,11 @@ const _parseConfigToTransform = (config: WidgetConfig): Transform[] => {
       //alias, field, extent, maxbins
       return Helper.bin(as, value, extent as number[], maxbins);
     });
-
   const timeBinDimsExprs = timeBinDims.map(t => {
     if (t.extract) {
-      return Helper.alias(t.as, t.timeBin==='isodow' ?`date_format(${t.value}, 'e')` :`${t.timeBin}(${t.value})`);
+      return Helper.alias(t.as, {unit: t.timeBin!, field: t.value, type: 'extract'} as any);
     }
-    return Helper.alias(
-      t.as,
-      t.timeBin === 'day' ? `date(${t.value})` : `trunc(${t.value}, '${t.timeBin}')`
-    );
+    return Helper.alias(t.as, {unit: t.timeBin!, field: t.value, type: 'date_trunc'} as any);
   });
 
   const hasAggregate =
@@ -223,8 +230,18 @@ export const prefixFilter = (prefix: string, name: string): string => {
 export const getWidgetSql = (
   configs: WidgetConfig[],
   sources: Source[] = [],
-  widgetSettings: WidgetSettings
+  widgetSettings: WidgetSettings,
+  isArctern: boolean = true
 ) => {
+  // register custom bin or expression parser for Arctern or MegaWise
+  if (!isArctern) {
+    SqlParser.SQLParser.registerExpression('date_trunc', dateTruncParser);
+    SqlParser.SQLParser.registerExpression('extract', extractParser);
+    SqlParser.SQLParser.registerTransform('bin', parseBin as SqlParser.TransformParser);
+  } else {
+    SqlParser.SQLParser.registerExpression('trunc', truncParser);
+    SqlParser.SQLParser.registerExpression('extract', arcternExtractParser);
+  }
   // create a config map
   const configMap: Map<string, WidgetConfig> = new Map();
   // add count table
@@ -240,6 +257,9 @@ export const getWidgetSql = (
     const widgetSetting = widgetSettings[config.type];
     // pre process config if needed
     const processedConfig = widgetSetting ? widgetSetting.configHandler(config) : config;
+    processedConfig.source = isArctern
+      ? restoreSource(processedConfig.source)
+      : processedConfig.source;
     // store the processed config in the map
     configMap.set(config.id, processedConfig);
     // special for range chart
@@ -266,7 +286,7 @@ export const getWidgetSql = (
   // loop our widget's configs
   configMap.forEach((config: WidgetConfig) => {
     // get transform for the config
-    let transform = _parseConfigToTransform(config);
+    let transform = _parseConfigToTransform(config, isArctern);
     // get current cross filtering node by source
     let xfilterNode: InfiniNode<Transform> = xfilterNodes.get(config.source)!;
     // if we have the cross filtering node set, get it
@@ -362,10 +382,18 @@ export const getWidgetSql = (
     if (type !== QueryType.sql) {
       query.params = params;
     }
-    widgetQuerys.push({
-      id: dataNode.id,
-      params: query,
-    });
+    widgetQuerys.push(
+      isArctern
+        ? {
+            id: dataNode.id,
+            params: query,
+          }
+        : {
+            id: dataNode.id,
+            type: dataNode.type,
+            sql,
+          }
+    );
     if (!config.isServerRender && hasFilter) {
       // recover current fitler
       xfilterNode.setTransform((transforms: Transform[]) => {
