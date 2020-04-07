@@ -91,6 +91,7 @@ const Dashboard: FC<DashboardProps> = ({dashboard, setDashboard}) => {
     }
     // parse configs to querys, create cross filter nodes and sqls
     let querys = getWidgetSql(widgetConfigs, sources, widgetSettings, isArctern);
+    // console.info(`the querys is: ${JSON.stringify(querys)}`); 
     // send to the backend
     dataQueryCache.current.q(querys);
     // eslint-disable-next-line react-hooks/exhaustive-deps

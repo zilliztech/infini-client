@@ -25,7 +25,8 @@ export type DB_TYPE = {
 // it should be array of object
 export type Data = any[];
 // each key is config id, value is its data
-export type DataCache = {[key: string]: Data};
+// export type DataCache = {[key: string]: Data};
+export type DataCache = any;
 
 export enum QueryType {
   sql = 'sql',
