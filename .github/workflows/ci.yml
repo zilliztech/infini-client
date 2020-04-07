@@ -43,6 +43,6 @@ jobs:
         run: docker build -t zilliz/infini-webclient:dev .
 
       - name: Docker Push version
-        run: docker build -t zilliz/infini-webclient:dev .
+        run: docker push zilliz/infini-webclient:dev
         
   
