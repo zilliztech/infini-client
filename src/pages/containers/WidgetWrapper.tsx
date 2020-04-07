@@ -87,6 +87,7 @@ const WidgetWrapper: FC<DefaultWidgetProps> = props => {
     });
   };
   const onResponse = (query: Query, data: Data) => {
+    // console.info(JSON.stringify(data))
     dataCache.current[query.id] = data;
     setLocalMeta((meta: Meta) => {
       const {id, timestamp} = query;
@@ -181,7 +182,7 @@ const WidgetWrapper: FC<DefaultWidgetProps> = props => {
     );
     if (sourceReady.isReady && dimensionsReady.isReady && measuresReady.isReady) {
       // generate sql
-      const querys = getWidgetSql(localConfigs, [], widgetSettings).filter(
+      const querys = getWidgetSql(localConfigs, [], widgetSettings, isArctern).filter(
         (c: any) => c.id === localConfig.id || c.id === localConfig.linkId
       );
 

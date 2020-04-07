@@ -1,5 +1,4 @@
 import React, {FC, Fragment, useState, useEffect, useContext} from 'react';
-import {rootContext} from '../../contexts/RootContext';
 import {queryContext} from '../../contexts/QueryContext';
 import {I18nContext} from '../../contexts/I18nContext';
 import MeasureSelector from './MeasureSelector';
@@ -11,7 +10,6 @@ import {WIDGET, CONFIG} from '../../utils/Consts';
 import {dimensionGetter, measureGetter} from '../../utils/WidgetHelpers';
 
 const Measures: FC<MeasuresProps> = props => {
-  const {isArctern} = useContext(rootContext);
   const {nls} = useContext(I18nContext);
   const reqContext = useContext(queryContext);
   const {config, setConfig, measuresSetting, options} = props;
@@ -56,7 +54,6 @@ const Measures: FC<MeasuresProps> = props => {
   };
 
   let validColumns: Column[] = getValidColumns(options, firstMeasureSetting.columnTypes!);
-  console.info(options, firstMeasureSetting.columnTypes)
   switch (firstMeasureSettingType) {
     case RequiredType.REQUIRED:
       return (

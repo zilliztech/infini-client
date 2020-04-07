@@ -1,6 +1,5 @@
 import React, {useContext, useRef} from 'react';
 import {I18nContext} from '../../contexts/I18nContext';
-import {rootContext} from '../../contexts/RootContext';
 import Table from '../common/Table';
 import {genWidgetEditorStyle} from './index.style';
 import {useTheme, makeStyles} from '@material-ui/core/styles';
@@ -9,7 +8,6 @@ const useStyles = makeStyles(theme => genWidgetEditorStyle(theme) as any) as Fun
 
 const DataInfoTable = (props: any) => {
   const {nls} = useContext(I18nContext);
-  const {isArctern} = useContext(rootContext);
   const theme = useTheme();
   const classes = useStyles(theme);
   const {dashboard, title} = props;
@@ -19,9 +17,7 @@ const DataInfoTable = (props: any) => {
     {field: 'col_name', name: nls.label_colName},
     {field: 'data_type', name: nls.label_column_type},
   ];
-  const data = isArctern
-    ? sourceOptions[title]
-    : sourceOptions[title].map((item: any) => ({col_name: item.colName, data_type: item.dataType}));
+  const data = sourceOptions[title];
   return (
     <div ref={baseInfoNode} className={`${classes.colNamePreview}`}>
       <div className={classes.baseInfo}>

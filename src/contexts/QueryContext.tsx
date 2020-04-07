@@ -104,22 +104,31 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
   const getData = isArctern
     ? async (params: any) => {
         let url = URL.Query;
+        const {configID} = params;
+        delete params.configID;
         const body = {id: DB && DB.id.toString(), query: params};
-        console.info(params, body);
         return axiosInstance
           .post(url, {...body}, getAxiosConfig())
           .then((res: any) => {
-            return res.data && res.data.data && res.data.data.result;
+            const result = res.data && res.data.data && res.data.data.result;
+            if (result) {
+              result.id = configID;
+            }
+            return result;
           })
           .catch(errorParser);
       }
     : async (params: any) => {
         let url = URL.Query;
         return axiosInstance
-          .post(url, {id: getConnId(), query: params}, getAxiosConfig())
+          .post(
+            url,
+            {id: getConnId(), query: Array.isArray(params) ? params : [params]},
+            getAxiosConfig()
+          )
           .then((res: any) => {
-            // console.info(res.data && res.data.data && res.data.data[0]);
-            return res.data && res.data.data && res.data.data[0];
+            const result = res.data && res.data.data && res.data.data[0].result;
+            return result;
           })
           .catch(errorParser);
       };
