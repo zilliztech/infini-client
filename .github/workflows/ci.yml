@@ -1,0 +1,51 @@
+name: ci
+
+on:
+  push:
+     # file paths to consider in the event. Optional; defaults to all.
+    paths:
+      - 'src/**'
+      - '.github/workflows/**'
+      - '!public'
+      - '!**.md'
+  pull_request:
+    # file paths to consider in the event. Optional; defaults to all.
+    paths:
+      - 'src/**'
+      - '.github/workflows/**'
+      - '!public'
+      - '!**.md'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Setup Node.js enviroment
+        uses: actions/setup-node@v1.1.0
+        with:
+          version: '12.x'
+   
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+      
+      - name: Install dependencies
+        run: yarn install
+      
+      - name: Run test
+        run: yarn test
+      
+      - name: Docker login
+        run: echo '${{ secrets.DOCKER_PWD }}' | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          
+      - name: Docker Build
+        run: docker build -t zilliz/infini-webclient:dev .
+
+      - name: Docker Push version
+        run: docker push zilliz/infini-webclient:dev
+        
+  

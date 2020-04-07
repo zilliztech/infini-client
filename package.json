@@ -1,6 +1,6 @@
 {
-  "name": "infini-client",
-  "version": "0.5.0",
+  "name": "arctern-gui",
+  "version": "0.1.0",
   "private": true,
   "author": "",
   "contributors": [
@@ -9,7 +9,7 @@
     "Chen Zizhao <zizhao.chen@zilliz.com>"
   ],
   "license": "reserved",
-  "description": "browser-based interactive data visualization system, support multiple database connection, focused on crossfilter",
+  "description": "Browser-based interactive data visualization system, support multiple database connection, focused on crossfiltering",
   "dependencies": {
     "@mapbox/mapbox-gl-draw": "^1.1.2",
     "@mapbox/mapbox-gl-language": "^0.10.1",
