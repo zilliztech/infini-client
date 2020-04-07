@@ -67,7 +67,7 @@ const _getQueryParams = (dataNode: dataNode) => {
           opacity: 0.5,
         },
       };
-    //TODO:
+    //TODO: put this into Widget Config
     case QueryType.heat:
       return {
         ...res,
@@ -152,7 +152,7 @@ const _parseConfigToTransform = (config: WidgetConfig, isArctern: boolean = true
     .filter(d => !d.isBinned)
     .map(d => ({
       type: 'project',
-      expr: d.expression ? {...d, type: d.expression} : d.value, //TODO:
+      expr: d.expression ? {...d, type: d.expression} : d.value,
       as: d.as,
     }));
 
@@ -168,7 +168,6 @@ const _parseConfigToTransform = (config: WidgetConfig, isArctern: boolean = true
       //alias, field, extent, maxbins
       return Helper.bin(as, value, extent as number[], maxbins);
     });
-  // TODO: put these parsers to one file later
   const timeBinDimsExprs = timeBinDims.map(t => {
     if (t.extract) {
       return Helper.alias(t.as, {unit: t.timeBin!, field: t.value, type: 'extract'} as any);

@@ -20,7 +20,7 @@ import {
 } from '../../utils/EditorHelper';
 import {COLUMN_TYPE} from '../../utils/Consts';
 import {getValidTimeBinOpts} from '../../utils/Binning';
-import {cloneObj, id as genID} from '../../utils/Helpers';
+import {cloneObj, id as genID, isValidValue} from '../../utils/Helpers';
 import {isDateCol, isTextCol, isNumCol} from '../../utils/ColTypes';
 import {Status} from '../../types/Editor';
 import Bin from './Bin';
@@ -41,9 +41,9 @@ type NewColumn = {
 const useStyles = makeStyles(theme => genDimensionSelectorStyles(theme) as any) as Function;
 
 const DimensionSelector: FC<DimensionSelectorProps> = (props: DimensionSelectorProps) => {
-  const {getData, binRangeRequest} = useContext(queryContext);
+  const {binRangeRequest} = useContext(queryContext);
   const {nls} = useContext(I18nContext);
-  const {setDialog, isArctern} = useContext(rootContext);
+  const {setDialog} = useContext(rootContext);
   const theme = useTheme();
   const classes = useStyles(theme);
   const {
@@ -161,7 +161,7 @@ const DimensionSelector: FC<DimensionSelectorProps> = (props: DimensionSelectorP
     const rangeSql = getRangeSql(col_name, source);
     const res = await binRangeRequest(rangeSql);
     const {minimum, maximum} = res;
-    if (minimum === null || minimum === undefined || maximum === null || maximum === undefined) {
+    if (isValidValue(minimum) && isValidValue(maximum)) {
       onReceiveInvalidBinRange();
       return;
     }
@@ -195,22 +195,16 @@ const DimensionSelector: FC<DimensionSelectorProps> = (props: DimensionSelectorP
     if (isNotUseBin) {
       addDimension({...newDimension, isBinned: false}, onAdd);
     } else {
-      const params = genRangeQuery(expression, source);
       let _res: any;
-      if (isArctern) {
-        _res = await getData(params);
-        _res = _res[0];
-      } else {
-        const rangeSql = getRangeSql(expression, source);
-        _res = await binRangeRequest({
-          query: [
-            {
-              sql: rangeSql,
-              id,
-            },
-          ],
-        });
-      }
+      const rangeSql = getRangeSql(expression, source);
+      _res = await binRangeRequest({
+        query: [
+          {
+            sql: rangeSql,
+            id,
+          },
+        ],
+      });
       const {minimum, maximum} = _res;
       if (typeof minimum !== 'number' || typeof maximum !== 'number') {
         onReceiveInvalidBinRange();

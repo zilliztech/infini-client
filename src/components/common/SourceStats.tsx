@@ -23,7 +23,9 @@ const useStyles = makeStyles(theme => ({
 interface ISourceStats {
   data: DataCache;
   sources: Source[];
-  sourceOptions: any;
+  sourceOptions: {
+    [propName: string]: any;
+  };
 }
 
 const SourceStats = (props: ISourceStats) => {
