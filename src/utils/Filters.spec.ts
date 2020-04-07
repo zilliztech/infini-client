@@ -116,7 +116,7 @@ test('Filters dimensionsDataToFilterExpr', () => {
         timeBin: 'hour',
         binningResolution: '1h',
       },
-      data: ['Mon Oct 08 13:00:00 2018', 'Mon, 08 Oct 2018 05:59:59 GMT'],
+      data: ['Mon Oct 08 13:00:00 2018', 'Mon Oct 08 13:59:59 2018'],
     },
   ];
 
