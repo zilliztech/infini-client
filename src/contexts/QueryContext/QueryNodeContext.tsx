@@ -4,19 +4,19 @@ import * as URL from '../../utils/EndpointsMegawise';
 import {authContext} from '../AuthContext';
 import {I18nContext} from '../I18nContext';
 import {rootContext} from '../RootContext';
-import {namespace, formatSource, restoreSource} from '../../utils/Helpers';
-import {DB_TYPE, Params, QueryType} from '../../types';
+import {namespace} from '../../utils/Helpers';
+import {DB_TYPE} from '../../types';
 import {isDashboardReady, getDashboardById} from '../../utils/Dashboard';
 
 const axiosInstance = axios.create();
-export const queryContext = createContext<any>({});
-const Provider = queryContext.Provider;
+export const queryNodeContext = createContext<any>({});
+const Provider = queryNodeContext.Provider;
 
 const _getDB = () => {
   const db = window.localStorage.getItem(namespace(['query'], 'db'));
   return db ? JSON.parse(db) : false;
 };
-const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
+const QueryNodeProvider: FC<{children: ReactNode}> = ({children}) => {
   const {setUnauthStatus, setAuthStatus} = useContext(authContext);
   const {widgetSettings, setDialog, setSnackbar, globalConfig} = useContext(rootContext);
   const {nls} = useContext(I18nContext);
@@ -316,4 +316,4 @@ const QueryProvider: FC<{children: ReactNode}> = ({children}) => {
   );
 };
 
-export default QueryProvider;
+export default QueryNodeProvider;

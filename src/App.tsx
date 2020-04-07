@@ -1,5 +1,8 @@
 import React, {FC} from 'react';
 import AuthContextProvider from './contexts/AuthContext';
+import QueryNodeProvider from './contexts/QueryContext/QueryNodeContext';
+import QueryArcternProvider from './contexts/QueryContext/QueryArcternContext';
+
 import QueryProvider from './contexts/QueryContext';
 import I18nProvider from './contexts/I18nContext';
 import RootProvider from './contexts/RootContext';
@@ -15,9 +18,13 @@ const App: FC = () => {
     <I18nProvider>
       <RootProvider>
         <AuthContextProvider>
-          <QueryProvider>
-            <RootContainer />
-          </QueryProvider>
+          <QueryNodeProvider>
+            <QueryArcternProvider>
+              <QueryProvider>
+                <RootContainer />
+              </QueryProvider>
+            </QueryArcternProvider>
+          </QueryNodeProvider>
         </AuthContextProvider>
       </RootProvider>
     </I18nProvider>
