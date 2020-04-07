@@ -12,6 +12,7 @@ export enum WIDGET {
   POINTMAP = 'PointMap',
   GEOHEATMAP = 'GeoHeatMap',
   SCATTERCHART = 'ScatterChart',
+  SCATTERCHART3D = 'ScatterChart3D',
   CHOROPLETHMAP = 'ChoroplethMap',
   TEXTCHART = 'TextChart',
   HISTOGRAMCHART = 'HistogramChart',

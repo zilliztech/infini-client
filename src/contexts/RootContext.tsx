@@ -90,7 +90,7 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
   const isArctern = false;
   // color theme
   const auth = window.localStorage.getItem(namespace(['login'], 'userAuth'));
-  const currTheme = (auth && JSON.parse(auth).theme) || themes[0];
+  const currTheme = (auth && JSON.parse(auth).theme) || 'Dark';
   const [theme, setTheme] = useState<any>(currTheme);
   // dialog state
   const [dialog, setDialog] = useState<any>({});
@@ -121,7 +121,8 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
     [
       'ChoroplethMegaWiseMap',
       'GeoHeatMegaWiseMap',
-      'PointMegaWiseMap, ScatterMegaWiseChart',
+      'PointMegaWiseMap', 
+      'ScatterMegaWiseChart',
     ].forEach((key: string) => delete widgetSettings[key]);
   }
   useEffect(() => {

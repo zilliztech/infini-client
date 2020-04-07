@@ -25,6 +25,7 @@ const useStyles = makeStyles(theme => ({
     width: '125px',
     margin: '5px 0',
     fontSize: '13px',
+    color: '#666',
   },
 }));
 
@@ -50,7 +51,6 @@ const ExpressionDropdown: FC<ExpressionDropdownProps> = props => {
               onClick={() => onClick(option.value)}
               className={classes.btn}
               variant={isSelected ? 'contained' : 'outlined'}
-              color="secondary"
               key={option.value}
             >
               {nls[`label_widgetEditor_expression_${option.value}`] || option.label}

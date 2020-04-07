@@ -393,7 +393,7 @@ const BubbleChart = (props: BubbleChartProps) => {
                 }
               />
               <text
-                fill="#000"
+                // fill="#000"
                 y={svgHeight - 30}
                 x={wrapperWidth / 2}
                 dy="0.71em"
@@ -416,7 +416,7 @@ const BubbleChart = (props: BubbleChartProps) => {
                 }
               />
               <text
-                fill="#000"
+                // fill="#000"
                 transform="rotate(-90)"
                 y={-margin.left + 10}
                 x={-50}
@@ -450,11 +450,11 @@ const BubbleChart = (props: BubbleChartProps) => {
                       y={textYPos}
                       x={textXPos}
                       style={{
-                        fill: '#333',
-                        // strokeWidth: '2px',
-                        // stroke: 'black',
-                        // paintOrder: 'stroke',
-                        // strokeOpacity: 0.3,
+                        fill: '#fff',
+                        strokeWidth: '2px',
+                        stroke: 'black',
+                        paintOrder: 'stroke',
+                        strokeOpacity: 0.3,
                       }}
                     >
                       {text}

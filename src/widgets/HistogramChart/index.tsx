@@ -367,7 +367,7 @@ const HistogramChart: FC<HistogramChartProps> = props => {
             <g className="grid-line" ref={yGridLine} />
             <g ref={yAxisContainer} />
             <text
-              fill="#000"
+              fill={theme.palette.text.primary}
               transform="rotate(-90)"
               y={-margin.left + 10}
               x={-10}

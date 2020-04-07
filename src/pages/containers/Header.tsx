@@ -164,7 +164,7 @@ const Header: FC<HeaderProps> = props => {
             <div className={classes.tools}>
               <div className={classes.tool}>
                 <Button
-                  variant="contained"
+                  variant="outlined"
                   className={classes.hover}
                   classes={{root: classes.layout}}
                   onClick={showLayoutSettings}
@@ -214,7 +214,7 @@ const Header: FC<HeaderProps> = props => {
                 onClick={onClearFilter}
               >
                 <Button
-                  variant="contained"
+                  variant="outlined"
                   className={classes.hover}
                   classes={{root: classes.layout}}
                 >
@@ -232,7 +232,7 @@ const Header: FC<HeaderProps> = props => {
               {showRestoreBtn && (
                 <div className={classes.tool}>
                   <Button
-                    variant="contained"
+                    variant="outlined"
                     className={classes.hover}
                     classes={{root: classes.layout}}
                     onClick={onRestoreLayout}

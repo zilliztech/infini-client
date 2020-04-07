@@ -1,56 +1,21 @@
 {
-  "id": 3,
+  "id": 4,
   "demo": true,
-  "title": "深圳车辆营运信息",
-  "userId": "zilliz",
+  "title": "深圳营运车辆分析",
+  "userId": "infini",
   "configs": [
     {
-      "id": "id_xve52r6z76",
-      "type": "TableChart",
-      "source": "car_move",
-      "layout": {
-        "w": 8,
-        "h": 9,
-        "x": 22,
-        "y": 8,
-        "i": "id_xve52r6z76",
-        "minW": 3,
-        "minH": 5,
-        "moved": false,
-        "static": false
-      },
-      "dimensions": [],
-      "measures": [
-        {
-          "type": "text",
-          "name": "m0",
-          "value": "car_num",
-          "label": "car_num",
-          "as": "measure_njb6zpa9js",
-          "format": "auto",
-          "isCustom": false,
-          "expression": "unique",
-          "color": "#FFDB5C"
-        }
-      ],
-      "offset": 0,
-      "length": 25,
-      "sort": {"name": "countval", "order": "descending"},
-      "filter": {},
-      "selfFilter": {}
-    },
-    {
-      "id": "id_jfwkd5r47d",
       "type": "PointMap",
-      "source": "car_move",
+      "title": "营运车辆数据分析",
+      "source": "szx_vehicles",
       "layout": {
-        "w": 14,
-        "h": 17,
+        "w": 15,
+        "h": 30,
         "x": 0,
         "y": 0,
-        "i": "id_jfwkd5r47d",
+        "i": "id_atwqk26f9x9",
         "minW": 3,
-        "minH": 5,
+        "minH": 1,
         "moved": false,
         "static": false
       },
@@ -58,171 +23,226 @@
       "measures": [
         {
           "type": "float8",
-          "name": "lon",
           "value": "gps_longitude",
           "label": "gps_longitude",
           "as": "lon",
           "format": "auto",
           "isCustom": false,
-          "color": "#37A2DA"
+          "isRecords": false,
+          "expression": "gis_mapping_lon",
+          "name": "y0"
         },
         {
           "type": "float8",
-          "name": "lat",
           "value": "gps_latitude",
           "label": "gps_latitude",
           "as": "lat",
           "format": "auto",
           "isCustom": false,
-          "color": "#32C5E9"
-        }
-      ],
-      "filter": {},
-      "selfFilter": {},
-      "width": 707,
-      "height": 728,
-      "isServerRender": true,
-      "mapTheme": "mapbox://styles/mapbox/dark-v10",
-      "zoom": 11.31787934105359,
-      "ruler": {"min": 0, "max": 1000},
-      "rulerBase": {"min": 0, "max": 1000},
-      "colorKey": "#37A2DA",
-      "center": {"lng": 113.92966849487209, "lat": 22.56489236712946},
-      "bounds": {
-        "_sw": {"lng": 113.83230396101328, "lat": 22.472279856940773},
-        "_ne": {"lng": 114.02703302872789, "lat": 22.65744271331775}
-      },
-      "popupItems": ["car_num", "system_time"],
-      "title": "深圳车辆运营地图"
-    },
-    {
-      "id": "id_7kd2tldegnb",
-      "type": "StackedBarChart",
-      "source": "car_move",
-      "layout": {
-        "w": 8,
-        "h": 9,
-        "x": 14,
-        "y": 8,
-        "i": "id_7kd2tldegnb",
-        "minW": 3,
-        "minH": 5,
-        "moved": false,
-        "static": false
-      },
-      "dimensions": [
-        {"type": "text", "value": "car_type", "name": "x", "as": "x"},
-        {"type": "text", "value": "car_type", "name": "color", "as": "color"}
-      ],
-      "measures": [
+          "isRecords": false,
+          "expression": "gis_mapping_lat",
+          "name": "y1"
+        },
         {
           "type": "float8",
-          "name": "y",
           "value": "car_speed",
           "label": "car_speed",
-          "as": "y",
+          "as": "color",
           "format": "auto",
           "isCustom": false,
-          "expression": "avg",
-          "color": "#8378EA"
+          "isRecords": false,
+          "expression": "project",
+          "name": "y2"
         }
       ],
       "filter": {},
       "selfFilter": {},
-      "sort": {"name": "x"},
-      "stackType": "vertical",
-      "colorItems": [
-        {"label": "客运", "color": "#37A2DA", "as": "客运"},
-        {"label": "货运", "color": "#32C5E9", "as": "货运"},
-        {"label": "外籍车", "color": "#67E0E3", "as": "外籍车"},
-        {"label": "行政车", "color": "#9FE6B8", "as": "行政车"}
-      ],
-      "colorItems": [
-        {"car_type": "客运"},
-        {"car_type": "货运"},
-        {"car_type": "外籍车"},
-        {"car_type": "行政车"}
-      ]
+      "width": 762,
+      "height": 1092.666748046875,
+      "isServerRender": true,
+      "mapTheme": "mapbox://styles/mapbox/dark-v9",
+      "zoom": 7.7987535377397,
+      "pointSize": 3,
+      "points": 1000000,
+      "popupItems": [],
+      "colorKey": "blue_green_yellow",
+      "id": "id_atwqk26f9x9",
+      "center": {"lng": 113.88605696219702, "lat": 22.89131949760855},
+      "bounds": {
+        "_sw": {"lng": 112.68296514816745, "lat": 21.292390666721914},
+        "_ne": {"lng": 115.08914877623181, "lat": 24.471628402080682}
+      },
+      "ruler": {"min": 0, "max": 65535},
+      "rulerBase": {"min": 0, "max": 65535}
     },
     {
-      "id": "id_eyw52p6cktv",
-      "type": "BubbleChart",
-      "source": "car_move",
+      "type": "LineChart",
+      "title": "车速-时间分析",
+      "source": "szx_vehicles",
       "layout": {
-        "w": 16,
-        "h": 8,
-        "x": 14,
+        "w": 15,
+        "h": 15,
+        "x": 15,
         "y": 0,
-        "i": "id_eyw52p6cktv",
+        "i": "id_flngi68ewie",
         "minW": 3,
-        "minH": 5,
+        "minH": 1,
         "moved": false,
         "static": false
       },
       "dimensions": [
         {
-          "format": "auto",
-          "type": "DATE",
-          "value": "system_time",
           "label": "system_time",
+          "short": "xaxis",
+          "value": "system_time",
+          "type": "timestamp",
+          "format": "auto",
+          "as": "x",
           "isBinned": true,
           "extract": false,
-          "as": "system_time_ojcq5l89uf",
           "min": "Mon Oct 08 00:00:01 2018",
-          "currMin": "Mon Oct 08 00:00:01 2018",
-          "max": "Mon Oct 08 23:59:59 2018",
-          "currMax": "Mon Oct 08 23:59:59 2018",
-          "extent": ["Mon Oct 08 00:00:01 2018", "Mon Oct 08 23:59:59 2018"],
-          "staticRange": ["Mon Oct 08 00:00:01 2018", "Mon Oct 08 23:59:59 2018"],
+          "max": "Thu Oct 11 23:59:59 2018",
+          "extent": ["Mon Oct 08 00:00:01 2018", "Thu Oct 11 23:59:59 2018"],
+          "staticRange": ["Mon Oct 08 00:00:01 2018", "Thu Oct 11 23:59:59 2018"],
           "timeBin": "hour",
           "binningResolution": "1h"
         }
       ],
       "measures": [
         {
-          "type": "float8",
-          "name": "y",
-          "value": "car_speed",
-          "label": "car_speed",
-          "as": "y",
+          "type": "int4",
+          "value": "gps_speed",
+          "label": "gps_speed",
+          "as": "measure_04b8ms9m252c",
           "format": "auto",
           "isCustom": false,
+          "isRecords": false,
           "expression": "avg",
-          "color": "#E062AE"
-        },
+          "name": "y0"
+        }
+      ],
+      "colorItems": [
         {
-          "type": "number",
-          "name": "color",
-          "value": "*",
-          "label": "Records",
-          "as": "color",
-          "format": "auto",
-          "isCustom": false,
-          "expression": "count",
-          "isRecords": true,
-          "color": "#E690D1"
-        },
-        {
-          "type": "number",
-          "name": "x",
-          "value": "*",
-          "label": "Records",
-          "as": "x",
-          "format": ".2s",
-          "isCustom": false,
-          "expression": "count",
-          "isRecords": true,
-          "color": "#96BFFF"
+          "color": "#37A2DA",
+          "as": "measure_04b8ms9m252c",
+          "label": "gps_speed",
+          "isRecords": false,
+          "value": "gps_speed"
         }
       ],
       "filter": {},
       "selfFilter": {},
-      "colorKey": "blue_green_yellow",
-      "ruler": {"min": 1584753, "max": 3140333},
-      "rulerBase": {"min": 1584753, "max": 3140333}
+      "isShowRange": false,
+      "id": "id_flngi68ewie"
+    },
+    {
+      "type": "TableChart",
+      "title": "车速-时间分析",
+      "source": "szx_vehicles",
+      "layout": {
+        "w": 7.5,
+        "h": 15,
+        "x": 15,
+        "y": 15,
+        "i": "id_2ycx36n7p9k",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "dimensions": [
+        {
+          "label": "system_time",
+          "short": "colname",
+          "value": "system_time",
+          "type": "timestamp",
+          "format": "auto",
+          "as": "gps_speed_6fg79pm4xsr",
+          "isBinned": true,
+          "extract": false,
+          "extent": ["Mon Oct 08 00:00:01 2018", "Thu Oct 11 23:59:59 2018"],
+          "staticRange": ["Mon Oct 08 00:00:01 2018", "Thu Oct 11 23:59:59 2018"],
+          "timeBin": "day",
+          "binningResolution": "1d"
+        }
+      ],
+      "measures": [],
+      "colorItems": [],
+      "filter": {},
+      "selfFilter": {},
+      "limit": 50,
+      "sort": {"name": "", "order": "descending"},
+      "id": "id_2ycx36n7p9k"
+    },
+    {
+      "type": "TableChart",
+      "title": "车辆速度",
+      "source": "szx_vehicles",
+      "layout": {
+        "w": 7.5,
+        "h": 15,
+        "x": 22.5,
+        "y": 15,
+        "i": "id_rbi9zi2hnr9",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "dimensions": [
+        {
+          "label": "car_num",
+          "short": "colname",
+          "value": "car_num",
+          "type": "text",
+          "format": "auto",
+          "as": "car_num_gmocro0qw2m"
+        }
+      ],
+      "measures": [
+        {
+          "type": "int",
+          "value": "*",
+          "label": "Records",
+          "as": "countval",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": true,
+          "expression": "count",
+          "name": "y0"
+        },
+        {
+          "type": "float8",
+          "value": "car_speed",
+          "label": "car_speed",
+          "as": "measure_9jtkqtpciiq",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "avg",
+          "name": "y1"
+        },
+        {
+          "type": "float8",
+          "value": "car_speed",
+          "label": "car_speed",
+          "as": "measure_4z54yw170vo",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "max",
+          "name": "y2"
+        }
+      ],
+      "colorItems": [],
+      "filter": {},
+      "selfFilter": {},
+      "limit": 50,
+      "sort": {"name": "", "order": "descending"},
+      "id": "id_rbi9zi2hnr9"
     }
   ],
   "createdAt": "Thu Jun  6 12:12:12 2019",
-  "modifyAt": "Thu Jun  6 12:12:13 2019",
-  "sources": ["car_move"]
+  "modifyAt": "Thu Jun  6 12:12:12 2019",
+  "sources": ["sha_truck", "szx_vehicles", "nyc_taxi"]
 }

@@ -161,7 +161,7 @@ const DimensionSelector: FC<DimensionSelectorProps> = (props: DimensionSelectorP
     const rangeSql = getRangeSql(col_name, source);
     const res = await binRangeRequest(rangeSql);
     const {minimum, maximum} = res;
-    if (isValidValue(minimum) && isValidValue(maximum)) {
+    if (!isValidValue(minimum) || !isValidValue(maximum)) {
       onReceiveInvalidBinRange();
       return;
     }
