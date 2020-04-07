@@ -33,6 +33,9 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v2
       
+      - name: Install dependencies
+        run: yan install
+      
       - name: Run test
         run: yarn test
       
