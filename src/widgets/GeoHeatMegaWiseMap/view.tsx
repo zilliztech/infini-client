@@ -1,15 +1,13 @@
-import React, {FC, useContext} from 'react';
+import React, {FC} from 'react';
 import {useTheme} from '@material-ui/core/styles';
 import {CONFIG} from '../../utils/Consts';
 import {GeoHeatMapProps} from './types';
 import MapboxGl from '../common/MapboxGl';
 import {drawsGlGetter} from '../Utils/Map';
 import {mapUpdateConfigHandler, drawUpdateConfigHandler} from '../Utils/filters/map';
-import {rootContext} from '../../contexts/RootContext';
 
 const GeoHeatMapView: FC<GeoHeatMapProps> = props => {
   const theme = useTheme();
-  const {isArctern} = useContext(rootContext);
   const {config, setConfig} = props;
 
   // get draws
@@ -36,7 +34,7 @@ const GeoHeatMapView: FC<GeoHeatMapProps> = props => {
   const onDrawUpdate = (draws: any) => {
     setConfig({
       type: CONFIG.UPDATE,
-      payload: drawUpdateConfigHandler(config, draws,isArctern),
+      payload: drawUpdateConfigHandler(config, draws, false),
     });
   };
 

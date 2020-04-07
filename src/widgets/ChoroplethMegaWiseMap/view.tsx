@@ -12,11 +12,9 @@ import {dimensionGetter, measureGetter} from '../../utils/WidgetHelpers';
 import {drawsGlGetter} from '../Utils/Map';
 import {id as genID} from '../../utils/Helpers';
 import {ChoroplethMapProps} from './types';
-import {rootContext} from '../../contexts/RootContext';
 const wkx = require('wkx');
 
 const ChoroplethMapView: FC<ChoroplethMapProps> = props => {
-  const {isArctern} = useContext(rootContext);
   const theme = useTheme();
   const {getRowBySql, generalRequest} = useContext(queryContext);
   const {config, setConfig} = props;
@@ -46,7 +44,7 @@ const ChoroplethMapView: FC<ChoroplethMapProps> = props => {
   const onDrawUpdate = (draws: any) => {
     setConfig({
       type: CONFIG.UPDATE,
-      payload: drawUpdateConfigHandler(config, draws, isArctern),
+      payload: drawUpdateConfigHandler(config, draws, false),
     });
   };
   const _preSql = (center: any) => {

@@ -29,8 +29,8 @@ export type ConfigAction =
   | {type: CONFIG.ADD_POPUP_ITEM; payload: string}
   | {type: CONFIG.DEL_POPUP_ITEM; payload: string}
   | {type: CONFIG.ADD_LIMIT; payload: {id: string; limit: number}}
-  | {type: CONFIG.UPDATE_POINTS; payload: {id: string; [propName: string]: number}}
-  | {type: CONFIG.UPDATE_POINT_SIZE; payload: {id: string; [propName: string]: number}}
+  | {type: CONFIG.UPDATE_POINTS; payload: {id: string; [propName: string]: any}}
+  | {type: CONFIG.UPDATE_POINT_SIZE; payload: {id: string; [propName: string]: any}}
   | {type: CONFIG.ADD_MAPTHEME; payload: WidgetConfig}
   | {type: CONFIG.ADD_STACKTYPE; payload: string}
   | {type: CONFIG.CHANGE_IS_AREA; payload: boolean}
