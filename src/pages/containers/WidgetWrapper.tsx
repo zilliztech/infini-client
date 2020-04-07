@@ -32,7 +32,6 @@ import {rootContext} from '../../contexts/RootContext';
 import localConfigReducer from '../../utils/reducers/localConfigReducer';
 import {getWidgetTitle, getView} from '../../utils/WidgetHelpers';
 
-
 // component cache
 const widgetsMap = new Map();
 const useStyles = makeStyles(theme => genWidgetWrapperStyle(theme) as any) as any;
@@ -105,7 +104,6 @@ const WidgetWrapper: FC<DefaultWidgetProps> = props => {
     })
   );
   const [localMeta, setLocalMeta] = useState<Meta>({});
-  const [isHover, setHover] = useState<boolean>(false);
   const [localConfig, _setLocalConfig] = useReducer(localConfigReducer, cloneObj(config));
 
   const calSize = () => {
@@ -202,14 +200,6 @@ const WidgetWrapper: FC<DefaultWidgetProps> = props => {
   const localData = dataCache.current[localConfig.id] || [];
   const localLinkData = getLinkData(dataCache.current, localConfig);
 
-  const onMouseEnter = () => {
-    setHover(true);
-  };
-
-  const onMouseLeave = () => {
-    setHover(false);
-  };
-
   // clear filter
   const onChartClearFilter = () => {
     setConfig({
@@ -246,15 +236,10 @@ const WidgetWrapper: FC<DefaultWidgetProps> = props => {
     <>
       <Suspense fallback={<Spinner />}>
         {widgetMode === MODE.NORMAL && (
-          <div
-            ref={container}
-            className={classes.container}
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
+          <div ref={container} className={classes.container}>
             <div className={classes.header}>
-              <h3>{getWidgetTitle(config, nls, isArctern)}</h3>
-              <div className={clsx(classes.actions, isHover ? '' : classes.hidden)}>
+              <h3>{getWidgetTitle(config, nls)}</h3>
+              <div className={clsx(classes.actions)}>
                 <span className={`${classes.link} ${isFilterExist ? '' : classes.hidden}`}>
                   <div
                     className={classes.icon}

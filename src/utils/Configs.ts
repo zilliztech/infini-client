@@ -23,7 +23,8 @@ import {
   WidgetSettings,
 } from '../types';
 import {restoreSource} from './Helpers';
-import {dateTruncParser, extractParser} from './MegaWiseParser';
+import {dateTruncParser, extractParser, parseBin} from './MegaWiseParser';
+import {truncParser, extractParser as arcternExtractParser} from './ArcternParser';
 
 // define a dataNode type
 type dataNode = {
@@ -161,25 +162,12 @@ const _parseConfigToTransform = (config: WidgetConfig, isArctern: Boolean = true
       //alias, field, extent, maxbins
       return Helper.bin(as, value, extent as number[], maxbins);
     });
-
-    // TODO: put these parsers to one file later
+  // TODO: put these parsers to one file later
   const timeBinDimsExprs = timeBinDims.map(t => {
     if (t.extract) {
-      return Helper.alias(
-        t.as,
-        isArctern
-          ? (t.timeBin === 'isodow' ? `date_format(${t.value}, 'e')` : `${t.timeBin}(${t.value})`)
-          : `extract('${t.timeBin}' from ${t.value})`
-      );
+      return Helper.alias(t.as, {unit: t.timeBin!, field: t.value, type: 'extract'} as any);
     }
-    return Helper.alias(
-      t.as,
-      isArctern
-        ? t.timeBin === 'day'
-          ? `date(${t.value})`
-          : `trunc(${t.value}, '${t.timeBin}')`
-        : `date_trunc('${t.timeBin}', ${t.value})`
-    );
+    return Helper.alias(t.as, {unit: t.timeBin!, field: t.value, type: 'date_trunc'} as any);
   });
 
   const hasAggregate =
@@ -243,6 +231,10 @@ export const getWidgetSql = (
   if (!isArctern) {
     SqlParser.SQLParser.registerExpression('date_trunc', dateTruncParser);
     SqlParser.SQLParser.registerExpression('extract', extractParser);
+    SqlParser.SQLParser.registerTransform('bin', parseBin as SqlParser.TransformParser);
+  } else {
+    SqlParser.SQLParser.registerExpression('trunc', truncParser);
+    SqlParser.SQLParser.registerExpression('extract', arcternExtractParser);
   }
   // create a config map
   const configMap: Map<string, WidgetConfig> = new Map();
