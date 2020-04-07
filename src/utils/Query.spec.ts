@@ -19,14 +19,14 @@ test('DataQuery', async () => {
   const res = await testQuery.q(qParams);
   expect(onResponse.mock.calls.length).toBe(2);
   expect(onRequest.mock.calls.length).toBe(2);
-  expect(res).toStrictEqual(['res', 'res']);
+  expect(res).toStrictEqual([{result: 'res'}, {result: 'res'}]);
   expect(requester.mock.calls.length).toBe(2);
 
   const res2 = await testQuery.q(qParams);
   expect(onResponse.mock.calls.length).toBe(2);
   expect(onRequest.mock.calls.length).toBe(4);
   expect(requester.mock.calls.length).toBe(2);
-  expect(res2).toStrictEqual(['res', 'res']);
+  expect(res2).toStrictEqual([{result: 'res'}, {result: 'res'}]);
 });
 
 test('getLinkData', () => {
