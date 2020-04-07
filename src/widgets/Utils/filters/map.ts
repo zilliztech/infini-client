@@ -19,57 +19,95 @@ export const mapUpdateConfigHandler = (
   return copiedConfig;
 };
 
-export const drawUpdateConfigHandler = (config: MapChartConfig, draws: any) => {
+export const drawUpdateConfigHandler = (
+  config: MapChartConfig,
+  draws: any,
+  isArctern: boolean = true
+) => {
   const copiedConfig = cloneObj(config);
   let {filter = {}} = copiedConfig;
   // get required lon, lat
   const lon = dimensionGetter(config, KEY.LONGTITUDE) || measureGetter(config, KEY.LONGTITUDE);
   const lat = dimensionGetter(config, KEY.LATITUDE) || measureGetter(config, KEY.LATITUDE);
 
-  // clear all draws
-  // TODO: any other type draw in PointMap?
-  // Object.keys(filter).forEach((f: any) => {
-  //   if (checkIsDraw(filter[f])) {
-  //     delete filter[f];
-  //   }
-  // });
   filter = {};
-
-  draws.forEach((draw: any) => {
-    if (draw.data.properties.isCircle) {
-      filter[draw.id] = {
-        type: 'filter',
-        expr: {
-          type: 'st_distance',
-          fromlon: draw.data.properties.center[0],
-          fromlat: draw.data.properties.center[1],
-          tolon: lon!.value,
-          tolat: lat!.value,
-          distance: draw.data.properties.radiusInKm * 1000,
-        },
-      };
-      return;
-    }
-
-    if (draw.type === 'Polygon') {
-      if (draw.data.geometry.coordinates[0][0] === null) {
+  if (isArctern) {
+    draws.forEach((draw: any) => {
+      if (draw.data.properties.isCircle) {
+        filter[draw.id] = {
+          type: 'filter',
+          expr: {
+            type: 'st_distance',
+            fromlon: draw.data.properties.center[0],
+            fromlat: draw.data.properties.center[1],
+            tolon: lon!.value,
+            tolat: lat!.value,
+            distance: draw.data.properties.radiusInKm * 1000,
+          },
+        };
         return;
       }
-      filter[draw.id] = {
-        type: 'filter',
-        isGeoJson: true,
-        expr: {
-          type: 'st_within',
-          geoJson: draw.data,
-          x: lon!.value,
-          y: lat!.value,
-          px: draw.data.geometry.coordinates[0].map((point: any) => point[0]),
-          py: draw.data.geometry.coordinates[0].map((point: any) => point[1]),
-        },
-      };
-    }
-  });
-  copiedConfig.filter = filter;
-  copiedConfig.draws = draws;
+
+      if (draw.type === 'Polygon') {
+        if (draw.data.geometry.coordinates[0][0] === null) {
+          return;
+        }
+        filter[draw.id] = {
+          type: 'filter',
+          isGeoJson: true,
+          expr: {
+            type: 'st_within',
+            geoJson: draw.data,
+            x: lon!.value,
+            y: lat!.value,
+            px: draw.data.geometry.coordinates[0].map((point: any) => point[0]),
+            py: draw.data.geometry.coordinates[0].map((point: any) => point[1]),
+          },
+        };
+      }
+    });
+    copiedConfig.filter = filter;
+    copiedConfig.draws = draws;
+  } else {
+    draws.forEach((draw: any) => {
+      if (draw.data.properties.isCircle) {
+        // console.log("add draw", draw.id, draw);
+        filter[draw.id] = {
+          type: 'filter',
+          isGeoJson: true,
+          expr: {
+            type: 'circle',
+            geoJson: draw.data,
+            fromlon: draw.data.properties.center[0],
+            fromlat: draw.data.properties.center[1],
+            tolon: lon!.value,
+            tolat: lat!.value,
+            distance: draw.data.properties.radiusInKm * 1000,
+          },
+        };
+        return;
+      }
+
+      if (draw.type === 'Polygon') {
+        if (draw.data.geometry.coordinates[0][0] === null) {
+          return;
+        }
+        filter[draw.id] = {
+          type: 'filter',
+          isGeoJson: true,
+          expr: {
+            type: 'polygon',
+            geoJson: draw.data,
+            x: lon!.value,
+            y: lat!.value,
+            px: draw.data.geometry.coordinates[0].map((point: any) => point[0]),
+            py: draw.data.geometry.coordinates[0].map((point: any) => point[1]),
+          },
+        };
+      }
+    });
+    copiedConfig.filter = filter;
+  }
+
   return copiedConfig;
 };

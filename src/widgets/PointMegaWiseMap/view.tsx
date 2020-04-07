@@ -23,9 +23,11 @@ import {delayRunFunc} from '../../utils/EditorHelper';
 import {drawsGlGetter, markerPosGetter, KEY} from '../Utils/Map';
 import {mapUpdateConfigHandler, drawUpdateConfigHandler} from '../Utils/filters/map';
 import {DEFAULT_COLOR, genColorGetter, isGradientType} from '../../utils/Colors';
+import {rootContext} from '../../contexts/RootContext';
 
 const PointMapNormal: FC<PointMapProps> = props => {
   const theme = useTheme();
+  const {isArctern} = useContext(rootContext);
   const {getRowBySql} = useContext(queryContext);
   const {nls} = useContext(I18nContext);
   const {config, setConfig, dataMeta} = props;
@@ -63,7 +65,7 @@ const PointMapNormal: FC<PointMapProps> = props => {
   const onDrawUpdate = throttle((draws: any) => {
     setConfig({
       type: CONFIG.UPDATE,
-      payload: drawUpdateConfigHandler(config, draws),
+      payload: drawUpdateConfigHandler(config, draws, isArctern),
     });
   }, 50);
 
