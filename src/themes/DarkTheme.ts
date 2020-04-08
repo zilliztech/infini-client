@@ -8,7 +8,7 @@ const DarkTheme: any = {
     type: 'dark', // Switching the dark mode on is a single property value change.
     primary: {
       main: BLUE[500],
-      contrastText: GREY[50],
+      contrastText: GREY[900],
     },
     secondary: {
       main: RED.A200,
