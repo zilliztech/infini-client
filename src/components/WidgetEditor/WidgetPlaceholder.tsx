@@ -15,8 +15,8 @@ const WidgetPlaceholder = (props: any) => {
     <div className={classes.requirement}>
       <div
         style={{
-          width: `50%`,
-          transform: 'translateX(50%)',
+          width: `30%`,
+          transform: 'translateX(118%)',
         }}
         dangerouslySetInnerHTML={{
           __html: icon,
