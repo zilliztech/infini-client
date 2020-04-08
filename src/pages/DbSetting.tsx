@@ -14,7 +14,7 @@ import {I18nContext} from '../contexts/I18nContext';
 import {queryContext} from '../contexts/QueryContext';
 import {rootContext} from '../contexts/RootContext';
 import {DB_TYPE} from '../types';
-
+import {PATH_ROOT, PATH_LOGIN} from '../utils/Endpoints';
 const useStyles = makeStyles((theme: any) => ({
   dataBaseConfiger: {
     flexGrow: 1,
@@ -107,7 +107,7 @@ const DbSetting: FC<RouteComponentProps> = props => {
       title: nls.label_db_success_title,
       content: nls.label_db_success_content,
       onConfirm: () => {
-        props.history.push('/');
+        props.history.push(PATH_ROOT);
       },
     });
   };
@@ -117,7 +117,7 @@ const DbSetting: FC<RouteComponentProps> = props => {
   };
 
   if (auth.userId === 'guest') {
-    return <Redirect to="/login" />;
+    return <Redirect to={PATH_LOGIN} />;
   }
 
   if (loading) {
@@ -156,11 +156,7 @@ const DbSetting: FC<RouteComponentProps> = props => {
               </Select>
             </FormControl>
             <div className={classes.buttonList}>
-              <Button
-                size="medium"
-                variant="outlined"
-                onClick={onSubmit}
-              >
+              <Button size="medium" variant="outlined" onClick={onSubmit}>
                 {nls.label_db_save}
               </Button>
               <Button size="medium" variant="contained" onClick={useDefaultConfig}>
