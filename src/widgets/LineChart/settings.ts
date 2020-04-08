@@ -63,7 +63,12 @@ const settings = makeSetting({
       onDelete: onDeleteMeasure,
     },
   ],
-  icon: `<svg  focusable="false" viewBox="0 0 48 48" aria-hidden="true" role="presentation"><g id="icon-chart-line"><path d="M40.3,22.5l1.7,1.7V42H8.7l11-11l3.5,1.7l3.2,1.6l1.3,0.6l1-1l2.5-2.5L40.3,22.5 M40.3,19.6L29.9,30l-2.5,2.5 l-3.2-1.6l-4.8-2.4L6.9,40.9L4,43.9V44h40V23.4l-3.5-3.5L40.3,19.6L40.3,19.6z"></path><polygon points="44,6 33.7,6 37.4,9.7 25.6,21.6 17.6,17.6 4,31.2 4,36.8 18.4,22.4 26.4,26.4 40.3,12.6 44,16.3 "></polygon></g></svg>`,
+  icon: `<svg version="1.1" viewBox="0 0 80 80" 
+  xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" fill-rule="evenodd">
+    <polyline points="3 60 29 34 46 51 77 20" fill-rule="nonzero" stroke="currentColor" stroke-width="8"/>
+  </g>
+</svg>`,
   enable: true,
   configHandler: lineChartHandler,
 });

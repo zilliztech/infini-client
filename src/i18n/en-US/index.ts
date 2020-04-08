@@ -36,7 +36,7 @@ const nls = {
   label_info: base.label_info,
   label_import_dashboard: 'Import Dashboard',
   // Login Page
-  label_title: 'Sign in to Arctern',
+  label_title: 'Sign in Infini',
   label_username: 'EMAIL ADDRESS',
   label_username_placeholder: 'name@company.com',
   label_password: 'PASSWORD',

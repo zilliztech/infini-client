@@ -14,6 +14,7 @@ import {I18nContext} from '../contexts/I18nContext';
 import {queryContext} from '../contexts/QueryContext';
 import {rootContext} from '../contexts/RootContext';
 import {DBSetting} from '../types';
+import {PATH_ROOT} from '../utils/Endpoints';
 
 const useStyles = makeStyles(() => ({
   dataBaseConfiger: {
@@ -72,7 +73,7 @@ const DbMegaWiseSetting: FC<RouteComponentProps> = props => {
   const [localDbSetting, setLocalDbSetting] = useState<DBSetting>(DB);
 
   const handleSetSuccess = () => {
-    props.history.push('/');
+    props.history.push(PATH_ROOT);
   };
 
   const handleSetFail = () => {};

@@ -19,6 +19,7 @@ import {cloneObj} from '../utils/Helpers';
 import {DIALOG_MODE} from '../utils/Consts';
 import {isDashboardReady} from '../utils/Dashboard';
 import dashboards from '../mock';
+import {PATH_BI} from '../utils/Endpoints';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -105,7 +106,7 @@ const Dashboards: FC<RouteComponentProps> = props => {
       name: nls.label_ID,
       format: null,
       onClick: (row: any) => {
-        const value = `/bi/${row.id}`;
+        const value = `${PATH_BI}/${row.id}`;
         history.push(value);
       },
     },
@@ -114,7 +115,7 @@ const Dashboards: FC<RouteComponentProps> = props => {
       sortable: true,
       name: nls.label_name,
       onClick: (row: any) => {
-        const value = `/bi/${row.id}`;
+        const value = `${PATH_BI}/${row.id}`;
         history.push(value);
       },
     },
@@ -165,7 +166,7 @@ const Dashboards: FC<RouteComponentProps> = props => {
     while (data.some((d: any) => d.id === nextId)) {
       nextId = data.length + i++;
     }
-    const value = `/bi/${nextId}`;
+    const value = `${PATH_BI}/${nextId}`;
     history.push(value);
   };
 

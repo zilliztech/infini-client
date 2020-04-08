@@ -2,15 +2,14 @@ import React, {FC, useContext, useEffect} from 'react';
 import clsx from 'clsx';
 import {withRouter} from 'react-router-dom';
 import {makeStyles, useTheme, Theme} from '@material-ui/core/styles';
-import {
-  Dashboard as DashboardIcon,
-  Settings as SettingsIcon,
-  AccountBox as AccountBoxIcon,
-} from '@material-ui/icons';
-import {Drawer} from '@material-ui/core';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import SettingsIcon from '@material-ui/icons/Settings';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import Drawer from '@material-ui/core/Drawer';
 import Logo from '../../logo.svg';
 import {rootContext} from '../../contexts/RootContext';
 import {genBasicStyle} from '../../utils/Theme';
+import {PATH_ROOT, PATH_CONFIG_DB} from '../../utils/Endpoints';
 const useStyles = makeStyles((theme: Theme) => ({
   ...genBasicStyle(theme.palette.primary.main),
   paper: {
@@ -71,17 +70,20 @@ const Nav: FC<any> = (props: any) => {
       variant="permanent"
       anchor="left"
     >
-      <div className={classes.logo} onClick={() => props.history.push('/')}></div>
+      <div className={classes.logo} onClick={() => props.history.push(PATH_ROOT)}></div>
       <div className={classes.container}>
-        <div className={clsx(classes.wrapper, classes.hover, {[classes.selected]: path === '/'})}>
-          <DashboardIcon onClick={() => props.history.push('/')} classes={{root: classes.icon}} />
+        <div className={clsx(classes.wrapper, classes.hover, {[classes.selected]: path === PATH_ROOT})}>
+          <DashboardIcon
+            onClick={() => props.history.push(PATH_ROOT)}
+            classes={{root: classes.icon}}
+          />
           <span>{`Dashboards`}</span>
         </div>
         <div>
           <div className={clsx(classes.wrapper, classes.hover)}>
             <SettingsIcon
               classes={{root: classes.settingIcon}}
-              onClick={() => props.history.push('/config')}
+              onClick={() => props.history.push(PATH_CONFIG_DB)}
             />
           </div>
           <div className={clsx(classes.wrapper, classes.hover)}>

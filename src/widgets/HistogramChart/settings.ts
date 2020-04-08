@@ -64,7 +64,14 @@ const settings = makeSetting({
       onDelete: onDeleteMeasure,
     },
   ],
-  icon: `<svg focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="presentation"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"></path></svg>`,
+  icon: `<svg version="1.1" viewBox="0 0 80 80" 
+  xmlns="http://www.w3.org/2000/svg">
+  <g fill="currentColor" fill-rule="evenodd">
+    <rect id="Rectangle" transform="translate(64 48) rotate(90) translate(-64 -48)" x="32" y="40" width="64" height="16"/>
+    <rect id="a" transform="translate(16 56) rotate(90) translate(-16 -56)" x="-8" y="48" width="48" height="16"/>
+    <rect transform="translate(40 40) rotate(90) translate(-40 -40)" y="32" width="80" height="16"/>
+  </g>
+</svg>`,
   enable: true,
   configHandler: lineChartHandler,
 });

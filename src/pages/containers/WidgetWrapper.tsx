@@ -155,7 +155,8 @@ const WidgetWrapper: FC<DefaultWidgetProps> = props => {
   if (widgetsMap.has(widgetKey)) {
     Widget = widgetsMap.get(widgetKey);
   } else {
-    Widget = React.lazy(() => import(`../../widgets/${getView(widgetType, isArctern)}/view`));
+    let root = getView(widgetType, isArctern);
+    Widget = React.lazy(() => import(`../../widgets/${root}/view`));
     widgetsMap.set(widgetKey, Widget);
   }
 

@@ -69,7 +69,38 @@ const configHandler = (config: WidgetConfig) => {
 
 const settings = makeSetting({
   type: 'StackedBarChart',
-  icon: `<svg  focusable="false" viewBox="0 0 48 48" aria-hidden="true" role="presentation"><g id="icon-chart-bar"><rect x="0" y="46" width="48" height="2"></rect><rect x="2" y="23" width="8" height="5"></rect><rect x="2" y="38" width="8" height="4"></rect><rect x="2" y="19" width="8" height="3"></rect><rect x="2" y="29" width="8" height="8"></rect><rect x="26" y="1" width="8" height="5"></rect><rect x="26" y="36" width="8" height="6"></rect><rect x="26" y="7" width="8" height="6"></rect><rect x="26" y="14" width="8" height="21"></rect><rect x="14" y="12" width="8" height="2"></rect><rect x="14" y="23" width="8" height="14"></rect><rect x="14" y="38" width="8" height="4"></rect><rect x="14" y="15" width="8" height="7"></rect><rect x="38" y="13" width="8" height="15"></rect><rect x="38" y="37" width="8" height="5"></rect><rect x="38" y="7" width="8" height="5"></rect><rect x="38" y="29" width="8" height="7"></rect></g></svg>`,
+  icon: `<svg version="1.1" viewBox="0 0 80 80" 
+  xmlns="http://www.w3.org/2000/svg">
+  <g fill="currentColor" fill-rule="evenodd">
+    <g transform="translate(40 32)">
+      <rect id="Rectangle" width="20" height="16"/>
+    </g>
+    <g transform="translate(40 56)">
+      <rect id="Rectangle" width="40" height="16"/>
+    </g>
+    <g transform="translate(40 8)">
+      <rect id="Rectangle" width="10" height="16"/>
+    </g>
+    <g id="icon/unit" transform="translate(20 8)">
+      <rect id="Rectangle" width="16" height="16"/>
+    </g>
+    <g id="icon/unit" transform="translate(0 8)">
+      <rect id="Rectangle" width="16" height="16"/>
+    </g>
+    <g id="icon/unit" transform="translate(20 32)">
+      <rect id="Rectangle" width="16" height="16"/>
+    </g>
+    <g id="icon/unit" transform="translate(0 32)">
+      <rect id="Rectangle" width="16" height="16"/>
+    </g>
+    <g id="b" transform="translate(20 56)">
+      <rect id="a" width="16" height="16"/>
+    </g>
+    <g transform="translate(0 56)">
+      <rect width="16" height="16"/>
+    </g>
+  </g>
+</svg>`,
   dimensions: [
     {
       type: RequiredType.REQUIRED,

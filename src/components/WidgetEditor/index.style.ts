@@ -78,12 +78,13 @@ export const genWidgetEditorStyle = (theme: any) => {
     requirement: {
       textAlign: 'center',
       flexGrow: 1,
-      color: theme.palette.primary.main,
+      color: theme.palette.grey[600],
       flexDirection: 'column',
       marginBottom: '10px',
       backgroundPosition: '50% 10%',
       backgroundSize: `30%`,
       backgroundRepeat: 'no-repeat',
+      overflowX: 'hidden',
     },
     loading: {
       position: 'absolute',
@@ -99,7 +100,6 @@ export const genWidgetEditorStyle = (theme: any) => {
     },
     label: {
       color: 'white',
-      marginTop: '40%',
     },
     colNamePreview: {
       flexGrow: 1,
