@@ -29,8 +29,8 @@ export const addOverRide = (theme: any) => {
           minWidth: 0,
         },
         contained: {
-          backgroundColor: '#fff',
-          color: theme.palette.text.primary,
+          // backgroundColor: theme.palette.grey[],
+          // color: theme.palette.text.primary,
         },
       },
     },

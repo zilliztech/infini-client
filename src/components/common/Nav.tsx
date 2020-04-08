@@ -72,7 +72,7 @@ const Nav: FC<any> = (props: any) => {
     >
       <div className={classes.logo} onClick={() => props.history.push(PATH_ROOT)}></div>
       <div className={classes.container}>
-        <div className={clsx(classes.wrapper, classes.hover, {[classes.selected]: path === '/'})}>
+        <div className={clsx(classes.wrapper, classes.hover, {[classes.selected]: path === PATH_ROOT})}>
           <DashboardIcon
             onClick={() => props.history.push(PATH_ROOT)}
             classes={{root: classes.icon}}

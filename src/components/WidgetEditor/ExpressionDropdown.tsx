@@ -25,7 +25,6 @@ const useStyles = makeStyles(theme => ({
     width: '125px',
     margin: '5px 0',
     fontSize: '13px',
-    color: '#666',
   },
 }));
 
