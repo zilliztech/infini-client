@@ -1,19 +1,27 @@
 import React, {useContext} from 'react';
 import {I18nContext} from '../../contexts/I18nContext';
-import clsx from 'clsx';
 import {genWidgetEditorStyle} from './index.style';
 import {useTheme, makeStyles} from '@material-ui/core/styles';
 import './index.scss';
 const useStyles = makeStyles(theme => genWidgetEditorStyle(theme) as any) as Function;
 
 const WidgetPlaceholder = (props: any) => {
-  const {language, nls} = useContext(I18nContext);
+  const {nls} = useContext(I18nContext);
   const theme = useTheme();
   const classes = useStyles(theme);
-  const {dimensionsReady, measuresReady, config} = props;
-
+  const {dimensionsReady, measuresReady, config, setting} = props;
+  const {icon} = setting;
   return (
-    <div className={clsx(classes.requirement, `${config.type}-${language}`)}>
+    <div className={classes.requirement}>
+      <div
+        style={{
+          width: `50%`,
+          transform: 'translateX(50%)',
+        }}
+        dangerouslySetInnerHTML={{
+          __html: icon,
+        }}
+      />
       <h1 className={classes.label}>
         {nls[`label_Header_${config.type}`] || config.type} {nls.label_oror_requirements}
       </h1>

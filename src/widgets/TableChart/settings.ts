@@ -28,7 +28,32 @@ const tableConfigHandler = (config: any) => {
 
 const settings = makeSetting({
   type: 'TableChart',
-  icon: `<svg focusable="false" viewBox="0 0 48 48" aria-hidden="true" role="presentation"><g id="icon-chart-table"><path d="M4,44h40V4H4V44z M41,41H7V10h34V41z"></path><path d="M8,34v2h7v4h2v-4h14v4h2v-4h7v-2h-7v-6h7v-2h-7v-6h7v-2h-7v-5h-2v5H17v-5h-2v5H8v2h7v6H8v2h7v6H8z M17,20h14v6H17V20z M17,28h14v6H17V28z"></path></g></svg>`,
+  icon: `<svg version="1.1" viewBox="0 0 80 80" 
+  xmlns="http://www.w3.org/2000/svg">
+  <g fill="currentColor" fill-rule="evenodd">
+    <g id="icon/bar-3" transform="translate(7 7)">
+      <rect id="Rectangle" width="64" height="13.474"/>
+    </g>
+    <g id="icon/bar-3" transform="translate(7 24.474)">
+      <rect id="Rectangle" width="16.842" height="13.474"/>
+    </g>
+    <g id="icon/bar-3" transform="translate(27.842 24.474)">
+      <rect id="Rectangle" width="43.789" height="13.474"/>
+    </g>
+    <g id="icon/bar-3" transform="translate(7 41.947)">
+      <rect id="Rectangle" width="16.842" height="13.474"/>
+    </g>
+    <g id="icon/bar-3" transform="translate(27.842 41.947)">
+      <rect id="Rectangle" width="43.789" height="13.474"/>
+    </g>
+    <g id="b" transform="translate(7 59.421)">
+      <rect id="a" width="16.842" height="13.474"/>
+    </g>
+    <g transform="translate(27.842 59.421)">
+      <rect width="43.789" height="13.474"/>
+    </g>
+  </g>
+</svg>`,
   dimensions: [
     {
       type: RequiredType.REQUIRED_ONE_DIMENSION_OR_MEASURE_AT_LEAST,

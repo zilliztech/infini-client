@@ -12,7 +12,15 @@ const settings = makeSetting({
       columnTypes: [COLUMN_TYPE.NUMBER, COLUMN_TYPE.TEXT],
     },
   ],
-  icon: `<svg focusable="false" viewBox="0 0 48 48" aria-hidden="true" role="presentation"><g id="icon-chart-number"><path d="M25.4,31h-4.9l-1.7,9h-3.7l1.7-9h-5.1v-3.5h5.7l1.3-6.9h-5.3v-3.5h6L21.1,8h3.7l-1.7,9.1H28L29.7,8h3.7l-1.7,9.1h4.6v3.5 H31l-1.3,6.9h4.9V31h-5.5l-1.7,9h-3.7L25.4,31z M21.2,27.5h4.9l1.3-6.9h-4.9L21.2,27.5z"></path></g></svg>`,
+  icon: `<svg version="1.1" viewBox="0 0 80 80" 
+  xmlns="http://www.w3.org/2000/svg">
+  <g fill="currentColor" fill-rule="evenodd">
+    <polygon id="Rectangle" transform="translate(30 39) rotate(90) translate(-30 -39)" points="6 35 54 35 54 43 6 43"/>
+    <polygon id="Rectangle" transform="translate(50 39) rotate(90) translate(-50 -39)" points="26 35 74 35 74 43 26 43"/>
+    <rect id="a" x="16" y="25" width="48" height="8"/>
+    <rect x="16" y="44" width="48" height="8"/>
+  </g>
+</svg>`,
   enable: true,
 });
 

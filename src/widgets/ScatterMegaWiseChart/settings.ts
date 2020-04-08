@@ -100,7 +100,24 @@ const onAfterSqlCreate = (sql: string, config: any): string =>
 const settings = makeSetting({
   type: 'ScatterMegaWiseChart',
   dbTypes: ['megawise'],
-  icon: `<svg focusable="false" viewBox="0 0 48 48" aria-hidden="true" role="presentation"><g><circle cx="6" cy="42" r="2"></circle><circle cx="10" cy="38" r="2"></circle><circle cx="18" cy="40" r="2"></circle><circle cx="20" cy="35" r="2"></circle><circle cx="14" cy="32" r="2"></circle><circle cx="26" cy="32" r="2"></circle><circle cx="23" cy="26" r="2"></circle><circle cx="30" cy="22" r="2"></circle><circle cx="32" cy="28" r="2"></circle><circle cx="38" cy="30" r="2"></circle><circle cx="32" cy="34" r="2"></circle><circle cx="30" cy="14" r="2"></circle><circle cx="36" cy="10" r="2"></circle><circle cx="40" cy="20" r="2"></circle></g></svg>`,
+  icon: `<svg version="1.1" viewBox="0 0 80 80" 
+  xmlns="http://www.w3.org/2000/svg">
+  <g fill="currentColor">
+    <circle id="Oval" cx="4" cy="56" r="4"/>
+    <circle id="Oval" cx="12" cy="40" r="4"/>
+    <circle id="Oval" cx="12" cy="72" r="4"/>
+    <circle id="Oval" cx="28" cy="40" r="4"/>
+    <circle id="Oval" cx="36" cy="24" r="4"/>
+    <circle id="Oval" cx="36" cy="56" r="4"/>
+    <circle id="Oval" cx="44" cy="40" r="4"/>
+    <circle id="Oval" cx="52" cy="24" r="4"/>
+    <circle id="Oval" cx="52" cy="56" r="4"/>
+    <circle id="Oval" cx="68" cy="24" r="4"/>
+    <circle id="a" cx="76" cy="40" r="4"/>
+    <circle cx="60" cy="8" r="4"/>
+  </g>
+</svg>
+`,
   dimensions: [],
   measures: [
     {

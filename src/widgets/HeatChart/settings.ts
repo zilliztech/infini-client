@@ -11,7 +11,35 @@ const heatChartConfigHandler = (config: any) => {
 
 const settings = makeSetting({
   type: 'HeatChart',
-  icon: `<svg focusable="false" viewBox="0 0 48 48"><rect x="4" y="32" width="12" height="12"></rect><path d="M4,30h12V18H4V30z M7,21h6v6H7V21z"></path><path d="M4,16h12V4H4V16z M6,6h8v8H6V6z"></path><path d="M18,16h12V4H18V16z M20,6h8v8h-8V6z"></path><rect x="18" y="18" width="12" height="12"></rect><path d="M32,4v12h12V4H32z M41,13h-6V7h6V13z"></path><path d="M18,44h12V32H18V44z M21,35h6v6h-6V35z"></path><rect x="32" y="18" width="12" height="12"></rect><path d="M32,44h12V32H32V44z M34,34h8v8h-8V34z"></path></svg>`,
+  icon: `<svg version="1.1" viewBox="0 0 80 80" 
+  xmlns="http://www.w3.org/2000/svg">
+  <g fill="currentColor" fill-rule="evenodd">
+    <g id="icon/unit" transform="translate(8 8)">
+      <rect id="Rectangle" width="16" height="16"/>
+    </g>
+    <g id="icon/unit" transform="translate(24 24)">
+      <rect id="Rectangle" width="16" height="16"/>
+    </g>
+    <g id="icon/unit" transform="translate(8 40)">
+      <rect id="Rectangle" width="16" height="16"/>
+    </g>
+    <g id="icon/unit" transform="translate(24 56)">
+      <rect id="Rectangle" width="16" height="16"/>
+    </g>
+    <g id="icon/unit" transform="translate(40 40)">
+      <rect id="Rectangle" width="16" height="16"/>
+    </g>
+    <g id="icon/unit" transform="translate(56 56)">
+      <rect id="Rectangle" width="16" height="16"/>
+    </g>
+    <g id="b" transform="translate(56 24)">
+      <rect id="a" width="16" height="16"/>
+    </g>
+    <g transform="translate(40 8)">
+      <rect width="16" height="16"/>
+    </g>
+  </g>
+</svg>`,
   enable: true,
   dimensions: [
     {

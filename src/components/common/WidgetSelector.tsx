@@ -5,7 +5,7 @@ import Spinner from './Spinner';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import {genBasicStyle} from '../../utils/Theme';
 import {I18nContext} from '../../contexts/I18nContext';
-// import 
+// import
 
 const useStyles = makeStyles(theme => ({
   ...genBasicStyle(theme.palette.primary.main),
@@ -47,21 +47,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const iconMap: any = {};
 
 const WidgetSelector: FC<WidgetSelectorProps> = props => {
-  const {widgetType, selected, onClick} = props;
+  const {widgetType, selected, onClick, icon} = props;
   const theme = useTheme();
   const classes = useStyles(theme);
   const {nls} = useContext(I18nContext);
   const label = nls[`label_Header_${widgetType}`] || widgetType;
-  let Icon;
-  if (iconMap[widgetType]) {
-    Icon = iconMap[widgetType];
-  } else {
-    Icon = React.lazy(() => import(`../../widgets/${widgetType}/Icon`));
-    iconMap[widgetType] = Icon;
-  }
   const onSelectorClick = () => {
     onClick(widgetType);
   };
@@ -71,9 +63,7 @@ const WidgetSelector: FC<WidgetSelectorProps> = props => {
         className={clsx(classes.widgetType, classes.hover, {[classes.selected]: selected})}
         onClick={onSelectorClick}
       >
-        <div className={classes.element}>
-          <Icon />
-        </div>
+        <div className={classes.element} dangerouslySetInnerHTML={{__html: icon}} />
         <p className={classes.element}>{label}</p>
       </div>
     </Suspense>

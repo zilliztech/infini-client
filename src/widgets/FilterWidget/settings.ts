@@ -77,7 +77,21 @@ const configHandler: ConfigHandler = config => {
 };
 const settings = makeSetting({
   type: 'FilterWidget',
-  icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg>`,
+  icon: `<svg version="1.1" viewBox="0 0 80 80" 
+  xmlns="http://www.w3.org/2000/svg">
+  <g fill="currentColor" fill-rule="evenodd">
+    <g transform="translate(12 32)">
+      <rect id="Rectangle" width="56" height="16"/>
+    </g>
+    <g transform="translate(20 56)">
+      <rect id="a" width="40" height="16"/>
+    </g>
+    <g transform="translate(0 8)">
+      <rect width="80" height="16"/>
+    </g>
+  </g>
+</svg>
+`,
   enable: true,
   dimensions: [
     {
