@@ -15,6 +15,21 @@ const barPieConfigHandler = (config: any) => {
 };
 
 const settings = makeSetting({
+  type: 'BarChart',
+  icon: `<svg version="1.1" viewBox="0 0 80 80" 
+  xmlns="http://www.w3.org/2000/svg">
+  <g fill="currentColor" fill-rule="evenodd">
+    <g transform="translate(0 8)">
+      <rect id="Rectangle" width="40" height="16"/>
+    </g>
+    <g transform="translate(0 32)">
+      <rect id="a" width="56" height="16"/>
+    </g>
+    <g transform="translate(0 56)">
+      <rect width="80" height="16"/>
+    </g>
+  </g>
+</svg>`,
   dimensions: [
     {
       type: RequiredType.REQUIRED_ONE_AT_LEAST,
@@ -37,8 +52,6 @@ const settings = makeSetting({
       columnTypes: [COLUMN_TYPE.NUMBER, COLUMN_TYPE.TEXT],
     },
   ],
-  type: 'BarChart',
-  icon: `<svg focusable="false" viewBox="0 0 48 48" aria-hidden="true" role="presentation"><g id="icon-chart-row"><rect x="4" y="4" width="2" height="40"></rect><rect x="10" y="16" width="26" height="6"></rect><rect x="10" y="6" width="34" height="6"></rect><rect x="10" y="26" width="18" height="6"></rect><rect x="10" y="36" width="14" height="6"></rect></g></svg>`,
   enable: true,
   configHandler: barPieConfigHandler,
 });

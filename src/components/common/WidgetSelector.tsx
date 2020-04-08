@@ -5,6 +5,7 @@ import Spinner from './Spinner';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import {genBasicStyle} from '../../utils/Theme';
 import {I18nContext} from '../../contexts/I18nContext';
+// import 
 
 const useStyles = makeStyles(theme => ({
   ...genBasicStyle(theme.palette.primary.main),
@@ -17,11 +18,11 @@ const useStyles = makeStyles(theme => ({
   widgetType: {
     minWidth: '48px',
     height: '52px',
-    borderWidth: '.5px',
-    borderColor: theme.palette.grey[700],
+    // borderWidth: '.5px',
+    // borderColor: theme.palette.grey[700],
     borderRadius: '3px',
     padding: '2px 6px',
-    border: 'solid',
+    // border: 'solid',
     display: 'flex',
     flexDirection: 'column',
     cursor: 'pointer',
@@ -36,7 +37,7 @@ const useStyles = makeStyles(theme => ({
       width: '1em',
       height: '1em',
       display: 'inline-block',
-      fontSize: '1.5rem',
+      fontSize: '2.5rem',
       transition: 'fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
     },
   },
@@ -46,22 +47,33 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const iconMap: any = {};
+
 const WidgetSelector: FC<WidgetSelectorProps> = props => {
-  const {icon, widgetType, selected, onClick} = props;
+  const {widgetType, selected, onClick} = props;
   const theme = useTheme();
   const classes = useStyles(theme);
   const {nls} = useContext(I18nContext);
+  const label = nls[`label_Header_${widgetType}`] || widgetType;
+  let Icon;
+  if (iconMap[widgetType]) {
+    Icon = iconMap[widgetType];
+  } else {
+    Icon = React.lazy(() => import(`../../widgets/${widgetType}/Icon`));
+    iconMap[widgetType] = Icon;
+  }
   const onSelectorClick = () => {
     onClick(widgetType);
   };
-  const label = nls[`label_Header_${widgetType}`] || widgetType;
   return (
     <Suspense fallback={<Spinner />}>
       <div
-        className={clsx(classes.widgetType, classes.hover, selected ? classes.selected : '')}
+        className={clsx(classes.widgetType, classes.hover, {[classes.selected]: selected})}
         onClick={onSelectorClick}
       >
-        <div className={classes.element} dangerouslySetInnerHTML={{__html: icon}} />
+        <div className={classes.element}>
+          <Icon />
+        </div>
         <p className={classes.element}>{label}</p>
       </div>
     </Suspense>
