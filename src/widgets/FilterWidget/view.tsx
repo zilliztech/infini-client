@@ -31,7 +31,7 @@ const FilterWidgetView: FC<FilterWidgetViewProps> = props => {
         }
         _options = options.map((opt: number[]) => {
           const label = opt.map((o: number) => formatter(o)).join(' ~ ');
-          const isSelected = _isSelected(opt, as, config);
+          const isSelected = _isSelected(opt[0], as, config);
           return {value: opt[0], label, isSelected};
         });
         break;
@@ -71,7 +71,6 @@ const FilterWidgetView: FC<FilterWidgetViewProps> = props => {
       options: _options,
     };
   });
-
   useEffect(() => {
     const selectedValues = items
       .map((item: Item) => item.options)
