@@ -8,7 +8,7 @@ export const queryContext: any = createContext({});
 const Provider = queryContext.Provider;
 
 const QueryProvider = ({children}: any) => {
-  const {isArctern} = useContext(rootContext);
+  const {isArctern = false} = useContext(rootContext);
   const arctern = useContext(queryArcternContext);
   const megawise = useContext(queryNodeContext);
   const {

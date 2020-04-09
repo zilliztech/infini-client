@@ -97,7 +97,6 @@ const _colorItemsAfterDeleteDimension = ({
   setConfig({type: CONFIG.ADD_COLORITEMS, payload: colorItems});
 };
 
-// TODO:
 const _resetSqlAfterChangeDimension = ({config}: {config: WidgetConfig}) => {
   const copyConfig = cloneObj(config);
   delete copyConfig.selfFilter.range;

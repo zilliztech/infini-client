@@ -91,7 +91,6 @@ describe(`<Selector /> in "selectColumn" status with huge options`, () => {
     const options = selector.find('ul')
     expect(options.children()).toHaveLength(QueryCount + 1);
   })
-  //TODO: how to test state changed by other component 
   it(`should add ${QueryCount} more options to show, if the rest options's length less than ${QueryCount}, show <NoMore />`, () => {
     // selector.instance().setShowOpts(2 * QueryCount)
     // const options = selector.find('ul')

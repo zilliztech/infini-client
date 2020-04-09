@@ -61,7 +61,7 @@ const PointMapNormal: FC<PointMapProps> = props => {
   const onDrawUpdate = throttle((draws: any) => {
     setConfig({
       type: CONFIG.UPDATE,
-      payload: drawUpdateConfigHandler(config, draws),
+      payload: drawUpdateConfigHandler(config, draws, true),
     });
   }, 50);
 
