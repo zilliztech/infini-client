@@ -4,7 +4,11 @@ import {getValidRulerBase} from '../../utils/WidgetHelpers';
 import Slider from '@material-ui/core/Slider';
 import TextField from '@material-ui/core/TextField';
 import {makeStyles} from '@material-ui/core/styles';
-import {changeRangeSliderInputBox, changeRangeSlider} from '../../utils/EditorHelper';
+import {
+  changeRangeSliderInputBox,
+  changeRangeSlider,
+  getSliderStep,
+} from '../../utils/EditorHelper';
 import {DEFAULT_RULER} from '../../utils/Colors';
 import {CONFIG} from '../../utils/Consts';
 
@@ -137,7 +141,7 @@ const RulerEditor = (props: any) => {
         max={Number.parseFloat(rulerBase.max)}
         value={[minInput, maxInput]}
         onChange={onSlideChange}
-        step={0.001}
+        step={getSliderStep(Number.parseFloat(rulerBase.min), Number.parseFloat(rulerBase.max))}
       />
     </>
   );
