@@ -18,6 +18,7 @@ const base = {
 const nls = {
   language: 'en-US',
   test: 'Hello',
+  label_dashboards: 'Dashboards',
   label_server_not_found: 'Server Not Found',
   label_ID: 'ID',
   label_clear: 'Clear',

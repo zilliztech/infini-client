@@ -18,6 +18,7 @@ const base = {
 const nls = {
   language: 'zh-CN',
   test: '你好',
+  label_dashboards: '仪表盘',
   label_server_not_found: 'API服务器不能访问',
   label_ID: 'ID',
   label_clear: '清除',
