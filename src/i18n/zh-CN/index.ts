@@ -59,6 +59,7 @@ const nls = {
   label_db_database: '数据库名称',
   label_db_port: '端口',
   label_db_save: '保存配置',
+  label_db_connect: '连接',
   label_db_success_title: '保存成功 ~',
   label_db_success_content: '请访问仪表盘',
   label_db_fail_title: '设置失败',

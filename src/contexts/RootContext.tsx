@@ -8,6 +8,7 @@ import {namespace} from '../utils/Helpers';
 interface IRootContext {
   isArctern?: boolean;
   theme: any;
+  auth: any;
   saveTheme: Function;
   themes: string[];
   themeMap: any;
@@ -69,6 +70,7 @@ const filterValidWidgets = (widgetSettings: any, dbType: string) => {
 
 export const rootContext = React.createContext<IRootContext>({
   isArctern: false,
+  auth: {},
   theme: {},
   themes: [],
   themeMap: {},
@@ -195,6 +197,7 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
   return (
     <Provider
       value={{
+        auth,
         isArctern,
         theme,
         themes,

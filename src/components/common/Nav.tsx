@@ -9,6 +9,7 @@ import Drawer from '@material-ui/core/Drawer';
 import Logo from '../../logo.svg';
 import {rootContext} from '../../contexts/RootContext';
 import {I18nContext} from '../../contexts/I18nContext';
+import {namespace} from '../../utils/Helpers';
 
 import {genBasicStyle} from '../../utils/Theme';
 import {PATH_ROOT, PATH_CONFIG_DB} from '../../utils/Endpoints';
@@ -61,11 +62,13 @@ const Nav: FC<any> = (props: any) => {
   const {onAvatarClick} = props;
   const classes = useStyles(_theme);
   let path = props.history.location.pathname;
+  const auth = JSON.parse(window.localStorage.getItem(namespace(['login'], 'userAuth')) || '');
 
   useEffect(() => {
     document.body.setAttribute('style', `background-color: ${_theme.palette.background.default};`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [theme]);
+
   return (
     <Drawer
       className={classes.muiRoot}
@@ -85,12 +88,14 @@ const Nav: FC<any> = (props: any) => {
           />
         </div>
         <div>
-          <div className={clsx(classes.wrapper, classes.hover)}>
-            <SettingsIcon
-              classes={{root: classes.settingIcon}}
-              onClick={() => props.history.push(PATH_CONFIG_DB)}
-            />
-          </div>
+          {auth && auth.userId !== 'demo' && (
+            <div className={clsx(classes.wrapper, classes.hover)}>
+              <SettingsIcon
+                classes={{root: classes.settingIcon}}
+                onClick={() => props.history.push(PATH_CONFIG_DB)}
+              />
+            </div>
+          )}
           <div className={clsx(classes.wrapper, classes.hover)}>
             <ExitToAppIcon onClick={onAvatarClick} classes={{root: classes.settingIcon}} />
           </div>

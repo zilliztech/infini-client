@@ -14,7 +14,16 @@ const Provider = queryNodeContext.Provider;
 
 const _getDB = () => {
   const db = window.localStorage.getItem(namespace(['query'], 'db'));
-  return db ? JSON.parse(db) : false;
+  return db
+    ? JSON.parse(db)
+    : {
+        type: 'postgres',
+        host: 'localhost',
+        username: '',
+        password: '',
+        database: '',
+        port: 5432,
+      };
 };
 const QueryNodeProvider: FC<{children: ReactNode}> = ({children}) => {
   const {setUnauthStatus, setAuthStatus} = useContext(authContext);
