@@ -80,14 +80,22 @@ const SlidePlayer: FC<SlidePlayerProps> = props => {
   }, [JSON.stringify(effectFactors)]);
 
   // start brush playing
+  const {nextTextGetter, nextNumberGetter, nextTimeGetter} = useMemo(() => {
+    const nextTextGetter = nextTextOrNumberWrapper(false);
+    const nextNumberGetter = nextTextOrNumberWrapper(false);
+    const nextTimeGetter = nextTimeWrapper(false);
+    return {
+      nextTextGetter,
+      nextNumberGetter,
+      nextTimeGetter,
+    };
+  }, []);
+
   useEffect(() => {
     if (!isPlaying) {
       clearTimeout(playingTimeout.current);
       return;
     }
-    const nextTextGetter = nextTextOrNumberWrapper(false);
-    const nextNumberGetter = nextTextOrNumberWrapper(false);
-    const nextTimeGetter = nextTimeWrapper(false);
 
     playingTimeout.current = setTimeout(() => {
       let nextBrush = [];
