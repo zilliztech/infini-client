@@ -63,6 +63,16 @@ const Header: FC<HeaderProps> = props => {
   const filtersLength = getFilterLength(configs.map((c: WidgetConfig) => c.filter));
   const cardRef = useRef(null);
 
+  // should we disable the apply button
+  const shouldBtnEnabled = isReady && JSON.stringify(config) !== JSON.stringify(localConfig);
+  // show source exists in configs
+  const existTables = configs.map((config: WidgetConfig) => config.source);
+  const sourceData = cloneObj(data);
+  for (let key in sourceData) {
+    if (existTables.length > 0 && existTables.indexOf(key) === -1) {
+      delete sourceData[key];
+    }
+  }
   useEffect(() => {
     if (!localConfig.type) {
       setIsReady(true);
@@ -135,16 +145,6 @@ const Header: FC<HeaderProps> = props => {
     }
   };
 
-  // should we disable the apply button
-  const shouldBtnEnabled = isReady && JSON.stringify(config) !== JSON.stringify(localConfig);
-  // show source exists in configs
-  const existTables = configs.map((config: WidgetConfig) => config.source);
-  const sourceData = cloneObj(data);
-  for (let key in sourceData) {
-    if (existTables.indexOf(key) === -1) {
-      delete sourceData[key];
-    }
-  }
   return (
     <>
       {isNormal && (

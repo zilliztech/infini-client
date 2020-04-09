@@ -1,6 +1,6 @@
 import React, {FC, useContext} from 'react';
 import {Route, Switch, Redirect} from 'react-router-dom';
-// import Dashboards from '../Dashboards';
+import Dashboards from '../Dashboards';
 import Bi from './Bi';
 import Page404 from '../Page404';
 import {authContext} from '../../contexts/AuthContext';
@@ -20,10 +20,8 @@ const MainContainer: FC<any> = () => {
 
   return (
     <Switch>
-      <Route exact path={PATH_ROOT}>
-        <Redirect to={`${PATH_BI}/:1`} />
-      </Route>
-      <Route path={`${PATH_BI}/:1`} component={Bi} />
+      <Route exact path={PATH_ROOT} component={Dashboards} />
+      <Route path={`${PATH_BI}/:id`} component={Bi} />
       <Route component={Page404} />
     </Switch>
   );

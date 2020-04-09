@@ -71,13 +71,17 @@ const scatterConfigHandler = (config: any) => {
   const copiedConfig = cloneObj(config);
   const xMeasure = measureGetter(config, 'x');
   const yMeasure = measureGetter(config, 'y');
-  // const colorMeasure = measureGetter(config, 'color');
-  // const sizeMeasure = measureGetter(config, 'size');
+  const colorMeasure = measureGetter(config, 'color');
 
   if (!xMeasure || !yMeasure) {
     return copiedConfig;
   }
 
+  const pointMeasure = {
+    as: 'point',
+    value: `(${xMeasure.value}, ${yMeasure.value})`,
+    expression: 'scatter_2d',
+  };
   // Put limit
   copiedConfig.limit = copiedConfig.points || DEFAULT_MAX_POINTS_NUM;
   return copiedConfig;
@@ -112,7 +116,7 @@ const settings = makeSetting({
       short: 'xaxis',
       columnTypes: [COLUMN_TYPE.NUMBER],
       onAdd: onAddScatterChartDomain,
-      expressions: ['gis_discrete_trans_scale_w'],
+      expressions: ['scatter_x'],
     },
     {
       type: RequiredType.REQUIRED,
@@ -120,7 +124,7 @@ const settings = makeSetting({
       short: 'yaxis',
       columnTypes: [COLUMN_TYPE.NUMBER],
       onAdd: onAddScatterChartDomain,
-      expressions: ['gis_discrete_trans_scale_h'],
+      expressions: ['scatter_y'],
     },
     {
       type: RequiredType.OPTION,

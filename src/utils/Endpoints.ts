@@ -3,12 +3,12 @@ declare global {
     _env_: any;
   }
 }
-let endpoint = `http://192.168.2.31:3000`;
+let endpoint = `http://192.168.1.169:5555`;
 if (window._env_ && window._env_.API_URL) {
   endpoint = window._env_.API_URL;
 }
 export const PATH_ROOT = '/';
-export const PATH_LOGIN = '/login'
+export const PATH_LOGIN = '/login';
 export const PATH_CONFIG_DB = '/config';
 export const PATH_BI = '/bi';
 

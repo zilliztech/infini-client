@@ -15,6 +15,7 @@ export const isValidValue = (val: any) => {
   return val !== null && val !== undefined;
 };
 
-export const formatSource = (source: string) => source.split('.')[1];
+export const formatSource = (source: string) =>
+  source.split('.')[source.indexOf('.') === -1 ? 0 : 1];
 
-export const restoreSource = (source: string) => `global_temp.${source}`;
+export const restoreSource = (source: string) => `${source}`;
