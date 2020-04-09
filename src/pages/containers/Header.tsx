@@ -143,11 +143,7 @@ const Header: FC<HeaderProps> = props => {
         <div className={classes.root}>
           <div className={classes.title}>
             <EditableLabel onChange={onTitleChange} label={title} />
-            <SourceStats
-              data={data!}
-              sources={sources}
-              sourceOptions={sourceOptions}
-            />
+            <SourceStats data={data!} sources={sources} sourceOptions={sourceOptions} />
           </div>
           <div className={classes.editor}>
             <Button

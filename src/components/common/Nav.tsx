@@ -4,7 +4,7 @@ import {withRouter} from 'react-router-dom';
 import {makeStyles, useTheme, Theme} from '@material-ui/core/styles';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import SettingsIcon from '@material-ui/icons/Settings';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Drawer from '@material-ui/core/Drawer';
 import Logo from '../../logo.svg';
 import {rootContext} from '../../contexts/RootContext';
@@ -92,7 +92,7 @@ const Nav: FC<any> = (props: any) => {
             />
           </div>
           <div className={clsx(classes.wrapper, classes.hover)}>
-            <AccountBoxIcon onClick={onAvatarClick} classes={{root: classes.settingIcon}} />
+            <ExitToAppIcon onClick={onAvatarClick} classes={{root: classes.settingIcon}} />
           </div>
         </div>
       </div>
