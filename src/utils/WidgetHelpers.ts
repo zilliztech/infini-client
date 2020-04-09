@@ -848,7 +848,7 @@ export const getWidgetTitle = (config: WidgetConfig, nls: any) => {
   return source;
 };
 
-export const getView = (type: string, isArctern: boolean = true) => {
+export const getView = (type: string, isArctern: boolean = false) => {
   if (isArctern) {
     return type;
   }
@@ -860,7 +860,7 @@ export const getView = (type: string, isArctern: boolean = true) => {
     case 'ChoroplethMap':
       return 'ChoroplethMegaWiseMap';
     case 'ScatterChart':
-      return 'ScatterMegaWiseChart' 
+      return 'ScatterMegaWiseChart';
     default:
       return type;
   }

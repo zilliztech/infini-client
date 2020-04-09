@@ -31,7 +31,7 @@ const GeoHeatMapView: FC<GeoHeatMapProps> = props => {
   const onDrawUpdate = (draws: any) => {
     setConfig({
       type: CONFIG.UPDATE,
-      payload: drawUpdateConfigHandler(config, draws),
+      payload: drawUpdateConfigHandler(config, draws, true),
     });
   };
 

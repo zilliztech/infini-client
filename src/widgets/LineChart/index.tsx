@@ -132,7 +132,6 @@ const LineChart: FC<LineChartProps> = props => {
   const yAxis: any = axisLeft(y);
   const xAxisFormatter = formatterGetter(xDimension, 'axis');
   // get yAxis formatter
-  // TODO: when LineChart has multy Measures, which format should choose for yAxis ???  currently, we select the first measure's format as yAxis's format as MapD
   const yMeasure = measureGetter(config, 'y') || config.measures[0];
   const yAxisFormatter = yAxisFormatterGetter(yMeasure, y);
 

@@ -14,6 +14,7 @@ import {rootContext} from '../../contexts/RootContext';
 import MainContainer from './MainContainer';
 import DbSetting from '../DbSetting';
 import DBSettingMegaWise from '../DBSettingMegaWise';
+import {PATH_LOGIN, PATH_CONFIG_DB, PATH_ROOT, PATH_BI} from '../../utils/Endpoints';
 
 const RootContainer: FC = () => {
   const {nls} = useContext(I18nContext);
@@ -42,11 +43,11 @@ const RootContainer: FC = () => {
         <BrowserRouter>
           {isLogined && <Nav onAvatarClick={setUnauthStatus} />}
           <Switch>
-            <Route path="/login" component={Login} />
-            <Route path="/config" component={isArctern ? DbSetting : DBSettingMegaWise} />
-            <Route path="/" component={MainContainer} />
-            <Route exact path="/bi">
-              <Redirect to="/" />
+            <Route path={PATH_LOGIN} component={Login} />
+            <Route path={PATH_CONFIG_DB} component={isArctern ? DbSetting : DBSettingMegaWise} />
+            <Route path={PATH_ROOT} component={MainContainer} />
+            <Route exact path={PATH_BI}>
+              <Redirect to={PATH_ROOT} />
             </Route>
           </Switch>
         </BrowserRouter>

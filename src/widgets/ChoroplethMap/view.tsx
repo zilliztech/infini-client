@@ -42,7 +42,7 @@ const ChoroplethMapView: FC<ChoroplethMapProps> = props => {
   const onDrawUpdate = (draws: any) => {
     setConfig({
       type: CONFIG.UPDATE,
-      payload: drawUpdateConfigHandler(config, draws),
+      payload: drawUpdateConfigHandler(config, draws, true),
     });
   };
   const _preSql = (center: any) => {

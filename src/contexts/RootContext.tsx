@@ -68,7 +68,7 @@ const filterValidWidgets = (widgetSettings: any, dbType: string) => {
 };
 
 export const rootContext = React.createContext<IRootContext>({
-  isArctern: true,
+  isArctern: false,
   theme: {},
   themes: [],
   themeMap: {},
@@ -121,7 +121,7 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
     [
       'ChoroplethMegaWiseMap',
       'GeoHeatMegaWiseMap',
-      'PointMegaWiseMap', 
+      'PointMegaWiseMap',
       'ScatterMegaWiseChart',
     ].forEach((key: string) => delete widgetSettings[key]);
   }
@@ -207,7 +207,7 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
         showTooltip,
         hideTooltip,
         globalConfig,
-        widgetSettings: filterValidWidgets(widgetSettings, isArctern ? 'arctern' : 'megawise'),
+        widgetSettings: filterValidWidgets(widgetSettings, isArctern ? 'arctern' : 'megawise'), //TODO:
       }}
     >
       {children}

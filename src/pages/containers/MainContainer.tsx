@@ -3,26 +3,25 @@ import {Route, Switch, Redirect} from 'react-router-dom';
 import Dashboards from '../Dashboards';
 import Bi from './Bi';
 import Page404 from '../Page404';
-import {rootContext} from '../../contexts/RootContext';
 import {authContext} from '../../contexts/AuthContext';
+import {PATH_LOGIN, PATH_CONFIG_DB, PATH_ROOT, PATH_BI} from '../../utils/Endpoints';
 import {queryContext} from './../../contexts/QueryContext';
 
 const MainContainer: FC<any> = () => {
-  const {isArctern} = useContext(rootContext);
   const {auth} = useContext(authContext);
   const {DB} = useContext(queryContext);
 
   if (auth.userId === 'guest') {
-    return <Redirect to="/login" />;
+    return <Redirect to={PATH_LOGIN} />;
   }
-  if (isArctern && DB === false) {
-    return <Redirect to="/config" />;
+  if (DB === false) {
+    return <Redirect to={PATH_CONFIG_DB} />;
   }
 
   return (
     <Switch>
-      <Route exact path="/" component={Dashboards} />
-      <Route path="/bi/:id" component={Bi} />
+      <Route exact path={PATH_ROOT} component={Dashboards} />
+      <Route path={`${PATH_BI}/:id`} component={Bi} />
       <Route component={Page404} />
     </Switch>
   );

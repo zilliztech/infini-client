@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { useStatus } from './Helper'
+import React, {useState, useEffect, useRef} from 'react';
+import {makeStyles} from '@material-ui/core/styles';
+import {useStatus} from './Helper';
 import clsx from 'clsx';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -9,8 +9,8 @@ import Input from '@material-ui/core/Input';
 import Clear from '@material-ui/icons/Clear';
 import NoOtherOpt from '../NoMoreOpt';
 import ShowMore from '../ShowMore';
-import { QueryCount, genEffectClickOutside } from '../../../utils/EditorHelper';
-import { sliceText } from '../../../widgets/Utils/Decorators';
+import {QueryCount, genEffectClickOutside} from '../../../utils/EditorHelper';
+import {sliceText} from '../../../widgets/Utils/Decorators';
 import genSelectorStyle from './Selector.style';
 
 const _handleOverflowLabel = (res: any[]) => {
@@ -23,7 +23,7 @@ const _handleOverflowLabel = (res: any[]) => {
 };
 const _genLastOpt = (visible_options_length: number) => {
   if (visible_options_length < QueryCount) {
-    return { useShowMore: false, useNoMoreOpt: true };
+    return {useShowMore: false, useNoMoreOpt: true};
   }
   return {
     useShowMore: visible_options_length % QueryCount === 0,
@@ -42,12 +42,12 @@ export function useOptions(query: Function) {
       return;
     }
     limitRef.current = 0;
-    showMore(filter_text)
+    showMore(filter_text);
     return () => {
       isSubscribed.current = false;
-    }
+    };
     //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter_text])
+  }, [filter_text]);
 
   const showMore = async (filter_text: string | undefined, init_len: number = limitRef.current) => {
     const new_len = init_len + QueryCount;
@@ -56,43 +56,42 @@ export function useOptions(query: Function) {
       limitRef.current = res.length;
       setVisibleOptions(_handleOverflowLabel(res));
     }
-  }
+  };
   const changeFilter = (e: any) => {
-    const value = e.target.value.trim() || ""
-    limitRef.current = QueryCount
+    const value = e.target.value.trim() || '';
+    limitRef.current = QueryCount;
     setFilterText(value);
-  }
+  };
   const resetFilter = () => {
     setFilterText(undefined);
-  }
+  };
   return {
-    filter_text, visible_options, changeFilter,
-    showMore, resetFilter
-  }
+    filter_text,
+    visible_options,
+    changeFilter,
+    showMore,
+    resetFilter,
+  };
 }
 
 const QuerySelector = (props: any) => {
   const classes = makeStyles(theme => genSelectorStyle(theme))() as any;
   const {
-    currOpt = { value: '' },
-    query = () => { },
+    currOpt = {value: ''},
+    query = () => {},
     placeholder = '',
     onOptionChange,
-    onMouseOver = () => { },
+    onMouseOver = () => {},
     onDelete,
   } = props;
-  const { value, label, tip = '' } = currOpt;
-  const { status, determineStatus, setSelectingStatus } = useStatus(value ? 'selected' : 'add')
-  const { filter_text, visible_options, changeFilter, showMore, resetFilter } = useOptions(query)
-  const { useShowMore, useNoMoreOpt } = _genLastOpt(visible_options.length);
+  const {value, label, tip = ''} = currOpt;
+  const {status, determineStatus, setSelectingStatus} = useStatus(value ? 'selected' : 'add');
+  const {filter_text, visible_options, changeFilter, showMore, resetFilter} = useOptions(query);
+  const {useShowMore, useNoMoreOpt} = _genLastOpt(visible_options.length);
   const rootDom = useRef(null);
 
   useEffect(() => {
-    const hide = genEffectClickOutside(
-      rootDom.current,
-      determineStatus,
-      currOpt.value
-    );
+    const hide = genEffectClickOutside(rootDom.current, determineStatus, currOpt.value);
     document.body.addEventListener('click', hide);
     return () => {
       document.body.removeEventListener('click', hide);
@@ -104,12 +103,12 @@ const QuerySelector = (props: any) => {
   const selectColumn = (e: any) => {
     const _value = e.currentTarget.dataset.value;
     value === _value ? determineStatus('selected') : onOptionChange(_value);
-    resetFilter()
+    resetFilter();
   };
   //TODO: could use cache here
   const toSelectColName = async () => {
     await showMore(filter_text, 0);
-    setSelectingStatus()
+    setSelectingStatus();
   };
 
   const _onMouseOver = (e: any) => {
@@ -161,13 +160,13 @@ const QuerySelector = (props: any) => {
             {visible_options.map((option: any, index: number) => {
               return (
                 <ListItem
-                  classes={{ gutters: classes.customGutters }}
+                  classes={{gutters: classes.customGutters}}
                   key={`${option.colName} ${index}`}
                   button
                   divider
                 >
                   <ListItemText
-                    classes={{ root: classes.customTextRoot }}
+                    classes={{root: classes.customTextRoot}}
                     primary={
                       <span
                         className={classes.option}

@@ -22,7 +22,7 @@ export const mapUpdateConfigHandler = (
 export const drawUpdateConfigHandler = (
   config: MapChartConfig,
   draws: any,
-  isArctern: boolean = true
+  isArctern: boolean = false
 ) => {
   const copiedConfig = cloneObj(config);
   let {filter = {}} = copiedConfig;

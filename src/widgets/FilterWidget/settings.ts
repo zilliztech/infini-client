@@ -12,8 +12,7 @@ const _onAddTextType = async ({dimension, config, setConfig, reqContext}: Dimens
 };
 
 const onAdd = async ({dimension, config, setConfig, reqContext}: any) => {
-  //TODO: move this logic to setting later
-  const alreadyExist = !!config.dimensions.find((d: any) => d.value === dimension.value);
+  const alreadyExist = config.dimensions.some((d: any) => d.value === dimension.value);
   if (alreadyExist) {
     return false;
   }

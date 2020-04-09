@@ -113,7 +113,7 @@ export const getDefaultConfig = (source: string, existLayouts: Layout[]): Widget
   };
 };
 
-const _parseConfigToTransform = (config: WidgetConfig, isArctern: boolean = true): Transform[] => {
+const _parseConfigToTransform = (config: WidgetConfig, isArctern: boolean = false): Transform[] => {
   let transform: Transform[] = [];
   let aggTransform: Transform;
   let sortTransform: Transform;
@@ -231,7 +231,7 @@ export const getWidgetSql = (
   configs: WidgetConfig[],
   sources: Source[] = [],
   widgetSettings: WidgetSettings,
-  isArctern: boolean = true
+  isArctern: boolean = false
 ) => {
   // register custom bin or expression parser for Arctern or MegaWise
   if (!isArctern) {
