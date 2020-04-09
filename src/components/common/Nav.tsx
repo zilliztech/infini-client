@@ -4,10 +4,12 @@ import {withRouter} from 'react-router-dom';
 import {makeStyles, useTheme, Theme} from '@material-ui/core/styles';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import SettingsIcon from '@material-ui/icons/Settings';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Drawer from '@material-ui/core/Drawer';
 import Logo from '../../logo.svg';
 import {rootContext} from '../../contexts/RootContext';
+import {I18nContext} from '../../contexts/I18nContext';
+
 import {genBasicStyle} from '../../utils/Theme';
 import {PATH_ROOT, PATH_CONFIG_DB} from '../../utils/Endpoints';
 const useStyles = makeStyles((theme: Theme) => ({
@@ -54,6 +56,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const Nav: FC<any> = (props: any) => {
   const {theme} = useContext(rootContext);
+  const {nls} = useContext(I18nContext);
   const _theme = useTheme();
   const {onAvatarClick} = props;
   const classes = useStyles(_theme);
@@ -72,12 +75,14 @@ const Nav: FC<any> = (props: any) => {
     >
       <div className={classes.logo} onClick={() => props.history.push(PATH_ROOT)}></div>
       <div className={classes.container}>
-        <div className={clsx(classes.wrapper, classes.hover, {[classes.selected]: path === PATH_ROOT})}>
+        <div
+          className={clsx(classes.wrapper, classes.hover, {[classes.selected]: path === PATH_ROOT})}
+          title={nls.label_dashboards}
+        >
           <DashboardIcon
             onClick={() => props.history.push(PATH_ROOT)}
             classes={{root: classes.icon}}
           />
-          <span>{`Dashboards`}</span>
         </div>
         <div>
           <div className={clsx(classes.wrapper, classes.hover)}>
@@ -87,7 +92,7 @@ const Nav: FC<any> = (props: any) => {
             />
           </div>
           <div className={clsx(classes.wrapper, classes.hover)}>
-            <AccountBoxIcon onClick={onAvatarClick} classes={{root: classes.settingIcon}} />
+            <ExitToAppIcon onClick={onAvatarClick} classes={{root: classes.settingIcon}} />
           </div>
         </div>
       </div>

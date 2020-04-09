@@ -1,5 +1,5 @@
 export const cloneObj = (obj: any): any => {
-  return JSON.parse(JSON.stringify(obj));
+  return JSON.parse(JSON.stringify(obj || {}));
 };
 
 export const id = (prefix: string = 'id') =>

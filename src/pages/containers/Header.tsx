@@ -19,7 +19,7 @@ import {HeaderProps, WidgetConfig} from '../../types';
 import {isReadyToRender, convertConfig, genEffectClickOutside} from '../../utils/EditorHelper';
 import {applyUsedLayout} from '../../utils/Layout';
 import {MODE, CONFIG, DASH_ACTIONS} from '../../utils/Consts';
-import {namespace} from '../../utils/Helpers';
+import {namespace, cloneObj} from '../../utils/Helpers';
 import {getFilterLength} from '../../utils/Filters';
 import {genHeaderStyle} from './Header.style';
 const useStyles = makeStyles(theme => genHeaderStyle(theme) as any) as Function;
@@ -137,17 +137,21 @@ const Header: FC<HeaderProps> = props => {
 
   // should we disable the apply button
   const shouldBtnEnabled = isReady && JSON.stringify(config) !== JSON.stringify(localConfig);
+  // show source exists in configs
+  const existTables = configs.map((config: WidgetConfig) => config.source);
+  const sourceData = cloneObj(data);
+  for (let key in sourceData) {
+    if (existTables.indexOf(key) === -1) {
+      delete sourceData[key];
+    }
+  }
   return (
     <>
       {isNormal && (
         <div className={classes.root}>
           <div className={classes.title}>
             <EditableLabel onChange={onTitleChange} label={title} />
-            <SourceStats
-              data={data!}
-              sources={sources}
-              sourceOptions={sourceOptions}
-            />
+            <SourceStats data={sourceData!} sources={sources} sourceOptions={sourceOptions} />
           </div>
           <div className={classes.editor}>
             <Button
