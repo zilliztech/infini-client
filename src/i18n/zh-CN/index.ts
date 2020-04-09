@@ -38,8 +38,8 @@ const nls = {
   label_import_dashboard: '导入仪表盘',
   // Login Page
   label_title: '登录Infini',
-  label_username: '邮件地址',
-  label_username_placeholder: 'name@company.com',
+  label_username: '用户名',
+  label_username_placeholder: 'Infini',
   label_password: '密码',
   label_password_placeholder: '密码',
   label_email: '电子邮件email',

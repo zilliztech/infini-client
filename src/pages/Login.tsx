@@ -1,4 +1,4 @@
-import React, {FC, useState, useContext} from 'react';
+import React, {FC, useState, useContext, useEffect} from 'react';
 import {
   CssBaseline,
   makeStyles,
@@ -14,7 +14,7 @@ import {I18nContext} from '../contexts/I18nContext';
 import {queryContext} from '../contexts/QueryContext';
 import {rootContext} from '../contexts/RootContext';
 import InfoDialog from '../components/common/Dialog';
-import {PATH_ROOT} from '../utils/Endpoints';
+import {PATH_BI} from '../utils/Endpoints';
 
 const genTheme = (theme: any) => ({
   paper: {
@@ -48,8 +48,13 @@ const Login: FC = () => {
   const [password, setPassword] = useState('123456');
   const classes = makeStyles(genTheme as any)() as any;
   const isIn = auth.userId !== 'guest';
+
+  useEffect(() => {
+    setTimeout(() => handleSubmit(), 1000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   if (isIn) {
-    return <Redirect to={PATH_ROOT} />;
+    return <Redirect to={`${PATH_BI}/:1`} />;
   }
 
   const handleSubmit = () => {

@@ -38,8 +38,8 @@ const nls = {
   label_import_dashboard: 'Import Dashboard',
   // Login Page
   label_title: 'Sign in Infini',
-  label_username: 'EMAIL ADDRESS',
-  label_username_placeholder: 'name@company.com',
+  label_username: 'USER',
+  label_username_placeholder: 'Infini',
   label_password: 'PASSWORD',
   label_password_placeholder: 'password',
   label_email: 'email',
