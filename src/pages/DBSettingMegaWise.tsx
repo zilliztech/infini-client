@@ -65,10 +65,9 @@ const useStyles = makeStyles(() => ({
 const DbMegaWiseSetting: FC<RouteComponentProps> = props => {
   const classes = useStyles();
   const {auth} = useContext(authContext);
-  const {DB = false, changeDBConfig, setDB, setConnId} = useContext(queryContext);
-  const {setDialog, globalConfig} = useContext(rootContext);
+  const {DB, changeDBConfig, setDB, setConnId} = useContext(queryContext);
+  const {setDialog} = useContext(rootContext);
   const {nls} = useContext(I18nContext);
-  const DEFAULT_MEGACONFIG_LIST = globalConfig.DEFAULT_MEGACONFIG_LIST;
   const [loading, setLoading] = useState(false);
   const [localDbSetting, setLocalDbSetting] = useState<DBSetting>(DB);
 
@@ -112,16 +111,6 @@ const DbMegaWiseSetting: FC<RouteComponentProps> = props => {
     });
   };
 
-  const useDefaultConfig = () => {
-    const {host, username, password, database, port, type} = DEFAULT_MEGACONFIG_LIST[0];
-    setLocalDbSetting({type, host, username, password, database, port: Number(port)});
-  };
-
-  const useGPUConfig = () => {
-    const {host, username, password, database, port, type} = DEFAULT_MEGACONFIG_LIST[1];
-    setLocalDbSetting({type, host, username, password, database, port: Number(port)});
-  };
-
   useEffect(() => {
     setLocalDbSetting(DB);
     //eslint-disable-next-line react-hooks/exhaustive-deps
@@ -149,7 +138,6 @@ const DbMegaWiseSetting: FC<RouteComponentProps> = props => {
               value={localDbSetting.type || ''}
               onChange={(e: any) => setLocalDbSetting({...localDbSetting, type: e.target.value})}
             >
-              <MenuItem value="megawise">megawsie</MenuItem>
               <MenuItem value="postgres">postgres</MenuItem>
             </Select>
             <TextField
@@ -215,17 +203,11 @@ const DbMegaWiseSetting: FC<RouteComponentProps> = props => {
             <div className={classes.buttonList}>
               <Button
                 size="medium"
-                variant="outlined"
+                variant="contained"
                 className={classes.submit}
                 onClick={onSubmit}
               >
-                {nls.label_db_save}
-              </Button>
-              <Button size="medium" variant="contained" onClick={useDefaultConfig}>
-                {nls.label_db_useDefault}
-              </Button>
-              <Button size="medium" variant="contained" onClick={useGPUConfig}>
-                {`杭州GPU`}
+                {nls.label_db_connect}
               </Button>
             </div>
           </form>
