@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import Slider from '@material-ui/core/Slider';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import {isValidValue} from '../../utils/Helpers';
-import {changeInputBox, changeSlider} from '../../utils/EditorHelper';
+import {changeInputBox, changeSlider, getSliderStep} from '../../utils/EditorHelper';
 import {WidgetConfig} from '../../types';
 import {CONFIG} from '../../utils/Consts';
 
@@ -64,7 +64,6 @@ const Limit = (props: ILimit) => {
     min = 1000,
     max = 10000000,
     initValue = min * 2,
-    step = 1,
   } = props;
   const value: number = config[attr] || min;
   const type = getActionType(attr);
@@ -98,7 +97,7 @@ const Limit = (props: ILimit) => {
           max={max}
           value={inputNum || value}
           onChange={onSlideChange}
-          step={step}
+          step={getSliderStep(min, max)}
         />
         <TextField
           classes={{root: classes.customInput}}

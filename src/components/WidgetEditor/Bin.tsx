@@ -18,6 +18,7 @@ import {
   changeSlider,
   changeRangeSliderInputBox,
   changeRangeSlider,
+  getSliderStep,
 } from '../../utils/EditorHelper';
 import {getValidTimeBinOpts} from '../../utils/Binning';
 import {cloneObj, isValidValue} from '../../utils/Helpers';
@@ -328,6 +329,7 @@ const Bin: FC<BinProps> = props => {
                 className={classes.content}
                 min={MaxbinsRange[0]}
                 max={MaxbinsRange[1]}
+                step={getSliderStep(MaxbinsRange[0], MaxbinsRange[1])}
                 value={maxbinsInput || maxbins}
                 onChange={onMaxbinsSliderChange}
               />
@@ -352,9 +354,9 @@ const Bin: FC<BinProps> = props => {
                 classes={{root: classes.color}}
                 min={Number.parseFloat(minimum)}
                 max={Number.parseFloat(maximum)}
+                step={getSliderStep(Number.parseFloat(minimum), Number.parseFloat(maximum))}
                 value={[numMinInput || extent[0], numMaxInput || extent[1]]}
                 onChange={onNumSliderChange}
-                step={NumMinMaxStep}
               />
             </>
           )}

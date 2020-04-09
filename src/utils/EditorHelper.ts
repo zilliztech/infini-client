@@ -350,3 +350,8 @@ export const getRangeSql = (colName: string, source: string): string => {
   const sql = `SELECT MIN(${v}) AS minimum, MAX(${v}) AS maximum FROM ${source}`;
   return sql;
 };
+
+export const getSliderStep = (min: number, max: number): number => {
+  const gap = max - min;
+  return Math.floor(gap / 100);
+};
