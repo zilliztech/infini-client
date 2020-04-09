@@ -14,6 +14,7 @@ import {I18nContext} from '../contexts/I18nContext';
 import {queryContext} from '../contexts/QueryContext';
 import {rootContext} from '../contexts/RootContext';
 import InfoDialog from '../components/common/Dialog';
+import {PATH_ROOT} from '../utils/Endpoints';
 
 const genTheme = (theme: any) => ({
   paper: {
@@ -43,12 +44,12 @@ const Login: FC = () => {
   const {auth, setAuthStatus} = useContext(authContext);
   const {login} = useContext(queryContext);
   const {dialog, setDialog} = useContext(rootContext);
-  const [email, setEmail] = useState('demo');
-  const [password, setPassword] = useState('demo');
+  const [email, setEmail] = useState('zilliz');
+  const [password, setPassword] = useState('123456');
   const classes = makeStyles(genTheme as any)() as any;
   const isIn = auth.userId !== 'guest';
   if (isIn) {
-    return <Redirect to="/" />;
+    return <Redirect to={PATH_ROOT} />;
   }
 
   const handleSubmit = () => {

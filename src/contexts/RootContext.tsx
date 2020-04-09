@@ -39,7 +39,6 @@ function importAllWidgets(r: any) {
     const m = r(key);
     const defaultM = m.default;
     if (defaultM && defaultM.enable) {
-      // console.info(defaultM)
       widgetSettings[defaultM.type] = defaultM;
     }
   });
@@ -89,7 +88,7 @@ const {Provider} = rootContext;
 // put global singletons here: dialog, tooltip...
 const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
   // database type
-  const isArctern = false;
+  const isArctern = true;
   // color theme
   const auth = window.localStorage.getItem(namespace(['login'], 'userAuth'));
   const currTheme = (auth && JSON.parse(auth).theme) || 'Dark';
