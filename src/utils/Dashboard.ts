@@ -52,6 +52,11 @@ const genNewDashboard = (id: number = 0): Dashboard => ({
   sourceOptions: {},
 });
 
+export const isNewDashboard = (id: number) => {
+  const local = window.localStorage.getItem(namespace(['dashboard'], String(id)));
+  return !local;
+}
+
 export const getDashboardById = (id: number) => {
   const local = window.localStorage.getItem(namespace(['dashboard'], String(id)));
 
