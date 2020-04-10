@@ -23,6 +23,7 @@ import {
   WidgetSettings,
 } from '../types';
 import {restoreSource} from './Helpers';
+import {measureGetter} from '../utils/WidgetHelpers';
 import {dateTruncParser, extractParser, parseBin} from './MegaWiseParser';
 import {
   truncParser,
@@ -40,10 +41,11 @@ type dataNode = {
   node: InfiniNode<Transform>;
 };
 
-const _getDataType = (dataNodeType: string): QueryType => {
-  switch (dataNodeType) {
+const _getDataType = (dataNode: any): string => {
+  switch (dataNode.type) {
     case 'PointMap':
-      return QueryType.point;
+      const isWeighted = !!measureGetter(dataNode.config, 'color');
+      return isWeighted ? 'weighted' : QueryType.point;
     case 'GeoHeatMap':
       return QueryType.heat;
     case 'ChoroplethMap':
@@ -341,7 +343,7 @@ export const getWidgetSql = (
     if (widgetSetting && widgetSetting.onAfterSqlCreate) {
       sql = widgetSetting.onAfterSqlCreate(sql, config);
     }
-    const type = _getDataType(dataNode.type);
+    const type = _getDataType(dataNode);
     const query: any = {sql, type};
     if (type !== QueryType.sql) {
       const {genQueryParams} = widgetSetting;

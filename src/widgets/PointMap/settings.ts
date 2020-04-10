@@ -32,7 +32,6 @@ const _onAddNumColor = async ({measure, config, setConfig, reqContext}: any) => 
   // });
   const res = await reqContext.numMinMaxValRequest(measure.value, config.source);
   const ruler = res;
-  console.info(ruler);
   setConfig({type: CONFIG.ADD_RULER, payload: ruler});
   setConfig({type: CONFIG.ADD_RULERBASE, payload: ruler});
   setConfig({type: CONFIG.ADD_COLORKEY, payload: gradientOpts[0].key});
@@ -115,7 +114,6 @@ const genQueryParams = (config: any) => {
   const bounding_box = [_sw.lng, _sw.lat, _ne.lng, _ne.lat];
   const c = measureGetter(config, 'color');
   const isWeighted = !!c;
-  console.info(isWeighted, colorKey);
   let res: any = {
     width,
     height,
@@ -130,7 +128,7 @@ const genQueryParams = (config: any) => {
     res[key] = {
       ...res[key],
       size_bound: [pointSize],
-      color_bound: ruler,
+      color_bound: [ruler.min, ruler.max],
       color_gradient: getColorGradient(colorKey),
     };
   } else {
