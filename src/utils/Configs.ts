@@ -172,7 +172,11 @@ const _parseConfigToTransform = (config: WidgetConfig, isArctern: boolean = fals
     if (t.extract) {
       return Helper.alias(t.as, {unit: t.timeBin!, field: t.value, type: 'extract'} as any);
     }
-    return Helper.alias(t.as, {unit: t.timeBin!, field: t.value, type: 'date_trunc'} as any);
+    return Helper.alias(t.as, {
+      unit: t.timeBin!,
+      field: t.value,
+      type: isArctern ? 'trunc' : 'date_trunc',
+    } as any);
   });
 
   const hasAggregate =
