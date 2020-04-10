@@ -24,7 +24,7 @@ import {
 } from '../types';
 import {restoreSource} from './Helpers';
 import {dateTruncParser, extractParser, parseBin} from './MegaWiseParser';
-import {truncParser, extractParser as arcternExtractParser} from './ArcternParser';
+import {truncParser, extractParser as arcternExtractParser, stWithinParser} from './ArcternParser';
 
 // define a dataNode type
 type dataNode = {
@@ -62,8 +62,8 @@ const _getQueryParams = (dataNode: dataNode) => {
         point: {
           bounding_box,
           coordinate: 'EPSG:4326',
-          stroke_width: pointSize,
-          stroke: colorKey,
+          point_size: pointSize,
+          point_color: colorKey,
           opacity: 0.5,
         },
       };
@@ -245,6 +245,7 @@ export const getWidgetSql = (
   } else {
     SqlParser.SQLParser.registerExpression('trunc', truncParser);
     SqlParser.SQLParser.registerExpression('extract', arcternExtractParser);
+    SqlParser.SQLParser.registerExpression('st_within', stWithinParser);
   }
   // create a config map
   const configMap: Map<string, WidgetConfig> = new Map();

@@ -98,8 +98,8 @@ const pointMapConfigHandler = (config: any) => {
       type: 'st_within',
       x: lon.value,
       y: lat.value,
-      px: [_sw.lng, _sw.lng, _ne.lng, _ne.lng, _sw.lng],
-      py: [_sw.lat, _ne.lat, _ne.lat, _sw.lat, _sw.lat],
+      sw: _sw,
+      ne: _ne,
     },
   };
   newConfig.filter = orFilterGetter(newConfig.filter);
