@@ -4,6 +4,7 @@ import {makeSetting} from '../../utils/Setting';
 import {restoreSource} from '../../utils/Helpers';
 import {CONFIG, COLUMN_TYPE, RequiredType} from '../../utils/Consts';
 import {measureGetter, dimensionGetter, getExpression} from '../../utils/WidgetHelpers';
+import {KEY as MAPKEY} from '../Utils/Map';
 import {ChoroplethMapConfig} from './types';
 import {MeasureParams} from '../Utils/settingHelper';
 const onAddChoroplethMapColor = async ({measure, config, setConfig, reqContext}: MeasureParams) => {
@@ -51,7 +52,8 @@ const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapCo
       },
     };
   }
-  const wkt = newConfig.dimensions[0];
+  const lon = measureGetter(newConfig, MAPKEY.LONGTITUDE)!;
+  const lat = measureGetter(newConfig, MAPKEY.LATITUDE)!;
   let colorM = measureGetter(newConfig, 'w');
   if (!newConfig.bounds) {
     newConfig.bounds = {
@@ -64,15 +66,17 @@ const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapCo
         lat: 41.1,
       },
     };
-    // return newConfig;
   }
   const {_sw, _ne} = newConfig.bounds;
-  const px = [_sw.lng, _sw.lng, _ne.lng, _ne.lng, _sw.lng];
-  const py = [_sw.lat, _ne.lat, _ne.lat, _sw.lat, _sw.lat];
-  const polygon = px.map((x: number, i: number) => `${x} ${py[i]}`).join(', ');
   newConfig.selfFilter.bounds = {
     type: 'filter',
-    expr: `ST_Within(${wkt.value}, 'POLYGON((${polygon}))')`,
+    expr: {
+      type: 'st_within',
+      x: lon.value,
+      y: lat.value,
+      sw: _sw,
+      ne: _ne,
+    },
   };
 
   newConfig.filter = orFilterGetter(newConfig.filter);
@@ -91,25 +95,26 @@ const settings = makeSetting<ChoroplethMapConfig>({
       key: 'wkt',
       short: 'building',
       isNotUseBin: true,
-      columnTypes: [COLUMN_TYPE.NUMBER, COLUMN_TYPE.TEXT],
+      columnTypes: [COLUMN_TYPE.TEXT],
       onAdd: onAddWkt,
+      expression: 'wkt'
     },
   ],
   measures: [
-    // {
-    //   type: RequiredType.REQUIRED,
-    //   key: MAPKEY.LONGTITUDE,
-    //   short: 'longtitude',
-    //   expressions: ['project'],
-    //   columnTypes: [COLUMN_TYPE.NUMBER],
-    // },
-    // {
-    //   type: RequiredType.REQUIRED,
-    //   key: MAPKEY.LATITUDE,
-    //   short: 'latitude',
-    //   expressions: ['project'],
-    //   columnTypes: [COLUMN_TYPE.NUMBER],
-    // },
+    {
+      type: RequiredType.REQUIRED,
+      key: MAPKEY.LONGTITUDE,
+      short: 'longtitude',
+      expressions: ['project'],
+      columnTypes: [COLUMN_TYPE.NUMBER],
+    },
+    {
+      type: RequiredType.REQUIRED,
+      key: MAPKEY.LATITUDE,
+      short: 'latitude',
+      expressions: ['project'],
+      columnTypes: [COLUMN_TYPE.NUMBER],
+    },
     {
       type: RequiredType.REQUIRED,
       key: 'w',

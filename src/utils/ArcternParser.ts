@@ -15,3 +15,12 @@ export const stWithinParser = (expression: any) => {
   const polygon = `${sw.lng} ${sw.lat}, ${sw.lng} ${ne.lat}, ${ne.lng} ${ne.lat}, ${ne.lng} ${sw.lat}, ${sw.lng} ${sw.lat}`;
   return `ST_Within (ST_Point (${x}, ${y}), ST_GeomFromText('POLYGON ((${polygon}))'))`;
 };
+
+export const stDistanceParser = (expression: any) => {
+  const {fromlon, fromlat, tolon, tolat, distance} = expression;
+  return `st_distance(st_transform(st_point(${tolon}, ${tolat}),'epsg:4326', 'epsg:3857'),st_transform('point(${fromlon} ${fromlat})','epsg:4326', 'epsg:3857')) < ${distance}`;
+};
+
+export const wktParser = (expression: any) => {
+  return `ST_GeomFromText(${expression.value})`;
+};

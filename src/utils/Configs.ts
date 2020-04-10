@@ -7,7 +7,7 @@ import {
   Crossfilter,
   Transform,
 } from 'infinivis-core';
-import {rangeConfigGetter} from './WidgetHelpers';
+import {rangeConfigGetter, measureGetter} from './WidgetHelpers';
 import {DEFAULT_COLOR} from '../utils/Colors';
 import {DEFAULT_CHART, COLUMN_TYPE} from './Consts';
 import {id, cloneObj} from './Helpers';
@@ -24,7 +24,14 @@ import {
 } from '../types';
 import {restoreSource} from './Helpers';
 import {dateTruncParser, extractParser, parseBin} from './MegaWiseParser';
-import {truncParser, extractParser as arcternExtractParser, stWithinParser} from './ArcternParser';
+import {
+  truncParser,
+  extractParser as arcternExtractParser,
+  stWithinParser,
+  stDistanceParser,
+  wktParser,
+} from './ArcternParser';
+import {getColorGradient} from '../utils/Colors';
 
 // define a dataNode type
 type dataNode = {
@@ -48,7 +55,7 @@ const _getDataType = (dataNodeType: string): QueryType => {
 };
 const _getQueryParams = (dataNode: dataNode) => {
   const {type, config} = dataNode;
-  const {width, height, pointSize, colorKey, bounds = {}, zoom = 5.36} = config;
+  const {width, height, pointSize, colorKey = '', bounds = {}, zoom = 5.36} = config;
   const {_sw = {}, _ne = {}} = bounds;
   const bounding_box = [_sw.lng, _sw.lat, _ne.lng, _ne.lat];
   let res = {
@@ -63,7 +70,7 @@ const _getQueryParams = (dataNode: dataNode) => {
           bounding_box,
           coordinate_system: 'EPSG:4326',
           point_size: pointSize,
-          point_color: colorKey,
+          point_color: getColorGradient(colorKey),
           opacity: 0.5,
         },
       };
@@ -78,14 +85,16 @@ const _getQueryParams = (dataNode: dataNode) => {
         },
       };
     case QueryType.choropleth:
+      const color = measureGetter(config, 'w')!;
       return {
         ...res,
         choropleth: {
           bounding_box,
-          coordinate: 'EPSG:4326',
-          color_style: 'blue_to_red',
-          rule: [2.5, 5],
+          coordinate_system: 'EPSG:4326',
+          color_style: getColorGradient(colorKey),
+          color_bound: [2.5, 5],
           opacity: 1,
+          aggregation_type: color.expression,
         },
       };
     default:
@@ -246,6 +255,8 @@ export const getWidgetSql = (
     SqlParser.SQLParser.registerExpression('trunc', truncParser);
     SqlParser.SQLParser.registerExpression('extract', arcternExtractParser);
     SqlParser.SQLParser.registerExpression('st_within', stWithinParser);
+    SqlParser.SQLParser.registerExpression('st_distance', stDistanceParser);
+    SqlParser.SQLParser.registerExpression('wkt', wktParser);
   }
   // create a config map
   const configMap: Map<string, WidgetConfig> = new Map();
