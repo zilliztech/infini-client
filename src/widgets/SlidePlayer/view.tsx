@@ -5,8 +5,10 @@ import {getColType} from '../../utils/ColTypes';
 import {lineRangeFilterHandler} from '../LineChart/filter';
 import {CONFIG} from '../../utils/Consts';
 import {SlidePlayerProps} from './types';
+import {useTheme} from '@material-ui/core/styles';
 
 const SlidePlayerView: FC<SlidePlayerProps> = props => {
+  const theme = useTheme();
   const {config, setConfig, dataMeta, wrapperWidth, wrapperHeight} = props;
   const data = useMemo(() => {
     return config.dimensions.map((d: Dimension) => {
@@ -48,14 +50,22 @@ const SlidePlayerView: FC<SlidePlayerProps> = props => {
     }
   };
   return (
-    <SlidePlayer
-      wrapperWidth={wrapperWidth}
-      wrapperHeight={wrapperHeight}
-      config={config}
-      dataMeta={dataMeta}
-      onRangeChange={onRangeChange}
-      data={data}
-    />
+    <div
+      className="slider-wrapper"
+      style={{
+        height: '100%',
+        background: theme.palette.background.paper,
+      }}
+    >
+      <SlidePlayer
+        wrapperWidth={wrapperWidth}
+        wrapperHeight={wrapperHeight}
+        config={config}
+        dataMeta={dataMeta}
+        onRangeChange={onRangeChange}
+        data={data}
+      />
+    </div>
   );
 };
 

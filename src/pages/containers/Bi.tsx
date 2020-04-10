@@ -6,6 +6,7 @@ import {DASH_ACTIONS} from '../../utils/Consts';
 import {Dashboard as DashboardType} from '../../types';
 import {dashboardReducer} from '../../utils/reducers/dashboardReducer';
 import {queryContext} from '../../contexts/QueryContext';
+import {isNewDashboard} from '../../utils/Dashboard';
 
 type DashboardPageProps = RouteComponentProps<{id?: string}>;
 
@@ -28,6 +29,10 @@ const Bi: FC<DashboardPageProps> = ({match}) => {
   // store dashboard on change
   useEffect(() => {
     if (dashboard) {
+      if (isNewDashboard(dashboard.id) && dashboard.configs.length === 0) {
+        return;
+      }
+
       // make changes persistent
       saveDashboard(JSON.stringify(dashboard), id);
     }
