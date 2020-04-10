@@ -13,5 +13,5 @@ export const extractParser = (expression: any) => {
 export const stWithinParser = (expression: any) => {
   const {x, y, sw, ne} = expression;
   const polygon = `${sw.lng} ${sw.lat}, ${sw.lng} ${ne.lat}, ${ne.lng} ${ne.lat}, ${ne.lng} ${sw.lat}, ${sw.lng} ${sw.lat}`;
-  return `ST_Within (ST_Point (${x}, ${y}), ST_GeomFromText('\\''POLYGON ((${polygon}))'\\''))`;
+  return `ST_Within (ST_Point (${x}, ${y}), ST_GeomFromText('POLYGON ((${polygon}))'))`;
 };

@@ -61,7 +61,7 @@ const _getQueryParams = (dataNode: dataNode) => {
         ...res,
         point: {
           bounding_box,
-          coordinate: 'EPSG:4326',
+          coordinate_system: 'EPSG:4326',
           point_size: pointSize,
           point_color: colorKey,
           opacity: 0.5,
@@ -73,8 +73,8 @@ const _getQueryParams = (dataNode: dataNode) => {
         ...res,
         heat: {
           bounding_box,
-          coordinate: 'EPSG:4326',
-          map_scale: zoom,
+          coordinate_system: 'EPSG:4326',
+          map_zoom_level: zoom,
         },
       };
     case QueryType.choropleth:

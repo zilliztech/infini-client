@@ -100,16 +100,12 @@ const QueryArcternProvider: FC<{children: ReactNode}> = ({children}) => {
 
   const getData = async (params: any) => {
     let url = URL.Query;
-    const {configID} = params;
     delete params.configID;
     const body = {id: DB && DB.id.toString(), query: params};
     return axiosInstance
       .post(url, {...body}, getAxiosConfig())
       .then((res: any) => {
         const result = res.data && res.data.data && res.data.data.result;
-        if (result) {
-          result.id = configID;
-        }
         return result;
       })
       .catch(errorParser);
