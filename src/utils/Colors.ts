@@ -222,7 +222,6 @@ export const genColorGetter = (config: WidgetConfig): Function => {
 };
 
 export const getColorGradient = (colorKey: string) => {
-  console.info(colorKey)
   const values = gradientOpts.find((item: any) => item.key === colorKey)!.value;
   const first = values[0];
   const last = values[values.length - 1];

@@ -8,7 +8,7 @@ import {DEFAULT_MAX_POINTS_NUM, KEY} from '../Utils/Map';
 import {measureGetter} from '../../utils/WidgetHelpers';
 import {cleanLastSelfFilter, addSelfFilter} from '../../widgets/Utils/settingHelper';
 import {MapMeasure} from '../common/MapChart.type';
-import {getColorGradient} from '../../utils/Colors';
+import {getColorGradient, gradientOpts} from '../../utils/Colors';
 
 // PointMap
 const _onAddTextColor = async ({measure, config, setConfig, reqContext}: MeasureParams) => {
@@ -23,24 +23,26 @@ const _onAddTextColor = async ({measure, config, setConfig, reqContext}: Measure
 };
 
 const _onAddNumColor = async ({measure, config, setConfig, reqContext}: any) => {
-  const {filter = {}} = config;
-  Object.keys(filter).forEach((filterKey: string) => {
-    if (!filter[filterKey].expr.geoJson) {
-      setConfig({type: CONFIG.DEL_FILTER, payload: [filterKey]});
-    }
-  });
-  reqContext.numMinMaxValRequest(measure.value, config.source).then((res: any) => {
-    const ruler = res;
-    setConfig({type: CONFIG.ADD_RULER, payload: ruler});
-    setConfig({type: CONFIG.ADD_RULERBASE, payload: ruler});
-  });
+  // if you change to an num_color_measure from a text_color_measure, you need to remvoe the filter with text_color_measure(colorItems), since arctern does not support text type yet , this step is no need use
+  // const {filter = {}} = config;
+  // Object.keys(filter).forEach((filterKey: string) => {
+  //   if (!filter[filterKey].expr.geoJson) {
+  //     setConfig({type: CONFIG.DEL_FILTER, payload: [filterKey]});
+  //   }
+  // });
+  const res = await reqContext.numMinMaxValRequest(measure.value, config.source);
+  const ruler = res;
+  console.info(ruler);
+  setConfig({type: CONFIG.ADD_RULER, payload: ruler});
+  setConfig({type: CONFIG.ADD_RULERBASE, payload: ruler});
+  setConfig({type: CONFIG.ADD_COLORKEY, payload: gradientOpts[0].key});
 };
 const onAddColor = async ({measure, config, setConfig, reqContext}: any) => {
   cleanLastSelfFilter({dimension: measure, setConfig, config});
   setConfig({type: CONFIG.DEL_ATTR, payload: ['colorItems']});
-
   const dataType = getColType(measure.type);
   switch (dataType) {
+    // arctern not support text type at the moment ,hide it
     case 'text':
       setConfig({type: CONFIG.DEL_ATTR, payload: ['colorKey']});
       await _onAddTextColor({measure, config, setConfig, reqContext});
@@ -113,6 +115,7 @@ const genQueryParams = (config: any) => {
   const bounding_box = [_sw.lng, _sw.lat, _ne.lng, _ne.lat];
   const c = measureGetter(config, 'color');
   const isWeighted = !!c;
+  console.info(isWeighted, colorKey);
   let res: any = {
     width,
     height,
