@@ -7,6 +7,8 @@ import {measureGetter, dimensionGetter, getExpression} from '../../utils/WidgetH
 import {KEY as MAPKEY} from '../Utils/Map';
 import {ChoroplethMapConfig} from './types';
 import {MeasureParams} from '../Utils/settingHelper';
+import {getColorGradient} from '../../utils/Colors';
+
 const onAddChoroplethMapColor = async ({measure, config, setConfig, reqContext}: MeasureParams) => {
   const buildDimension = dimensionGetter(config, 'wkt');
   if (buildDimension) {
@@ -85,7 +87,24 @@ const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapCo
   newConfig.measures = [colorM];
   return newConfig;
 };
-
+const genQueryParams = (config: any) => {
+  const {width, height, colorKey = '', bounds = {}} = config;
+  const {_sw = {}, _ne = {}} = bounds;
+  const color = measureGetter(config, 'w')!;
+  const bounding_box = [_sw.lng, _sw.lat, _ne.lng, _ne.lat];
+  return {
+    width,
+    height,
+    choropleth: {
+      bounding_box,
+      coordinate_system: 'EPSG:4326',
+      color_style: getColorGradient(colorKey),
+      color_bound: [2.5, 5],
+      opacity: 1,
+      aggregation_type: color.expression,
+    },
+  };
+};
 const settings = makeSetting<ChoroplethMapConfig>({
   type: 'ChoroplethMap',
   dbTypes: ['arctern'],
@@ -97,7 +116,7 @@ const settings = makeSetting<ChoroplethMapConfig>({
       isNotUseBin: true,
       columnTypes: [COLUMN_TYPE.TEXT],
       onAdd: onAddWkt,
-      expression: 'wkt'
+      expression: 'wkt',
     },
   ],
   measures: [
@@ -136,6 +155,7 @@ const settings = makeSetting<ChoroplethMapConfig>({
 </svg>`,
   enable: true,
   configHandler: choroplethMapConfigHandler,
+  genQueryParams,
 });
 
 export default settings;

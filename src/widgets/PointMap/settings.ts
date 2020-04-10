@@ -8,6 +8,7 @@ import {DEFAULT_MAX_POINTS_NUM, KEY} from '../Utils/Map';
 import {measureGetter} from '../../utils/WidgetHelpers';
 import {cleanLastSelfFilter, addSelfFilter} from '../../widgets/Utils/settingHelper';
 import {MapMeasure} from '../common/MapChart.type';
+import {getColorGradient} from '../../utils/Colors';
 
 // PointMap
 const _onAddTextColor = async ({measure, config, setConfig, reqContext}: MeasureParams) => {
@@ -106,6 +107,39 @@ const pointMapConfigHandler = (config: any) => {
   return newConfig;
 };
 
+const genQueryParams = (config: any) => {
+  const {width, height, pointSize, colorKey = '', bounds = {}, ruler = []} = config;
+  const {_sw = {}, _ne = {}} = bounds;
+  const bounding_box = [_sw.lng, _sw.lat, _ne.lng, _ne.lat];
+  const c = measureGetter(config, 'color');
+  const isWeighted = !!c;
+  let res: any = {
+    width,
+    height,
+  };
+  let key = isWeighted ? 'weighted' : 'point';
+  res[key] = {
+    opacity: 0.5,
+    bounding_box,
+    coordinate_system: 'EPSG:4326',
+  };
+  if (isWeighted) {
+    res[key] = {
+      ...res[key],
+      size_bound: [pointSize],
+      color_bound: ruler,
+      color_gradient: getColorGradient(colorKey),
+    };
+  } else {
+    res[key] = {
+      ...res[key],
+      point_size: pointSize,
+      point_color: colorKey,
+    };
+  }
+  return res;
+};
+
 const settings = makeSetting({
   type: 'PointMap',
   dbTypes: ['arctern'],
@@ -143,6 +177,7 @@ const settings = makeSetting({
   enable: true,
   isServerRender: true,
   configHandler: pointMapConfigHandler,
+  genQueryParams,
 });
 
 export default settings;

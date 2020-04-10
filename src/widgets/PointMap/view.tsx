@@ -10,12 +10,12 @@ import MapboxGl from '../common/MapboxGl';
 import {MapChartConfig} from '../common/MapChart.type';
 import {queryContext} from '../../contexts/QueryContext';
 import {I18nContext} from '../../contexts/I18nContext';
+import {stDistanceParser} from '../../utils/ArcternParser'
 import {
   measureGetter,
   popupContentGetter,
   popupContentBuilder,
   throttle,
-  parseExpression,
 } from '../../utils/WidgetHelpers';
 import {CONFIG} from '../../utils/Consts';
 import {cloneObj, restoreSource} from '../../utils/Helpers';
@@ -114,7 +114,7 @@ const PointMapNormal: FC<PointMapProps> = props => {
       .join(', ');
     const pointSql = `select * ${columns && `,${columns}`} from ${restoreSource(
       config.source
-    )} where ${parseExpression(pointExpr)} ${AND} ${
+    )} where ${stDistanceParser(pointExpr)} ${AND} ${
       color ? `ORDER BY ${color.value} DESC` : ''
     } limit 1`;
     return pointSql;

@@ -67,6 +67,21 @@ const geoHeatMapConfigHandler: ConfigHandler<GeoHeatMapConfig> = config => {
   return newConfig;
 };
 
+const genQueryParams = (config: any) => {
+  const {width, height, zoom, bounds = {}} = config;
+  const {_sw = {}, _ne = {}} = bounds;
+  const bounding_box = [_sw.lng, _sw.lat, _ne.lng, _ne.lat];
+  return {
+    width,
+    height,
+    heat: {
+      bounding_box,
+      coordinate_system: 'EPSG:4326',
+      map_zoom_level: zoom,
+    },
+  };
+};
+
 const settings = makeSetting<GeoHeatMapConfig>({
   type: 'GeoHeatMap',
   dbTypes: ['arctern'],
@@ -105,6 +120,7 @@ const settings = makeSetting<GeoHeatMapConfig>({
 </svg>`,
   enable: true,
   configHandler: geoHeatMapConfigHandler,
+  genQueryParams,
 });
 
 export default settings;

@@ -18,7 +18,7 @@ export const stWithinParser = (expression: any) => {
 
 export const stDistanceParser = (expression: any) => {
   const {fromlon, fromlat, tolon, tolat, distance} = expression;
-  return `st_distance(st_transform(st_point(${tolon}, ${tolat}),'epsg:4326', 'epsg:3857'),st_transform('point(${fromlon} ${fromlat})','epsg:4326', 'epsg:3857')) < ${distance}`;
+  return `st_distance(st_transform(st_geomFromText('point(${tolon} ${tolat})'),'epsg:4326', 'epsg:3857'),st_transform(st_geomFromText ('point(${fromlon} ${fromlat})'),'epsg:4326', 'epsg:3857')) < ${distance}`;
 };
 
 export const wktParser = (expression: any) => {

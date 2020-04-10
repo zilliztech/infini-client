@@ -155,6 +155,7 @@ export type InitSetting<T = WidgetConfig> = {
   configHandler?: ConfigHandler<T>;
   // it will be fired after having sql generated
   onAfterSqlCreate?: Function;
+  genQueryParams?: Function;
 };
 export type Setting<T = WidgetConfig> = {
   // widget Type
@@ -173,6 +174,7 @@ export type Setting<T = WidgetConfig> = {
   configHandler: ConfigHandler<T>;
   // it will be fired after having sql generated
   onAfterSqlCreate: Function;
+  genQueryParams?: Function;
 };
 // all widgets Settings
 export type WidgetSettings = {[key: string]: Setting};

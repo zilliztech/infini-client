@@ -7,7 +7,7 @@ import {
   Crossfilter,
   Transform,
 } from 'infinivis-core';
-import {rangeConfigGetter, measureGetter} from './WidgetHelpers';
+import {rangeConfigGetter} from './WidgetHelpers';
 import {DEFAULT_COLOR} from '../utils/Colors';
 import {DEFAULT_CHART, COLUMN_TYPE} from './Consts';
 import {id, cloneObj} from './Helpers';
@@ -31,7 +31,6 @@ import {
   stDistanceParser,
   wktParser,
 } from './ArcternParser';
-import {getColorGradient} from '../utils/Colors';
 
 // define a dataNode type
 type dataNode = {
@@ -53,55 +52,6 @@ const _getDataType = (dataNodeType: string): QueryType => {
       return QueryType.sql;
   }
 };
-const _getQueryParams = (dataNode: dataNode) => {
-  const {type, config} = dataNode;
-  const {width, height, pointSize, colorKey = '', bounds = {}, zoom = 5.36} = config;
-  const {_sw = {}, _ne = {}} = bounds;
-  const bounding_box = [_sw.lng, _sw.lat, _ne.lng, _ne.lat];
-  let res = {
-    width,
-    height,
-  };
-  switch (_getDataType(type)) {
-    case QueryType.point:
-      return {
-        ...res,
-        point: {
-          bounding_box,
-          coordinate_system: 'EPSG:4326',
-          point_size: pointSize,
-          point_color: getColorGradient(colorKey),
-          opacity: 0.5,
-        },
-      };
-    //TODO: put this into Widget Config
-    case QueryType.heat:
-      return {
-        ...res,
-        heat: {
-          bounding_box,
-          coordinate_system: 'EPSG:4326',
-          map_zoom_level: zoom,
-        },
-      };
-    case QueryType.choropleth:
-      const color = measureGetter(config, 'w')!;
-      return {
-        ...res,
-        choropleth: {
-          bounding_box,
-          coordinate_system: 'EPSG:4326',
-          color_style: getColorGradient(colorKey),
-          color_bound: [2.5, 5],
-          opacity: 1,
-          aggregation_type: color.expression,
-        },
-      };
-    default:
-      return null;
-  }
-};
-
 export const getDefaultConfig = (source: string, existLayouts: Layout[]): WidgetConfig => {
   let _id: string = id();
   return {
@@ -386,17 +336,16 @@ export const getWidgetSql = (
     }
 
     const widgetSetting = widgetSettings[config.type];
-
     // generate sql
     let sql = dataNode.node.reduceToString();
     if (widgetSetting && widgetSetting.onAfterSqlCreate) {
       sql = widgetSetting.onAfterSqlCreate(sql, config);
     }
     const type = _getDataType(dataNode.type);
-    const params = _getQueryParams(dataNode);
     const query: any = {sql, type};
     if (type !== QueryType.sql) {
-      query.params = params;
+      const {genQueryParams} = widgetSetting;
+      query.params = genQueryParams && genQueryParams(config);
     }
     widgetQuerys.push(
       isArctern
