@@ -64,12 +64,8 @@ const ScatterChart = React.forwardRef(
       : yMeasure.label;
 
     const [x, y] = [
-      scaleLinear()
-        .range([0, width])
-        .domain(xDomain!),
-      scaleLinear()
-        .range([height, 0])
-        .domain(yDomain!),
+      scaleLinear().range([0, width]).domain(xDomain!),
+      scaleLinear().range([height, 0]).domain(yDomain!),
     ];
 
     const svgRoot = useRef<any>(null);
@@ -102,9 +98,7 @@ const ScatterChart = React.forwardRef(
           transformPos.current = {left: event.transform.x, top: event.transform.y};
           onZoomEnd({newScaleX, newScaleY});
         });
-      select(zoomArea.current)
-        .call(zoom.transform, zoomIdentity)
-        .call(zoom);
+      select(zoomArea.current).call(zoom.transform, zoomIdentity).call(zoom);
     }
     function updateZoom({x, y}: any) {
       x.domain(xDomain);
@@ -125,18 +119,10 @@ const ScatterChart = React.forwardRef(
       select(xAxisContainer.current).call(xAxis.scale(new_xScale).tickFormat(xMeasureFormatter));
       select(yAxisContainer.current).call(yAxis.scale(new_yScale).tickFormat(yMeasureFormatter));
       select(xGridLine.current).call(
-        xAxis
-          .scale(new_xScale)
-          .tickSizeInner(-height)
-          .tickSizeOuter(0)
-          .tickFormat('')
+        xAxis.scale(new_xScale).tickSizeInner(-height).tickSizeOuter(0).tickFormat('')
       );
       select(yGridLine.current).call(
-        yAxis
-          .scale(new_yScale)
-          .tickFormat('')
-          .tickSizeInner(-width)
-          .tickSizeOuter(0)
+        yAxis.scale(new_yScale).tickFormat('').tickSizeInner(-width).tickSizeOuter(0)
       );
     };
     const _setImagePos = (transform: any) => {
@@ -163,7 +149,7 @@ const ScatterChart = React.forwardRef(
       _setImagePos(event.transform);
     };
 
-    const _onMouseMove = function() {
+    const _onMouseMove = function () {
       let [xPos, yPos] = mouse(event.target);
       const isValidX = xPos >= 0 && xPos <= width;
       const isValidY = yPos >= 0 && yPos <= height;
@@ -220,13 +206,13 @@ const ScatterChart = React.forwardRef(
     useEffect(() => {
       // Create and set Image
       imageObj.current = new Image();
-      imageObj.current.onload = function() {
+      imageObj.current.onload = function () {
         const context = canvas.current.getContext('2d');
         _initImagPos();
         context.clearRect(0, 0, width, height);
         context.drawImage(imageObj.current, 0, 0);
       };
-      imageObj.current.src = data;
+      imageObj.current.src = `data:image/png;base64,${data}`;
       //eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 

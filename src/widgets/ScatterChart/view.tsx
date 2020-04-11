@@ -36,6 +36,24 @@ const ScatterChartView: FC<ScatterChartConfig> = props => {
   const marker = useRef<SVGCircleElement>(null);
   const markerData = useRef<any>(null);
 
+  useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
+    }
+    const isStaticRangeChange =
+      JSON.stringify(xDomain) !== JSON.stringify(xStaticDomain) ||
+      JSON.stringify(yDomain) !== JSON.stringify(yStaticDomain);
+
+    if (isStaticRangeChange) {
+      setConfig({
+        type: CONFIG.UPDATE_AXIS_RANGE,
+        payload: {id: config.id, x: xStaticDomain, y: yStaticDomain},
+      });
+    }
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify([xStaticDomain, yStaticDomain])]);
+
   const _onRectChange = (width: number, height: number) => {
     setConfig({type: CONFIG.UPDATE, payload: rectHandler({config, width, height})});
   };
@@ -143,23 +161,6 @@ const ScatterChartView: FC<ScatterChartConfig> = props => {
     }
   };
   const isFirstRun = useRef(true);
-  useEffect(() => {
-    if (isFirstRun.current) {
-      isFirstRun.current = false;
-      return;
-    }
-    const isStaticRangeChange =
-      JSON.stringify(xDomain) !== JSON.stringify(xStaticDomain) ||
-      JSON.stringify(yDomain) !== JSON.stringify(yStaticDomain);
-
-    if (isStaticRangeChange) {
-      setConfig({
-        type: CONFIG.UPDATE_AXIS_RANGE,
-        payload: {id: config.id, x: xStaticDomain, y: yStaticDomain},
-      });
-    }
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify([xStaticDomain, yStaticDomain])]);
   return (
     <ScatterChart
       config={config}
@@ -173,7 +174,7 @@ const ScatterChartView: FC<ScatterChartConfig> = props => {
       wrapperHeight={props.wrapperHeight}
       onZooming={onZooming}
       onZoomEnd={onZoomEnd}
-      onMouseMove={onMouseMove}
+      // onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
       onRectChange={_onRectChange}
       reset={_reset}
