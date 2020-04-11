@@ -353,5 +353,8 @@ export const getRangeSql = (colName: string, source: string): string => {
 
 export const getSliderStep = (min: number, max: number): number => {
   const gap = max - min;
-  return Math.floor(gap / 100);
+  if (gap > 100) {
+    return Math.floor(gap / 100);
+  }
+  return gap / 100;
 };

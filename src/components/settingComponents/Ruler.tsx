@@ -72,7 +72,6 @@ const RulerEditor = (props: any) => {
   const onSlideChange = (e: any, val: any) => {
     const immediateCallback = (val: any[]) => {
       setMinMaxInput(val);
-      config.ruler = {min: val[0], max: val[1]};
     };
     const delayCallback = (val: any) => {
       if (val[0] === val[1]) {
