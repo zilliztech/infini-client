@@ -140,11 +140,15 @@ const Header: FC<HeaderProps> = props => {
   // show source exists in configs
   const existTables = configs.map((config: WidgetConfig) => config.source);
   const sourceData = cloneObj(data);
-  for (let key in sourceData) {
-    if (existTables.indexOf(key) === -1) {
-      delete sourceData[key];
+
+  if (configs.length) {
+    for (let key in sourceData) {
+      if (existTables.indexOf(key) === -1) {
+        delete sourceData[key];
+      }
     }
   }
+
   return (
     <>
       {isNormal && (
