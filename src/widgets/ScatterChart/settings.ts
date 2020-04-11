@@ -26,17 +26,17 @@ const onAddScatterChartDomain = ({measure, config, setConfig, reqContext}: any) 
   });
 };
 const _onAddNumColor = async ({measure, config, setConfig, reqContext}: any) => {
-  const {filter = {}} = config;
-  Object.keys(filter).forEach((filterKey: string) => {
-    if (!filter[filterKey].expr.geoJson) {
-      setConfig({type: CONFIG.DEL_FILTER, payload: [filterKey]});
-    }
-  });
-  reqContext.numMinMaxValRequest(measure.value, config.source).then((res: any) => {
-    const ruler = res;
-    setConfig({type: CONFIG.ADD_RULER, payload: ruler});
-    setConfig({type: CONFIG.ADD_RULERBASE, payload: ruler});
-  });
+  // const {filter = {}} = config;
+  // Object.keys(filter).forEach((filterKey: string) => {
+  //   if (!filter[filterKey].expr.geoJson) {
+  //     setConfig({type: CONFIG.DEL_FILTER, payload: [filterKey]});
+  //   }
+  // });
+  const res = await reqContext.numMinMaxValRequest(measure.value, config.source);
+  const ruler = res;
+  setConfig({type: CONFIG.ADD_RULER, payload: ruler});
+  setConfig({type: CONFIG.ADD_RULERBASE, payload: ruler});
+  setConfig({type: CONFIG.ADD_COLORKEY, payload: gradientOpts[0].key});
 };
 const _onAddTextColor = async ({measure, config, setConfig, reqContext}: any) => {
   const res = await queryDistinctValues({
@@ -182,7 +182,7 @@ const settings = makeSetting({
       key: 'color',
       short: 'color',
       expressions: ['project'],
-      columnTypes: [COLUMN_TYPE.NUMBER, COLUMN_TYPE.TEXT],
+      columnTypes: [COLUMN_TYPE.NUMBER],
       onAdd: onAddColor,
     },
   ],
