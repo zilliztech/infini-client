@@ -115,8 +115,8 @@ const genQueryParams = (config: any) => {
   const c = measureGetter(config, 'color');
   const isWeighted = !!c;
   let res: any = {
-    width,
-    height,
+    width: Number.parseInt(width),
+    height: Number.parseInt(height),
   };
   let key = isWeighted ? 'weighted' : 'point';
   res[key] = {

@@ -44,6 +44,7 @@ type dataNode = {
 const _getDataType = (dataNode: any): string => {
   switch (dataNode.type) {
     case 'PointMap':
+    case 'ScatterChart':
       const isWeighted = !!measureGetter(dataNode.config, 'color');
       return isWeighted ? 'weighted' : QueryType.point;
     case 'GeoHeatMap':
@@ -370,6 +371,5 @@ export const getWidgetSql = (
       });
     }
   });
-  // debugger;
   return widgetQuerys;
 };

@@ -34,20 +34,17 @@ const geoHeatMapConfigHandler: ConfigHandler<GeoHeatMapConfig> = config => {
 
   let lon = dimensionGetter(newConfig, KEY.LONGTITUDE) as MapDimension;
   let lat = dimensionGetter(newConfig, KEY.LATITUDE) as MapDimension;
-  let color = measureGetter(newConfig, 'w');
 
   if (!lon || !lat) {
     return newConfig;
   }
 
   const {_sw, _ne} = newConfig.bounds;
-  const pointMeasure = {
-    expression: 'project',
+  const pointDimension = {
     value: `ST_Point (${lon.value}, ${lat.value})`,
     as: 'point',
   };
-  newConfig.measures = [pointMeasure, color];
-  newConfig.dimensions = [];
+  newConfig.dimensions = [pointDimension];
   newConfig.isServerRender = true;
   newConfig.filter = newConfig.filter || {};
 
@@ -71,13 +68,15 @@ const genQueryParams = (config: any) => {
   const {width, height, zoom, bounds = {}} = config;
   const {_sw = {}, _ne = {}} = bounds;
   const bounding_box = [_sw.lng, _sw.lat, _ne.lng, _ne.lat];
+  const color = measureGetter(config, 'w')!;
   return {
-    width,
-    height,
+    width: Number.parseInt(width),
+    height: Number.parseInt(height),
     heat: {
       bounding_box,
       coordinate_system: 'EPSG:4326',
       map_zoom_level: zoom,
+      aggregation_type: color.expression,
     },
   };
 };
@@ -109,7 +108,6 @@ const settings = makeSetting<GeoHeatMapConfig>({
       key: 'w',
       short: 'color',
       onAdd: onAddColor,
-      expressions: ['project'],
       columnTypes: [COLUMN_TYPE.NUMBER],
     },
   ],

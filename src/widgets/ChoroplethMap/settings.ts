@@ -93,8 +93,8 @@ const genQueryParams = (config: any) => {
   const color = measureGetter(config, 'w')!;
   const bounding_box = [_sw.lng, _sw.lat, _ne.lng, _ne.lat];
   return {
-    width,
-    height,
+    width: Number.parseInt(width),
+    height: Number.parseInt(height),
     choropleth: {
       bounding_box,
       coordinate_system: 'EPSG:4326',
