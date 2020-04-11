@@ -1,7 +1,7 @@
 import {scaleOrdinal, interpolateRgbBasis} from 'd3';
 import {isValidValue} from './Helpers';
 import {WidgetConfig} from '../types';
-
+const rgbHex = require('rgb-hex');
 const makeScale = (num: number, colorGroup: any) => {
   return colorGroup.slice(0, num);
 };
@@ -223,8 +223,7 @@ export const genColorGetter = (config: WidgetConfig): Function => {
 
 export const getColorGradient = (colorKey: string) => {
   const values = gradientOpts.find((item: any) => item.key === colorKey)!.value;
-  const first = values[0];
-  const last = values[values.length - 1];
-  const middle = values[Math.floor((values.length + 1) / 2)];
-  return [first, middle, last];
+  const first = `#${rgbHex(values[0])}`;
+  const last = `#${rgbHex(values[values.length - 1])}`;
+  return [first, last];
 };

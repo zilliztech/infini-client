@@ -370,5 +370,6 @@ export const getWidgetSql = (
       });
     }
   });
+  // debugger;
   return widgetQuerys;
 };

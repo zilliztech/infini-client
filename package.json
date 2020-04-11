@@ -31,6 +31,7 @@
     "react-icons": "^3.9.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
+    "rgb-hex": "^3.0.0",
     "wkx": "^0.4.8"
   },
   "devDependencies": {
