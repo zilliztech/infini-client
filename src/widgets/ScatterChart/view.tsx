@@ -24,12 +24,8 @@ const ScatterChartView: FC<ScatterChartConfig> = props => {
   const xStaticDomain = xMeasure.staticDomain!;
   const yStaticDomain = yMeasure.staticDomain!;
   const [x, y] = [
-    scaleLinear()
-      .range([0, width])
-      .domain(xDomain!),
-    scaleLinear()
-      .range([height, 0])
-      .domain(yDomain!),
+    scaleLinear().range([0, width]).domain(xDomain!),
+    scaleLinear().range([height, 0]).domain(yDomain!),
   ];
 
   const useTooltip = useRef<any>(true);
@@ -95,10 +91,10 @@ const ScatterChartView: FC<ScatterChartConfig> = props => {
   const _getPoint = ({event, xLen, yLen}: any) => {
     const sql = _sqlGetter({config, xLen, yLen, dataMeta});
     useTooltip.current &&
-      getRowBySql(sql).then((rows: any) => {
-        if (rows && rows[0]) {
+      getRowBySql(sql).then((res: any) => {
+        if (res && res.data) {
           // showTooltip
-          const tooltipData = rows[0];
+          const tooltipData = res.data.result[0];
           showTooltip({
             position: {event},
             tooltipData,
@@ -130,7 +126,7 @@ const ScatterChartView: FC<ScatterChartConfig> = props => {
   const _sqlGetter = ({config, xLen, yLen, dataMeta}: any) => {
     const circleR = _getValidCircle();
     const exprs = config.measures.map((m: Measure) => `${m.value} as ${m.as}`).join(', ');
-    const where = dataMeta.sql.split('WHERE')[1];
+    const where = dataMeta.query.params.sql.split('WHERE')[1];
     const globalFilter = where ? where.split('LIMIT')[0] : '';
     const filter = _singlePointFilterGetter({circleR, x: xLen, y: yLen});
     return `SELECT *, ${exprs} FROM ${config.source} WHERE (${filter}${
@@ -174,7 +170,7 @@ const ScatterChartView: FC<ScatterChartConfig> = props => {
       wrapperHeight={props.wrapperHeight}
       onZooming={onZooming}
       onZoomEnd={onZoomEnd}
-      // onMouseMove={onMouseMove}
+      onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
       onRectChange={_onRectChange}
       reset={_reset}

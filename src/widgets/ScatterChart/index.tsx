@@ -252,7 +252,7 @@ const ScatterChart = React.forwardRef(
               <g ref={xGridLine} className="grid-line" transform={`translate(0, ${height})`} />
               <g ref={xAxisContainer} transform={`translate(0, ${height})`} />
               <text
-                fill="#000"
+                fill="#fff"
                 y={svgHeight - 30}
                 x={wrapperWidth / 2}
                 dy="0.71em"
@@ -265,7 +265,7 @@ const ScatterChart = React.forwardRef(
               <g ref={yGridLine} className="grid-line" />
               <g ref={yAxisContainer} />
               <text
-                fill="#000"
+                fill="#fff"
                 transform="rotate(-90)"
                 y={-margin.left + 10}
                 x={-50}
