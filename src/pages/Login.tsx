@@ -54,7 +54,8 @@ const Login: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   if (isIn) {
-    return <Redirect to={`${PATH_BI}/:1`} />;
+    return <Redirect to="/" />;
+    // return <Redirect to={`${PATH_BI}/:1`} />;
   }
 
   const handleSubmit = () => {

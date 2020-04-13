@@ -38,7 +38,7 @@ const nls = {
   label_import_dashboard: 'Import Dashboard',
   // Login Page
   label_title: 'Sign in Infini',
-  label_username: 'USER',
+  label_username: 'USER NAME',
   label_username_placeholder: 'Infini',
   label_password: 'PASSWORD',
   label_password_placeholder: 'password',
