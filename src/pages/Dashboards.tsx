@@ -18,7 +18,7 @@ import {exportJson} from '../utils/Export';
 import {cloneObj} from '../utils/Helpers';
 import {DIALOG_MODE} from '../utils/Consts';
 import {isDashboardReady} from '../utils/Dashboard';
-import dashboards from '../mock';
+import {dashboards, dashboards_arctern} from '../mock';
 import {PATH_BI} from '../utils/Endpoints';
 
 const useStyles = makeStyles(theme => ({
@@ -258,7 +258,7 @@ const Dashboards: FC<RouteComponentProps> = props => {
 
   useEffect(() => {
     if (!imported) {
-      (isArctern ? [] : dashboards).map(importDashboard);
+      (isArctern ? dashboards_arctern : dashboards).map(importDashboard);
       imported = true;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -570,6 +570,85 @@
         "_sw": {"lng": -74.00938632287193, "lat": 40.757929213132115},
         "_ne": {"lng": -73.94719494486831, "lat": 40.786865890801835}
       }
+    },
+    {
+      "type": "ChoroplethMap",
+      "title": "",
+      "source": "nyc_taxi",
+      "layout": {
+        "w": 20,
+        "h": 20,
+        "x": 0,
+        "y": 0,
+        "i": "id_jxuim042h5",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "dimensions": [
+        {
+          "label": "buildingtext_dropoff",
+          "short": "building",
+          "value": "buildingtext_dropoff",
+          "type": "text",
+          "format": "auto",
+          "as": "wkt",
+          "expression": "wkt"
+        }
+      ],
+      "measures": [
+        {
+          "type": "double",
+          "value": "dropoff_longitude",
+          "label": "dropoff_longitude",
+          "as": "lon",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "project",
+          "name": "y0"
+        },
+        {
+          "type": "double",
+          "value": "dropoff_latitude",
+          "label": "dropoff_latitude",
+          "as": "lat",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "project",
+          "name": "y1"
+        },
+        {
+          "type": "double",
+          "value": "fare_amount",
+          "label": "fare_amount",
+          "as": "w",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "avg",
+          "name": "y2"
+        }
+      ],
+      "colorItems": [],
+      "filter": {"fillEmpty": "buildingtext_dropoff!=''"},
+      "selfFilter": {},
+      "width": 996,
+      "height": 712.6666870117188,
+      "isServerRender": true,
+      "mapTheme": "mapbox://styles/mapbox/dark-v9",
+      "zoom": 13.899993445295927,
+      "id": "id_jxuim042h5",
+      "colorKey": "blue_green_yellow",
+      "ruler": {"min": 2.5, "max": 60.9},
+      "rulerBase": {"min": 2.5, "max": 60.9},
+      "center": {"lng": -73.98455216763148, "lat": 40.7449476397332},
+      "bounds": {
+        "_sw": {"lng": -74.00745804419152, "lat": 40.73252337906712},
+        "_ne": {"lng": -73.96164629106984, "lat": 40.75736957983685}
+      }
     }
   ],
   "createdAt": "Mon Apr 13 10:53:16 2020",
