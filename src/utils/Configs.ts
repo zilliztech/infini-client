@@ -200,16 +200,16 @@ export const getWidgetSql = (
   isArctern: boolean = false
 ) => {
   // register custom bin or expression parser for Arctern or MegaWise
-  if (!isArctern) {
-    SqlParser.SQLParser.registerExpression('date_trunc', dateTruncParser);
-    SqlParser.SQLParser.registerExpression('extract', extractParser);
-    SqlParser.SQLParser.registerTransform('bin', parseBin as SqlParser.TransformParser);
-  } else {
+  if (isArctern) {
     SqlParser.SQLParser.registerExpression('trunc', truncParser);
     SqlParser.SQLParser.registerExpression('extract', arcternExtractParser);
     SqlParser.SQLParser.registerExpression('st_within', stWithinParser);
     SqlParser.SQLParser.registerExpression('st_distance', stDistanceParser);
-    SqlParser.SQLParser.registerExpression('wkt', wktParser);
+    SqlParser.SQLParser.registerExpression('wkt', wktParser);            
+  } else {
+    SqlParser.SQLParser.registerExpression('date_trunc', dateTruncParser);
+    SqlParser.SQLParser.registerExpression('extract', extractParser);
+    SqlParser.SQLParser.registerTransform('bin', parseBin as SqlParser.TransformParser);
   }
   // create a config map
   const configMap: Map<string, WidgetConfig> = new Map();
