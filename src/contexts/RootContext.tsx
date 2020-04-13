@@ -29,7 +29,6 @@ interface IShowTooltip {
   contentGetter: Function;
   isShowTitle?: boolean;
 }
-
 // load all settings from folder
 const widgetSettings: any = {};
 const themeMap: any = {};
@@ -102,6 +101,8 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
   const _tooltipContent = useRef<HTMLDivElement>(null);
   const _tooltipWrapper = useRef<HTMLDivElement>(null);
   const _timeout: any = useRef(null);
+  const _hasRegisterdParser = useRef<boolean>(false);
+  // register Parser on window, for other utils use
   if (!isArctern) {
     if (widgetSettings.PointMegaWiseMap) {
       widgetSettings.PointMap = widgetSettings.PointMegaWiseMap;
@@ -130,6 +131,7 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
     if (_tooltipWrapper.current) {
       _tooltipWrapper.current.style.left = `-999999px`;
     }
+    _hasRegisterdParser.current = true;
   }, []);
   const saveTheme = (theme: string) => {
     const auth = window.localStorage.getItem(namespace(['login'], 'userAuth'));
