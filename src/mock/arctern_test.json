@@ -623,6 +623,67 @@
         "_sw": {"lng": -73.99579812510063, "lat": 40.73914529346868},
         "_ne": {"lng": -73.97330621016485, "lat": 40.750749479821025}
       }
+    },
+    {
+      "type": "ScatterChart",
+      "title": "",
+      "source": "nyc_taxi",
+      "layout": {
+        "w": 10,
+        "h": 10,
+        "x": 0,
+        "y": 0,
+        "i": "id_x6s4a8wnjml",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "dimensions": [],
+      "measures": [
+        {
+          "type": "double",
+          "value": "fare_amount",
+          "label": "fare_amount",
+          "as": "x",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "scatter_x",
+          "name": "y0",
+          "domain": [-59.97448979591837, 137.52551020408163],
+          "staticDomain": [2.5, 200]
+        },
+        {
+          "type": "double",
+          "value": "total_amount",
+          "label": "total_amount",
+          "as": "y",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "scatter_y",
+          "name": "y1",
+          "domain": [-54.32433179906895, 163.17566820093103],
+          "staticDomain": [2.5, 220]
+        }
+      ],
+      "filter": {},
+      "selfFilter": {},
+      "width": 392,
+      "height": 222,
+      "pointSize": 3,
+      "points": 1000000,
+      "popupItems": [],
+      "isServerRender": true,
+      "id": "id_x6s4a8wnjml",
+      "mapTheme": {
+        "label": "Dark",
+        "value": "mapbox://styles/mapbox/dark-v9"
+      },
+      "colorKey": "#37A2DA",
+      "ruler": {"max": 49.53, "min": 0},
+      "rulerBase": {"max": 49.53, "min": 0}
     }
   ],
   "createdAt": "Mon Apr 13 10:53:16 2020",

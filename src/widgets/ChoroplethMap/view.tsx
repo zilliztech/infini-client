@@ -45,24 +45,11 @@ const ChoroplethMapView: FC<ChoroplethMapProps> = props => {
       payload: drawUpdateConfigHandler(config, draws, true),
     });
   };
-  const _preSql = (center: any) => {
-    const data = {
-      data: [
-        {
-          name: 'render_type',
-          values: ['get_building_shape'],
-        },
-        {
-          name: 'cursor_position',
-          values: [center.lng, center.lat],
-        },
-      ],
-    };
-    return JSON.stringify(data);
-  };
   const _genChoroplethMapPointSql = ({config, center}: any) => {
-    const preFix = `pixel_get_building_shape('${_preSql(center)}')`;
-    const pgSql = `SELECT ${preFix} FROM ${config.source}`;
+    const wkt = dimensionGetter(config, 'wkt')!;
+    const {lng, lat} = center;
+    const pgSql = `SELECT ${wkt.value} FROM ${config.source} where ST_Within (ST_Point (${lng}, ${lat}), ST_GeomFromText(${wkt.value})) `;
+    console.info(pgSql);
     return pgSql;
   };
   const _pointValSqlGetter = (config: any, buildVal: string) => {
@@ -137,6 +124,7 @@ const ChoroplethMapView: FC<ChoroplethMapProps> = props => {
       ({e, map}: any) => {
         const center = {lng: e.lngLat.lng, lat: e.lngLat.lat};
         const pointSql = _genChoroplethMapPointSql({config, center});
+        debugger;
         getRowBySql(pointSql).then((rows: any) => {
           if (rows && rows.length) {
             const buildVal = rows[0].pixel_get_building_shape;
@@ -212,7 +200,7 @@ const ChoroplethMapView: FC<ChoroplethMapProps> = props => {
         {...props}
         onMapUpdate={onMapUpdate}
         onDrawUpdate={onDrawUpdate}
-        // onMouseMove={onMouseMove}
+        onMouseMove={onMouseMove}
         onMouseOut={onMouseOut}
         draws={config.draws || []}
         allowPopUp={true}

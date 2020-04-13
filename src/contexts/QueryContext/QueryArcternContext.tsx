@@ -227,6 +227,9 @@ const QueryArcternProvider: FC<{children: ReactNode}> = ({children}) => {
     return axiosInstance
       .post(url, {id: DB && DB.id.toString(), query: params}, getAxiosConfig())
       .then((res: any) => {
+        if (res.code === -1) {
+          return;
+        }
         const lngLat = res && res.data && res.data.data.result;
         if (lngLat.length > 0) {
           const geocodingUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lngLat[0][lng]},${lngLat[0][lat]}.json?access_token=${globalConfig.MAPBOX_ACCESS_TOKEN}`;
