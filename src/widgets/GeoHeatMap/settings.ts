@@ -1,7 +1,7 @@
 import {makeSetting} from '../../utils/Setting';
 import {cloneObj} from '../../utils/Helpers';
 import {orFilterGetter} from '../../utils/Filters';
-import {KEY} from '../Utils/Map';
+import {KEY, parseBoundsToPolygon} from '../Utils/Map';
 import {dimensionGetter, measureGetter} from '../../utils/WidgetHelpers';
 import {CONFIG, COLUMN_TYPE, RequiredType} from '../../utils/Consts';
 import {GeoHeatMapConfig} from './types';
@@ -39,7 +39,6 @@ const geoHeatMapConfigHandler: ConfigHandler<GeoHeatMapConfig> = config => {
     return newConfig;
   }
 
-  const {_sw, _ne} = newConfig.bounds;
   const pointDimension = {
     value: `ST_Point (${lon.value}, ${lat.value})`,
     as: 'point',
@@ -54,8 +53,7 @@ const geoHeatMapConfigHandler: ConfigHandler<GeoHeatMapConfig> = config => {
       type: 'st_within',
       x: lon.value,
       y: lat.value,
-      sw: _sw,
-      ne: _ne,
+      polygon: parseBoundsToPolygon(newConfig.bounds),
     },
   };
 

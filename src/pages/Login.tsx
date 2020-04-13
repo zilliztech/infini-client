@@ -14,7 +14,7 @@ import {I18nContext} from '../contexts/I18nContext';
 import {queryContext} from '../contexts/QueryContext';
 import {rootContext} from '../contexts/RootContext';
 import InfoDialog from '../components/common/Dialog';
-import {PATH_BI} from '../utils/Endpoints';
+// import {PATH_BI} from '../utils/Endpoints';
 
 const genTheme = (theme: any) => ({
   paper: {

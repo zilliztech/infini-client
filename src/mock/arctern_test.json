@@ -1,0 +1,578 @@
+{
+  "id": 6,
+  "demo": false,
+  "title": "TestDashboard",
+  "userId": "infini",
+  "configs": [
+    {
+      "id": "id_p8wl76x85ya",
+      "title": "",
+      "filter": {},
+      "selfFilter": {},
+      "type": "NumberChart",
+      "source": "nyc_taxi",
+      "dimensions": [],
+      "measures": [
+        {
+          "type": "int",
+          "value": "*",
+          "label": "Records",
+          "as": "value",
+          "format": ".2s",
+          "isCustom": false,
+          "isRecords": true,
+          "expression": "count",
+          "name": "y0"
+        }
+      ],
+      "layout": {
+        "w": 10,
+        "h": 10,
+        "x": 0,
+        "y": 0,
+        "i": "id_p8wl76x85ya",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "colorKey": "#37A2DA",
+      "isServerRender": false
+    },
+    {
+      "type": "BarChart",
+      "title": "",
+      "source": "nyc_taxi",
+      "layout": {
+        "w": 10,
+        "h": 10,
+        "x": 10,
+        "y": 0,
+        "i": "id_r4793be0c8",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "dimensions": [
+        {
+          "label": "tpep_dropoff_datetime",
+          "short": "",
+          "value": "tpep_dropoff_datetime",
+          "type": "timestamp",
+          "format": "auto",
+          "as": "tpep_dropoff_datetime_ee7fajz98u",
+          "isBinned": true,
+          "extract": false,
+          "min": "2009-04-01T00:01:45.000Z",
+          "max": "2009-05-01T00:44:00.000Z",
+          "extent": ["2009-04-01T00:01:45.000Z", "2009-05-01T00:44:00.000Z"],
+          "staticRange": ["2009-04-01T00:01:45.000Z", "2009-05-01T00:44:00.000Z"],
+          "timeBin": "day",
+          "binningResolution": "1d"
+        }
+      ],
+      "measures": [
+        {
+          "type": "int",
+          "value": "*",
+          "label": "Records",
+          "as": "width",
+          "format": ",.0f",
+          "isCustom": false,
+          "isRecords": true,
+          "expression": "count",
+          "name": "y0"
+        }
+      ],
+      "colorItems": [],
+      "filter": {},
+      "selfFilter": {},
+      "id": "id_r4793be0c8",
+      "sort": {"name": "", "order": "descending"},
+      "limit": 8,
+      "colorKey": "ordinal3"
+    },
+    {
+      "type": "BarChart",
+      "title": "",
+      "source": "nyc_taxi",
+      "layout": {
+        "w": 10,
+        "h": 10,
+        "x": 0,
+        "y": 0,
+        "i": "id_lae04d1f12",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "dimensions": [
+        {
+          "label": "tpep_dropoff_datetime",
+          "short": "",
+          "value": "tpep_dropoff_datetime",
+          "type": "timestamp",
+          "format": "auto",
+          "as": "tpep_dropoff_datetime_ukv4djt6mr",
+          "isBinned": true,
+          "extract": false,
+          "min": "2009-04-01T00:01:45.000Z",
+          "max": "2009-05-01T00:44:00.000Z",
+          "extent": ["2009-04-01T00:01:45.000Z", "2009-05-01T00:44:00.000Z"],
+          "staticRange": ["2009-04-01T00:01:45.000Z", "2009-05-01T00:44:00.000Z"],
+          "timeBin": "day",
+          "binningResolution": "1d"
+        },
+        {
+          "label": "VendorID",
+          "short": "",
+          "value": "VendorID",
+          "type": "text",
+          "format": "auto",
+          "as": "VendorID_p2vw54rosr8"
+        }
+      ],
+      "measures": [
+        {
+          "type": "int",
+          "value": "*",
+          "label": "Records",
+          "as": "width",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": true,
+          "expression": "count",
+          "name": "y0"
+        }
+      ],
+      "colorItems": [],
+      "filter": {},
+      "selfFilter": {
+        "selfFilter_VendorID_p2vw54rosr8": {
+          "type": "filter",
+          "expr": {
+            "type": "in",
+            "set": ["VTS", "CMT", "DDS"],
+            "expr": "VendorID"
+          }
+        }
+      },
+      "id": "id_lae04d1f12",
+      "sort": {"name": "", "order": "descending"},
+      "limit": 10,
+      "colorKey": "ordinal8"
+    },
+    {
+      "type": "BubbleChart",
+      "title": "",
+      "source": "nyc_taxi",
+      "layout": {
+        "w": 10,
+        "h": 10,
+        "x": 10,
+        "y": 0,
+        "i": "id_2vgeufmrgni",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "dimensions": [
+        {
+          "label": "fare_amount",
+          "short": "",
+          "value": "fare_amount",
+          "type": "double",
+          "format": "auto",
+          "as": "fare_amount_fy3my4md5zj",
+          "isBinned": true,
+          "maxbins": 12,
+          "min": 2.5,
+          "max": 200,
+          "extent": [2.5, 200],
+          "staticRange": [2.5, 200]
+        }
+      ],
+      "measures": [
+        {
+          "type": "double",
+          "value": "trip_distance",
+          "label": "trip_distance",
+          "as": "x",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "avg",
+          "name": "y2"
+        },
+        {
+          "type": "double",
+          "value": "fare_amount",
+          "label": "fare_amount",
+          "as": "y",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "avg",
+          "name": "y1"
+        },
+        {
+          "type": "double",
+          "value": "fare_amount",
+          "label": "fare_amount",
+          "as": "color",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "avg",
+          "name": "y2"
+        },
+        {
+          "type": "double",
+          "value": "fare_amount",
+          "label": "fare_amount",
+          "as": "size",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "avg",
+          "name": "y3"
+        }
+      ],
+      "colorItems": [],
+      "filter": {},
+      "selfFilter": {},
+      "id": "id_2vgeufmrgni",
+      "colorKey": "blue_green_yellow",
+      "ruler": {"min": 8.11, "max": 151},
+      "rulerBase": {"min": 8.11, "max": 196.25}
+    },
+    {
+      "type": "HeatChart",
+      "title": "",
+      "source": "nyc_taxi",
+      "layout": {
+        "w": 10,
+        "h": 10,
+        "x": 20,
+        "y": 0,
+        "i": "id_ss61q8f8lv7",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "dimensions": [
+        {
+          "label": "fare_amount",
+          "short": "xaxis",
+          "value": "fare_amount",
+          "type": "double",
+          "format": "auto",
+          "as": "x",
+          "isBinned": true,
+          "maxbins": 12,
+          "min": 2.5,
+          "max": 200,
+          "extent": [2.5, 200],
+          "staticRange": [2.5, 200]
+        },
+        {
+          "label": "tpep_dropoff_datetime",
+          "short": "yaxis",
+          "value": "tpep_dropoff_datetime",
+          "type": "timestamp",
+          "format": "auto",
+          "as": "y",
+          "isBinned": true,
+          "extract": false,
+          "min": "2009-04-01T00:01:45.000Z",
+          "max": "2009-05-01T00:44:00.000Z",
+          "extent": ["2009-04-01T00:01:45.000Z", "2009-05-01T00:44:00.000Z"],
+          "staticRange": ["2009-04-01T00:01:45.000Z", "2009-05-01T00:44:00.000Z"],
+          "timeBin": "day",
+          "binningResolution": "1d"
+        }
+      ],
+      "measures": [
+        {
+          "type": "int",
+          "value": "*",
+          "label": "Records",
+          "as": "color",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": true,
+          "expression": "count",
+          "name": "y0"
+        }
+      ],
+      "colorItems": [],
+      "filter": {},
+      "selfFilter": {},
+      "id": "id_ss61q8f8lv7",
+      "colorKey": "green_yellow_red",
+      "ruler": {"min": 1, "max": 17631},
+      "rulerBase": {"min": 1, "max": 17631}
+    },
+    {
+      "type": "HistogramChart",
+      "title": "",
+      "source": "nyc_taxi",
+      "layout": {
+        "w": 10,
+        "h": 10,
+        "x": 0,
+        "y": 10,
+        "i": "id_09lldnniefgv",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "dimensions": [
+        {
+          "label": "tpep_dropoff_datetime",
+          "short": "xaxis",
+          "value": "tpep_dropoff_datetime",
+          "type": "timestamp",
+          "format": "auto",
+          "as": "x",
+          "isBinned": true,
+          "extract": false,
+          "min": "2009-04-01T00:01:45.000Z",
+          "max": "2009-05-01T00:44:00.000Z",
+          "extent": ["2009-04-01T00:01:45.000Z", "2009-05-01T00:44:00.000Z"],
+          "staticRange": ["2009-04-01T00:01:45.000Z", "2009-05-01T00:44:00.000Z"],
+          "timeBin": "day",
+          "binningResolution": "1d"
+        },
+        {
+          "label": "VendorID",
+          "short": "color",
+          "value": "VendorID",
+          "type": "text",
+          "format": "auto",
+          "as": "color"
+        }
+      ],
+      "measures": [
+        {
+          "type": "double",
+          "value": "total_amount",
+          "label": "total_amount",
+          "as": "y",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "avg",
+          "name": "y0"
+        }
+      ],
+      "colorItems": [
+        {
+          "colName": "VendorID",
+          "value": "VTS",
+          "label": "VTS",
+          "color": "#32C5E9",
+          "as": "VTS"
+        },
+        {
+          "colName": "VendorID",
+          "value": "CMT",
+          "label": "CMT",
+          "color": "#67E0E3",
+          "as": "CMT"
+        },
+        {
+          "colName": "VendorID",
+          "value": "DDS",
+          "label": "DDS",
+          "color": "#9FE6B8",
+          "as": "DDS"
+        }
+      ],
+      "filter": {},
+      "selfFilter": {
+        "selfFilter_color": {
+          "type": "filter",
+          "expr": {
+            "type": "in",
+            "set": ["VTS", "CMT", "DDS"],
+            "expr": "VendorID"
+          }
+        }
+      },
+      "id": "id_09lldnniefgv"
+    },
+    {
+      "type": "PieChart",
+      "title": "",
+      "source": "nyc_taxi",
+      "layout": {
+        "w": 10,
+        "h": 10,
+        "x": 10,
+        "y": 0,
+        "i": "id_7voyoaeo60v",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "dimensions": [
+        {
+          "label": "tpep_dropoff_datetime",
+          "short": "",
+          "value": "tpep_dropoff_datetime",
+          "type": "timestamp",
+          "format": "auto",
+          "as": "tpep_dropoff_datetime_sf5601pwib",
+          "isBinned": true,
+          "extract": false,
+          "min": "2009-04-01T00:01:45.000Z",
+          "max": "2009-05-01T00:44:00.000Z",
+          "extent": ["2009-04-01T00:01:45.000Z", "2009-05-01T00:44:00.000Z"],
+          "staticRange": ["2009-04-01T00:01:45.000Z", "2009-05-01T00:44:00.000Z"],
+          "timeBin": "day",
+          "binningResolution": "1d"
+        }
+      ],
+      "measures": [
+        {
+          "type": "int",
+          "value": "*",
+          "label": "Records",
+          "as": "size",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": true,
+          "expression": "count",
+          "name": "y0"
+        }
+      ],
+      "colorItems": [],
+      "filter": {},
+      "selfFilter": {},
+      "id": "id_7voyoaeo60v",
+      "sort": {"name": "", "order": "descending"},
+      "limit": 6,
+      "colorKey": "ordinal4"
+    },
+    {
+      "type": "TableChart",
+      "title": "",
+      "source": "nyc_taxi",
+      "layout": {
+        "w": 10,
+        "h": 10,
+        "x": 20,
+        "y": 0,
+        "i": "id_vk3qw1h9l99",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "dimensions": [
+        {
+          "label": "fare_amount",
+          "short": "colname",
+          "value": "fare_amount",
+          "type": "double",
+          "format": ",.2f",
+          "as": "fare_amount_25futqhrmap",
+          "isBinned": true,
+          "maxbins": 12,
+          "min": 2.5,
+          "max": 200,
+          "extent": [2.5, 200],
+          "staticRange": [2.5, 200]
+        }
+      ],
+      "measures": [
+        {
+          "type": "bigint",
+          "value": "passenger_count",
+          "label": "passenger_count",
+          "as": "measure_2qx6slhvcz4",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "avg",
+          "name": "y0"
+        }
+      ],
+      "colorItems": [],
+      "filter": {},
+      "selfFilter": {},
+      "limit": 50,
+      "sort": {"name": "", "order": "descending"},
+      "id": "id_vk3qw1h9l99"
+    },
+    {
+      "type": "PointMap",
+      "title": "点图",
+      "source": "nyc_taxi",
+      "layout": {
+        "w": 10,
+        "h": 10,
+        "x": 0,
+        "y": 0,
+        "i": "id_o6ogoxs7tl",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "dimensions": [],
+      "measures": [
+        {
+          "type": "double",
+          "value": "dropoff_longitude",
+          "label": "dropoff_longitude",
+          "as": "lon",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "gis_point_lon",
+          "name": "y0"
+        },
+        {
+          "type": "double",
+          "value": "dropoff_latitude",
+          "label": "dropoff_latitude",
+          "as": "lat",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "gis_point_lat",
+          "name": "y1"
+        }
+      ],
+      "colorItems": [],
+      "filter": {},
+      "selfFilter": {},
+      "width": 542,
+      "height": 332.66668701171875,
+      "isServerRender": true,
+      "mapTheme": "mapbox://styles/mapbox/dark-v9",
+      "zoom": 12.581143743461755,
+      "pointSize": 3,
+      "points": 1000000,
+      "popupItems": [],
+      "id": "id_o6ogoxs7tl",
+      "colorKey": "#37A2DA",
+      "center": {"lng": -73.97829063386956, "lat": 40.77239912726026},
+      "bounds": {
+        "_sw": {"lng": -74.00938632287193, "lat": 40.757929213132115},
+        "_ne": {"lng": -73.94719494486831, "lat": 40.786865890801835}
+      }
+    }
+  ],
+  "createdAt": "Mon Apr 13 10:53:16 2020",
+  "modifyAt": "Mon Apr 13 10:53:16 2020",
+  "sources": ["nyc_taxi"]
+}

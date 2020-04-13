@@ -167,3 +167,8 @@ export const drawsGlGetter = (config: any) => {
   });
   return draws;
 };
+
+export const parseBoundsToPolygon = (bounds: any) => {
+  const {_sw: sw, _ne: ne} = bounds;
+  return `${sw.lng} ${sw.lat}, ${sw.lng} ${ne.lat}, ${ne.lng} ${ne.lat}, ${ne.lng} ${sw.lat}, ${sw.lng} ${sw.lat}`;
+};

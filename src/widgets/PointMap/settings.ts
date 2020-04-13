@@ -4,7 +4,7 @@ import {CONFIG, COLUMN_TYPE, RequiredType} from '../../utils/Consts';
 import {cloneObj} from '../../utils/Helpers';
 import {getColType} from '../../utils/ColTypes';
 import {queryDistinctValues, MeasureParams, parseTocolorItems} from '../Utils/settingHelper';
-import {DEFAULT_MAX_POINTS_NUM, KEY} from '../Utils/Map';
+import {DEFAULT_MAX_POINTS_NUM, KEY, parseBoundsToPolygon} from '../Utils/Map';
 import {measureGetter} from '../../utils/WidgetHelpers';
 import {cleanLastSelfFilter, addSelfFilter} from '../../widgets/Utils/settingHelper';
 import {MapMeasure} from '../common/MapChart.type';
@@ -80,8 +80,6 @@ const pointMapConfigHandler = (config: any) => {
     return newConfig;
   }
 
-  const {_sw, _ne} = newConfig.bounds;
-
   let colorMeasure = measureGetter(newConfig, 'color');
   const pointMeasure = {
     expression: 'project',
@@ -100,8 +98,7 @@ const pointMapConfigHandler = (config: any) => {
       type: 'st_within',
       x: lon.value,
       y: lat.value,
-      sw: _sw,
-      ne: _ne,
+      polygon: parseBoundsToPolygon(newConfig.bounds),
     },
   };
   newConfig.filter = orFilterGetter(newConfig.filter);

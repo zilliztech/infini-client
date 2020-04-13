@@ -279,6 +279,7 @@ const LineChart: FC<LineChartProps> = props => {
   yAxis.ticks(yTickNums);
 
   const [timeSelection, setTimeSelection] = useState<any>([]);
+
   return (
     <div
       className={`z-chart z-line-chart ${clipId}`}

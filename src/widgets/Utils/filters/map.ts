@@ -52,6 +52,10 @@ export const drawUpdateConfigHandler = (
         if (draw.data.geometry.coordinates[0][0] === null) {
           return;
         }
+        const points = draw.data.geometry.coordinates.map((item: any) => `${item[0]} ${item[1]}`);
+        points.push(points[0]);
+        const polygon = points.join(', ');
+        // console.info(polygon);
         filter[draw.id] = {
           type: 'filter',
           isGeoJson: true,
@@ -60,8 +64,7 @@ export const drawUpdateConfigHandler = (
             geoJson: draw.data,
             x: lon!.value,
             y: lat!.value,
-            px: draw.data.geometry.coordinates[0].map((point: any) => point[0]),
-            py: draw.data.geometry.coordinates[0].map((point: any) => point[1]),
+            polygon,
           },
         };
       }

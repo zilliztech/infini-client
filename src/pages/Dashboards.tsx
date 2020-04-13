@@ -60,7 +60,7 @@ const Dashboards: FC<RouteComponentProps> = props => {
   const {auth} = useContext(authContext);
   const {nls} = useContext(I18nContext);
   const {getDashboardList, saveDashboard, removeDashboard} = useContext(queryContext);
-  const {widgetSettings, setDialog, setSnackbar} = useContext(rootContext);
+  const {widgetSettings, setDialog, setSnackbar, isArctern} = useContext(rootContext);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<any>([]);
   const classes = useStyles();
@@ -258,7 +258,7 @@ const Dashboards: FC<RouteComponentProps> = props => {
 
   useEffect(() => {
     if (!imported) {
-      dashboards.map(importDashboard);
+      (isArctern ? [] : dashboards).map(importDashboard);
       imported = true;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

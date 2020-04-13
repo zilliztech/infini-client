@@ -4,7 +4,7 @@ import {makeSetting} from '../../utils/Setting';
 import {restoreSource} from '../../utils/Helpers';
 import {CONFIG, COLUMN_TYPE, RequiredType} from '../../utils/Consts';
 import {measureGetter, dimensionGetter, getExpression} from '../../utils/WidgetHelpers';
-import {KEY as MAPKEY} from '../Utils/Map';
+import {KEY as MAPKEY, parseBoundsToPolygon} from '../Utils/Map';
 import {ChoroplethMapConfig} from './types';
 import {MeasureParams} from '../Utils/settingHelper';
 import {getColorGradient} from '../../utils/Colors';
@@ -69,15 +69,13 @@ const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapCo
       },
     };
   }
-  const {_sw, _ne} = newConfig.bounds;
   newConfig.selfFilter.bounds = {
     type: 'filter',
     expr: {
       type: 'st_within',
       x: lon.value,
       y: lat.value,
-      sw: _sw,
-      ne: _ne,
+      polygon: parseBoundsToPolygon(newConfig.bounds),
     },
   };
 
