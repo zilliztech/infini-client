@@ -137,15 +137,16 @@ const QueryArcternProvider: FC<{children: ReactNode}> = ({children}) => {
     let dashboard: any = getDashboardById(id);
     const url = URL.POST_TABLES_DETAIL;
     let sources = await getAvaliableTables();
+    sources = sources || [];
     const options: any[] = await Promise.all(
-      (sources || []).map(async (source: string) => {
+      sources.map(async (source: string) => {
         const [id, table] = [DB && DB.id.toString(), source];
         let res = await axiosInstance.post(url, {id, table}, getAxiosConfig());
         return res && res.data.data;
       })
     );
     const totals = await Promise.all(
-      (sources || []).map(async (source: string) => {
+      sources.map(async (source: string) => {
         const params = {type: QueryType.sql, sql: `select count(*) from ${source}`};
         const res = await getData(params);
         const key = Object.keys(res[0])[0];
@@ -153,7 +154,7 @@ const QueryArcternProvider: FC<{children: ReactNode}> = ({children}) => {
       })
     );
     let sourceOptions: any = {};
-    (sources || []).forEach((source: string, i: number) => {
+    sources.forEach((source: string, i: number) => {
       sourceOptions[formatSource(source)] = options[i].sort((item1: any, item2: any) =>
         item1.col_name > item2.col_name ? 1 : -1
       );

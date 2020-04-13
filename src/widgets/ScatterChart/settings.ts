@@ -1,7 +1,7 @@
 import {makeSetting} from '../../utils/Setting';
 import {cloneObj} from '../../utils/Helpers';
 import {measureGetter} from '../../utils/WidgetHelpers';
-import {DEFAULT_MAX_POINTS_NUM} from '../Utils/Map';
+import {DEFAULT_MAX_POINTS_NUM, parseBoundsToPolygon} from '../Utils/Map';
 import {CONFIG, RequiredType, COLUMN_TYPE} from '../../utils/Consts';
 import {
   cleanLastSelfFilter,
@@ -97,8 +97,10 @@ const scatterConfigHandler = (config: any) => {
       type: 'st_within',
       x: xMeasure.value,
       y: yMeasure.value,
-      sw: {lng: xDomain[0], lat: yDomain[0]},
-      ne: {lng: xDomain[1], lat: yDomain[1]},
+      polygon: parseBoundsToPolygon({
+        _sw: {lng: xDomain[0], lat: yDomain[0]},
+        _ne: {lng: xDomain[1], lat: yDomain[1]},
+      }),
     },
   };
   copiedConfig.xDomain = xDomain;
