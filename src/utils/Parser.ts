@@ -9,7 +9,7 @@ import {
 } from '../utils/ArcternParser';
 const Parser = S.SQLParser;
 export const parseExpression = (expression: any) => {
-  const {isArctern = false} = window._env_;
+  const {isArctern = false} = (window && window._env_) || {};
   if (isArctern) {
     Parser.registerExpression('trunc', truncParser);
     Parser.registerExpression('extract', arcternExtractParser);
