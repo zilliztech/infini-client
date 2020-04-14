@@ -4,7 +4,7 @@ import {CONFIG, COLUMN_TYPE, RequiredType} from '../../utils/Consts';
 import {cloneObj} from '../../utils/Helpers';
 import {getColType} from '../../utils/ColTypes';
 import {queryDistinctValues, MeasureParams, parseTocolorItems} from '../Utils/settingHelper';
-import {DEFAULT_MAX_POINTS_NUM, KEY, parseBoundsToPolygon} from '../Utils/Map';
+import {DEFAULT_MAX_POINTS_NUM, KEY} from '../Utils/Map';
 import {measureGetter} from '../../utils/WidgetHelpers';
 import {cleanLastSelfFilter, addSelfFilter} from '../../widgets/Utils/settingHelper';
 import {MapMeasure} from '../common/MapChart.type';
@@ -92,15 +92,6 @@ const pointMapConfigHandler = (config: any) => {
   }
   newConfig.limit = newConfig.points || DEFAULT_MAX_POINTS_NUM;
 
-  newConfig.selfFilter.bounds = {
-    type: 'filter',
-    expr: {
-      type: 'st_within',
-      x: lon.value,
-      y: lat.value,
-      polygon: parseBoundsToPolygon(newConfig.bounds),
-    },
-  };
   newConfig.filter = orFilterGetter(newConfig.filter);
   return newConfig;
 };

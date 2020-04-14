@@ -4,7 +4,7 @@ import {makeSetting} from '../../utils/Setting';
 import {restoreSource} from '../../utils/Helpers';
 import {CONFIG, COLUMN_TYPE, RequiredType} from '../../utils/Consts';
 import {measureGetter, dimensionGetter, getExpression} from '../../utils/WidgetHelpers';
-import {KEY as MAPKEY, parseBoundsToPolygon} from '../Utils/Map';
+import {KEY as MAPKEY} from '../Utils/Map';
 import {ChoroplethMapConfig} from './types';
 import {MeasureParams} from '../Utils/settingHelper';
 import {getColorGradient} from '../../utils/Colors';
@@ -54,8 +54,6 @@ const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapCo
       },
     };
   }
-  const lon = measureGetter(newConfig, MAPKEY.LONGTITUDE)!;
-  const lat = measureGetter(newConfig, MAPKEY.LATITUDE)!;
   let colorM = measureGetter(newConfig, 'w');
   if (!newConfig.bounds) {
     newConfig.bounds = {
@@ -69,16 +67,6 @@ const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapCo
       },
     };
   }
-  newConfig.selfFilter.bounds = {
-    type: 'filter',
-    expr: {
-      type: 'st_within',
-      x: lon.value,
-      y: lat.value,
-      polygon: parseBoundsToPolygon(newConfig.bounds),
-    },
-  };
-
   newConfig.filter = orFilterGetter(newConfig.filter);
 
   // gen vega
