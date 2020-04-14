@@ -1,7 +1,7 @@
 import {makeSetting} from '../../utils/Setting';
 import {cloneObj} from '../../utils/Helpers';
 import {orFilterGetter} from '../../utils/Filters';
-import {KEY, parseBoundsToPolygon} from '../Utils/Map';
+import {KEY} from '../Utils/Map';
 import {dimensionGetter, measureGetter} from '../../utils/WidgetHelpers';
 import {CONFIG, COLUMN_TYPE, RequiredType} from '../../utils/Consts';
 import {GeoHeatMapConfig} from './types';
@@ -46,17 +46,6 @@ const geoHeatMapConfigHandler: ConfigHandler<GeoHeatMapConfig> = config => {
   newConfig.dimensions = [pointDimension];
   newConfig.isServerRender = true;
   newConfig.filter = newConfig.filter || {};
-
-  newConfig.selfFilter.bounds = {
-    type: 'filter',
-    expr: {
-      type: 'st_within',
-      x: lon.value,
-      y: lat.value,
-      polygon: parseBoundsToPolygon(newConfig.bounds),
-    },
-  };
-
   newConfig.filter = orFilterGetter(newConfig.filter);
 
   return newConfig;
