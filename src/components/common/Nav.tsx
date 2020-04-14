@@ -2,17 +2,20 @@ import React, {FC, useContext, useEffect} from 'react';
 import clsx from 'clsx';
 import {withRouter} from 'react-router-dom';
 import {makeStyles, useTheme, Theme} from '@material-ui/core/styles';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import SettingsIcon from '@material-ui/icons/Settings';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+// import DashboardIcon from '@material-ui/icons/Dashboard';
+// import SettingsIcon from '@material-ui/icons/Settings';
+// import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Drawer from '@material-ui/core/Drawer';
 import Logo from '../../logo.svg';
 import {rootContext} from '../../contexts/RootContext';
 import {I18nContext} from '../../contexts/I18nContext';
-import {namespace} from '../../utils/Helpers';
+// import {namespace} from '../../utils/Helpers';
 
 import {genBasicStyle} from '../../utils/Theme';
-import {PATH_ROOT, PATH_CONFIG_DB} from '../../utils/Endpoints';
+import {
+  PATH_ROOT,
+  // PATH_CONFIG_DB
+} from '../../utils/Endpoints';
 const useStyles = makeStyles((theme: Theme) => ({
   ...genBasicStyle(theme.palette.primary.main),
   paper: {
@@ -59,10 +62,10 @@ const Nav: FC<any> = (props: any) => {
   const {theme} = useContext(rootContext);
   const {nls} = useContext(I18nContext);
   const _theme = useTheme();
-  const {onAvatarClick} = props;
+  // const {onAvatarClick} = props;
   const classes = useStyles(_theme);
   let path = props.history.location.pathname;
-  const auth = JSON.parse(window.localStorage.getItem(namespace(['login'], 'userAuth')) || '');
+  // const auth = JSON.parse(window.localStorage.getItem(namespace(['login'], 'userAuth')) || '');
 
   useEffect(() => {
     document.body.setAttribute('style', `background-color: ${_theme.palette.background.default};`);
@@ -76,19 +79,23 @@ const Nav: FC<any> = (props: any) => {
       variant="permanent"
       anchor="left"
     >
-      <div className={classes.logo} onClick={() => props.history.push(PATH_ROOT)}></div>
+      <div
+        className={classes.logo}
+        onClick={() => window.open('http://www.zilliz.com', '_blank')}
+        // onClick={() => props.history.push(PATH_ROOT)}
+      ></div>
       <div className={classes.container}>
         <div
           className={clsx(classes.wrapper, classes.hover, {[classes.selected]: path === PATH_ROOT})}
           title={nls.label_dashboards}
         >
-          <DashboardIcon
+          {/* <DashboardIcon
             onClick={() => props.history.push(PATH_ROOT)}
             classes={{root: classes.icon}}
-          />
+          /> */}
         </div>
         <div>
-          {auth && auth.userId !== 'demo' && (
+          {/* {auth && auth.userId !== 'demo' && (
             <div className={clsx(classes.wrapper, classes.hover)}>
               <SettingsIcon
                 classes={{root: classes.settingIcon}}
@@ -98,7 +105,7 @@ const Nav: FC<any> = (props: any) => {
           )}
           <div className={clsx(classes.wrapper, classes.hover)}>
             <ExitToAppIcon onClick={onAvatarClick} classes={{root: classes.settingIcon}} />
-          </div>
+          </div> */}
         </div>
       </div>
     </Drawer>
