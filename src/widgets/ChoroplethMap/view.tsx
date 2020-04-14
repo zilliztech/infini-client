@@ -123,7 +123,7 @@ const ChoroplethMapView: FC<ChoroplethMapProps> = props => {
         const center = {lng: e.lngLat.lng, lat: e.lngLat.lat};
         const pointSql = _genChoroplethMapPointSql({config, center});
         getRowBySql(pointSql).then((res: any) => {
-          if (res && res.data && res.data.result) {
+          if (res && res.data && res.data.result && res.data.result.length) {
             const buildVal = res.data.result[0].wkt;
             const pointSql = _pointValSqlGetter(config, buildVal);
             generalRequest(pointSql).then((res: any) => {
