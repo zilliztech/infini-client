@@ -205,7 +205,7 @@ export const getWidgetSql = (
     SqlParser.SQLParser.registerExpression('extract', arcternExtractParser);
     SqlParser.SQLParser.registerExpression('st_within', stWithinParser);
     SqlParser.SQLParser.registerExpression('st_distance', stDistanceParser);
-    SqlParser.SQLParser.registerExpression('wkt', wktParser);            
+    SqlParser.SQLParser.registerExpression('wkt', wktParser);
   } else {
     SqlParser.SQLParser.registerExpression('date_trunc', dateTruncParser);
     SqlParser.SQLParser.registerExpression('extract', extractParser);
