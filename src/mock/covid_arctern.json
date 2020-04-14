@@ -1,0 +1,409 @@
+{
+  "id": 2,
+  "demo": false,
+  "title": "新冠病毒热力图",
+  "userId": "infini",
+  "configs": [
+    {
+      "type": "GeoHeatMap",
+      "title": "全球确诊数",
+      "source": "world_with_city",
+      "layout": {
+        "w": 12,
+        "h": 30,
+        "x": 0,
+        "y": 0,
+        "i": "id_bkxbkpx7wy7",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "dimensions": [
+        {
+          "label": "Longitude",
+          "short": "longtitude",
+          "value": "Longitude",
+          "type": "double",
+          "format": "auto",
+          "as": "lon",
+          "isBinned": false,
+          "maxbins": 12,
+          "expression": "gis_mapping_lon",
+          "isNotUseBin": true
+        },
+        {
+          "label": "Latitude",
+          "short": "latitude",
+          "value": "Latitude",
+          "type": "double",
+          "format": "auto",
+          "as": "lat",
+          "isBinned": false,
+          "maxbins": 12,
+          "expression": "gis_mapping_lat",
+          "isNotUseBin": true
+        }
+      ],
+      "measures": [
+        {
+          "type": "int",
+          "value": "ConfirmedCount",
+          "label": "ConfirmedCount",
+          "as": "w",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "sum",
+          "name": "y0"
+        }
+      ],
+      "colorItems": [],
+      "filter": {},
+      "selfFilter": {},
+      "width": 530,
+      "height": 1093,
+      "isServerRender": true,
+      "colorKey": "green_yellow_red",
+      "mapTheme": "mapbox://styles/mapbox/dark-v9",
+      "zoom": 2.4742439486819863,
+      "id": "id_bkxbkpx7wy7",
+      "ruler": {"max": 166831, "min": 0},
+      "rulerBase": {"max": 166831, "min": 0},
+      "center": {"lng": 104.13633351225008, "lat": 37.90513974653511},
+      "bounds": {
+        "_sw": {"lng": 70.60454112247754, "lat": -27.067169735573266},
+        "_ne": {"lng": 137.66812590202528, "lat": 73.36503696611794}
+      }
+    },
+    {
+      "type": "HeatChart",
+      "title": "",
+      "source": "world_with_city",
+      "layout": {
+        "w": 6,
+        "h": 31,
+        "x": 24,
+        "y": 0,
+        "i": "id_wbn47cet8m",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "dimensions": [
+        {
+          "label": "ConfirmedCount",
+          "short": "xaxis",
+          "value": "ConfirmedCount",
+          "type": "int",
+          "format": "auto",
+          "as": "x",
+          "isBinned": true,
+          "maxbins": 12,
+          "min": 0,
+          "max": 166831,
+          "extent": [0, 166831],
+          "staticRange": [0, 166831]
+        },
+        {
+          "label": "CuredCount",
+          "short": "yaxis",
+          "value": "CuredCount",
+          "type": "int",
+          "format": "auto",
+          "as": "y",
+          "isBinned": true,
+          "maxbins": 12,
+          "min": 0,
+          "max": 64281,
+          "extent": [0, 64281],
+          "staticRange": [0, 64281]
+        }
+      ],
+      "measures": [
+        {
+          "type": "int",
+          "value": "*",
+          "label": "Records",
+          "as": "color",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": true,
+          "expression": "count",
+          "name": "y0"
+        }
+      ],
+      "colorItems": [],
+      "filter": {},
+      "selfFilter": {},
+      "id": "id_wbn47cet8m",
+      "colorKey": "blue_green_yellow",
+      "ruler": {"min": 1, "max": 73361},
+      "rulerBase": {"min": 1, "max": 73361}
+    },
+    {
+      "type": "BarChart",
+      "title": "",
+      "source": "world_with_city",
+      "layout": {
+        "w": 6,
+        "h": 13,
+        "x": 12,
+        "y": 10,
+        "i": "id_lm8umpo0a7",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "dimensions": [
+        {
+          "label": "DeadCount",
+          "short": "",
+          "value": "DeadCount",
+          "type": "int",
+          "format": "auto",
+          "as": "DeadCount_xd43sdvy6q8",
+          "isBinned": true,
+          "maxbins": 12,
+          "min": 0,
+          "max": 19899,
+          "extent": [0, 19899],
+          "staticRange": [0, 19899]
+        }
+      ],
+      "measures": [
+        {
+          "type": "string",
+          "value": "Country",
+          "label": "Country",
+          "as": "width",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "unique",
+          "name": "y1"
+        },
+        {
+          "type": "int",
+          "value": "CuredCount",
+          "label": "CuredCount",
+          "as": "color",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "avg",
+          "name": "y1"
+        }
+      ],
+      "colorItems": [],
+      "filter": {},
+      "selfFilter": {},
+      "sort": {"name": "", "order": "descending"},
+      "limit": 10,
+      "colorKey": "blue_green_yellow",
+      "id": "id_lm8umpo0a7",
+      "ruler": {"min": 0, "max": 31897},
+      "rulerBase": {"min": 0, "max": 31897}
+    },
+    {
+      "type": "PieChart",
+      "title": "",
+      "source": "world_with_city",
+      "layout": {
+        "w": 6,
+        "h": 12.5,
+        "x": 18,
+        "y": 10,
+        "i": "id_97um5t9egj9",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "dimensions": [
+        {
+          "label": "Country",
+          "short": "",
+          "value": "Country",
+          "type": "text",
+          "format": "auto",
+          "as": "Country_p2gf6a5y9o8"
+        }
+      ],
+      "measures": [
+        {
+          "type": "int",
+          "value": "*",
+          "label": "Records",
+          "as": "size",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": true,
+          "expression": "count",
+          "name": "y0"
+        }
+      ],
+      "colorItems": [],
+      "filter": {},
+      "selfFilter": {
+        "selfFilter_Country_p2gf6a5y9o8": {
+          "type": "filter",
+          "expr": {
+            "type": "in",
+            "set": [
+              "Texas",
+              "Georgia",
+              "Virginia",
+              "Kentucky",
+              "Missouri",
+              "North Carolina",
+              "Tennessee",
+              "Indiana",
+              "Illinois",
+              "Iowa"
+            ],
+            "expr": "Country"
+          }
+        }
+      },
+      "sort": {"name": "", "order": "descending"},
+      "limit": 13,
+      "colorKey": "ordinal8",
+      "id": "id_97um5t9egj9"
+    },
+    {
+      "title": "",
+      "filter": {},
+      "selfFilter": {},
+      "type": "NumberChart",
+      "source": "world_with_city",
+      "dimensions": [],
+      "measures": [
+        {
+          "type": "int",
+          "value": "DeadCount",
+          "label": "DeadCount",
+          "as": "value",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "sum",
+          "name": "y0"
+        }
+      ],
+      "layout": {
+        "w": 6,
+        "h": 8,
+        "x": 18,
+        "y": 22.5,
+        "i": "id_9jm06b2lb4b",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "colorKey": "#37A2DA",
+      "isServerRender": false,
+      "colorItems": [],
+      "id": "id_9jm06b2lb4b"
+    },
+    {
+      "title": "",
+      "filter": {},
+      "selfFilter": {},
+      "type": "NumberChart",
+      "source": "world_with_city",
+      "dimensions": [],
+      "measures": [
+        {
+          "type": "int",
+          "value": "CuredCount",
+          "label": "CuredCount",
+          "as": "value",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "sum",
+          "name": "y0"
+        }
+      ],
+      "layout": {
+        "w": 6,
+        "h": 7.5,
+        "x": 12,
+        "y": 23,
+        "i": "id_ndo07sr4ope",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "colorKey": "#37A2DA",
+      "isServerRender": false,
+      "colorItems": [],
+      "id": "id_ndo07sr4ope"
+    },
+    {
+      "type": "HistogramChart",
+      "title": "",
+      "source": "world_with_city",
+      "layout": {
+        "w": 12,
+        "h": 10,
+        "x": 12,
+        "y": 0,
+        "i": "id_tukcxwkesgi",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "dimensions": [
+        {
+          "label": "ConfirmedCount",
+          "short": "xaxis",
+          "value": "ConfirmedCount",
+          "type": "int",
+          "format": "auto",
+          "as": "x",
+          "isBinned": true,
+          "maxbins": 12,
+          "min": 0,
+          "max": 166831,
+          "extent": [0, 166831],
+          "staticRange": [0, 166831]
+        }
+      ],
+      "measures": [
+        {
+          "type": "string",
+          "value": "Country",
+          "label": "Country",
+          "as": "y",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "unique",
+          "name": "y0"
+        }
+      ],
+      "colorItems": [
+        {
+          "color": "#37A2DA",
+          "as": "y",
+          "label": "Country",
+          "isRecords": false,
+          "value": "Country"
+        }
+      ],
+      "filter": {},
+      "selfFilter": {},
+      "id": "id_tukcxwkesgi"
+    }
+  ],
+  "createdAt": "Tue Apr 14 17:39:12 2020",
+  "modifyAt": "Tue Apr 14 17:39:12 2020",
+  "sources": ["nyc_taxi", "world_with_city"]
+}

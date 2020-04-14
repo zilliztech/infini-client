@@ -46,7 +46,6 @@ const geoHeatMapConfigHandler: ConfigHandler<GeoHeatMapConfig> = config => {
   newConfig.dimensions = [pointDimension];
   newConfig.isServerRender = true;
   newConfig.filter = newConfig.filter || {};
-
   newConfig.filter = orFilterGetter(newConfig.filter);
   return newConfig;
 };
