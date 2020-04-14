@@ -3,7 +3,7 @@
 
 > Still in early phase
 ## Quick Start
-* change endpoint to your server address
+* change endpoint to your api server address(you api server should push a default user with username:"zilliz", password:"123456")
 ```
 vim src/utils/Endpoints.ts
 ```
@@ -12,15 +12,19 @@ vim src/utils/Endpoints.ts
 npm/yarn install
 ```
 
-* start the server
+* start the server(the path will show after the server start successfully, default is http://localhost:3000)
 ```
 npm/yarn start
 ```
 
-* Build
+* Build(if you just wanna run locally, jump this step)
 ```
 yarn build
 ```
+
+* visit the website in browser, the default username, password is "zilliz", "123456", and it will auto login
+
+* choose the database you wanna connect to, then you could make your own dashboard
 
 ## Support Database
 * postgres (partial support)
