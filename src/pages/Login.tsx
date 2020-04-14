@@ -14,7 +14,11 @@ import {I18nContext} from '../contexts/I18nContext';
 import {queryContext} from '../contexts/QueryContext';
 import {rootContext} from '../contexts/RootContext';
 import InfoDialog from '../components/common/Dialog';
-// import {PATH_BI} from '../utils/Endpoints';
+import Spinner from '../components/common/Spinner';
+import {PATH_BI} from '../utils/Endpoints';
+import {cloneObj} from '../utils/Helpers';
+import {isDashboardReady} from '../utils/Dashboard';
+import {dashboards_arctern} from '../mock';
 
 const genTheme = (theme: any) => ({
   paper: {
@@ -22,6 +26,7 @@ const genTheme = (theme: any) => ({
     display: 'flex',
     flexDirection: 'column',
     background: theme.palette.background.paper,
+    position: 'relative',
   },
   title: {
     padding: theme.spacing(4, 4, 0, 4),
@@ -42,22 +47,49 @@ const genTheme = (theme: any) => ({
 const Login: FC = () => {
   const {nls} = useContext(I18nContext);
   const {auth, setAuthStatus} = useContext(authContext);
-  const {login} = useContext(queryContext);
-  const {dialog, setDialog} = useContext(rootContext);
+  const {login, getDBs, setDB, saveDashboard} = useContext(queryContext);
+  const {dialog, setDialog, widgetSettings} = useContext(rootContext);
   const [email, setEmail] = useState('zilliz');
   const [password, setPassword] = useState('123456');
+  const [isLoading, setLoading] = useState(false);
   const classes = makeStyles(genTheme as any)() as any;
   const isIn = auth.userId !== 'guest';
 
   useEffect(() => {
-    setTimeout(() => handleSubmit(), 1000);
+    dashboards_arctern.map(importDashboard);
+    setTimeout(() => {
+      setLoading(true);
+      handleSubmit();
+    }, 1000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   if (isIn) {
-    return <Redirect to="/" />;
-    // return <Redirect to={`${PATH_BI}/:1`} />;
+    // return <Redirect to="/" />;
+    return <Redirect to={`${PATH_BI}/1`} />;
   }
 
+  const importDashboard = (obj: any) => {
+    if (!isDashboardReady(obj, widgetSettings)) {
+      setDialog({
+        open: true,
+        title: nls.label_info,
+        content: nls.tip_dashboard_config_wrong,
+      });
+      return false;
+    }
+    _import(obj);
+  };
+  const _import = (obj: any) => {
+    let cloneData = cloneObj([]);
+    obj.modifyAt = new Date().toUTCString();
+    saveDashboard(JSON.stringify(obj), obj.id);
+    let index = cloneData.findIndex((d: any) => d.id === obj.id);
+    if (index !== -1) {
+      cloneData[index] = obj;
+    } else {
+      cloneData.push(obj);
+    }
+  };
   const handleSubmit = () => {
     if (email === '' || password === '') {
       setDialog({
@@ -70,7 +102,14 @@ const Login: FC = () => {
       login({username: email, password}).then(
         (res: any) => {
           const {token, expired, connId} = res.data;
-          setAuthStatus({userId: email, token, expired, connId});
+          setAuthStatus({userId: 'guest', token, expired, connId});
+          getDBs().then((res: any) => {
+            if (res.data) {
+              setDB(res.data.data[0]);
+              setLoading(false);
+              setAuthStatus({token, expired, connId, userId: email});
+            }
+          });
         },
         () => {
           setDialog({
@@ -136,7 +175,24 @@ const Login: FC = () => {
             {nls.label_sign_in}
           </Button>
         </div>
+        {isLoading && (
+          <div
+            style={{
+              position: 'absolute',
+              background: 'transparent',
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              opacity: 0.6,
+            }}
+          >
+            <Spinner />
+          </div>
+        )}
       </Paper>
+
       <InfoDialog {...dialog} />
     </Container>
   );

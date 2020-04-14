@@ -1,10 +1,10 @@
 import React, {FC, useContext} from 'react';
 import {Route, Switch, Redirect} from 'react-router-dom';
-import Dashboards from '../Dashboards';
+// import Dashboards from '../Dashboards';
 import Bi from './Bi';
 import Page404 from '../Page404';
 import {authContext} from '../../contexts/AuthContext';
-import {PATH_LOGIN, PATH_CONFIG_DB, PATH_ROOT, PATH_BI} from '../../utils/Endpoints';
+import {PATH_LOGIN, PATH_CONFIG_DB, PATH_BI} from '../../utils/Endpoints';
 import {queryContext} from './../../contexts/QueryContext';
 
 const MainContainer: FC<any> = () => {
@@ -20,7 +20,7 @@ const MainContainer: FC<any> = () => {
 
   return (
     <Switch>
-      <Route exact path={PATH_ROOT} component={Dashboards} />
+      {/* <Route exact path={PATH_ROOT} component={Dashboards} /> */}
       <Route path={`${PATH_BI}/:id`} component={Bi} />
       <Route component={Page404} />
     </Switch>
