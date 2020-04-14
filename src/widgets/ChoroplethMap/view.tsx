@@ -9,7 +9,6 @@ import {CONFIG} from '../../utils/Consts';
 import {formatterGetter} from '../../utils/Formatters';
 import {delayRunFunc} from '../../utils/EditorHelper';
 import {dimensionGetter, measureGetter} from '../../utils/WidgetHelpers';
-import {id as genID} from '../../utils/Helpers';
 import {ChoroplethMapProps} from './types';
 const wkx = require('wkx');
 
@@ -48,15 +47,14 @@ const ChoroplethMapView: FC<ChoroplethMapProps> = props => {
   const _genChoroplethMapPointSql = ({config, center}: any) => {
     const wkt = dimensionGetter(config, 'wkt')!;
     const {lng, lat} = center;
-    const pgSql = `SELECT ${wkt.value} FROM ${config.source} where ST_Within (ST_Point (${lng}, ${lat}), ST_GeomFromText(${wkt.value})) `;
-    console.info(pgSql);
+    const pgSql = `SELECT ${wkt.value} as wkt FROM ${config.source} where ST_Within (ST_Point (double(${lng}), double(${lat})), ST_GeomFromText(${wkt.value})) limit 1 `;
     return pgSql;
   };
   const _pointValSqlGetter = (config: any, buildVal: string) => {
-    const buildDimension = dimensionGetter(config, 'build')!;
+    const buildDimension = dimensionGetter(config, 'wkt')!;
     const lonMeasure = measureGetter(config, 'lon')!;
     const latMeasure = measureGetter(config, 'lat')!;
-    const colorMeasure = measureGetter(config, 'color')!;
+    const colorMeasure = measureGetter(config, 'w')!;
 
     const sql = `SELECT AVG(${lonMeasure.value}) as ${lonMeasure.as}, AVG(${latMeasure.value}) as ${
       latMeasure.as
@@ -124,45 +122,42 @@ const ChoroplethMapView: FC<ChoroplethMapProps> = props => {
       ({e, map}: any) => {
         const center = {lng: e.lngLat.lng, lat: e.lngLat.lat};
         const pointSql = _genChoroplethMapPointSql({config, center});
-        debugger;
-        getRowBySql(pointSql).then((rows: any) => {
-          if (rows && rows.length) {
-            const buildVal = rows[0].pixel_get_building_shape;
-            if (buildVal) {
-              const pointSql = _pointValSqlGetter(config, buildVal);
-              generalRequest({id: genID(), sql: pointSql}).then((res: any) => {
-                if (res && res[0]) {
-                  const data = res[0];
-                  const html = popupContentGetter(config, data);
-                  // create marker
-                  let el = document.createElement('div');
-                  el.className = 'marker';
-                  el.style.cursor = 'initial';
-                  const size = '14px';
-                  el.style.width = size;
-                  el.style.height = size;
-                  // clear first
-                  if (popup.current) {
-                    popup.current.remove();
-                  }
-                  // get  pos
-                  let popupPos = {lat: data.lat, lng: data.lon};
-                  popup.current = new mapboxgl.Popup({offset: 20, maxWidth: '600px'})
-                    .setLngLat(popupPos)
-                    .setHTML(html)
-                    .addTo(map);
-                  // bind popup event
-                  popup.current.on('close', () => {
-                    _cleanMap({map, id: 'hover-exter'});
-                    _cleanMap({map, id: 'hover-inter'});
-                    popup.current = null;
-                  });
-                  // Draw layer
-                  const coordinatesGrp = _parseCoordinate(buildVal);
-                  _addChoroLayer({map, coordinatesGrp});
+        getRowBySql(pointSql).then((res: any) => {
+          if (res && res.data && res.data.result) {
+            const buildVal = res.data.result[0].wkt;
+            const pointSql = _pointValSqlGetter(config, buildVal);
+            generalRequest(pointSql).then((res: any) => {
+              if (res && res[0]) {
+                const data = res[0];
+                const html = popupContentGetter(config, data);
+                // create marker
+                let el = document.createElement('div');
+                el.className = 'marker';
+                el.style.cursor = 'initial';
+                const size = '14px';
+                el.style.width = size;
+                el.style.height = size;
+                // clear first
+                if (popup.current) {
+                  popup.current.remove();
                 }
-              });
-            }
+                // get  pos
+                let popupPos = {lat: data.lat, lng: data.lon};
+                popup.current = new mapboxgl.Popup({offset: 20, maxWidth: '600px'})
+                  .setLngLat(popupPos)
+                  .setHTML(html)
+                  .addTo(map);
+                // bind popup event
+                popup.current.on('close', () => {
+                  _cleanMap({map, id: 'hover-exter'});
+                  _cleanMap({map, id: 'hover-inter'});
+                  popup.current = null;
+                });
+                // Draw layer
+                const coordinatesGrp = _parseCoordinate(buildVal);
+                _addChoroLayer({map, coordinatesGrp});
+              }
+            });
           }
         });
       },
