@@ -1,14 +1,14 @@
-name: merge
+name: arctern
 on:
   push:
      # file paths to consider in the event. Optional; defaults to all.
     paths:
       - 'src/**'
-      - '.github/workflows/**'
       - '!public'
       - '!**.md'
     branches:
       - arctern-online-demo
+      - master
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
