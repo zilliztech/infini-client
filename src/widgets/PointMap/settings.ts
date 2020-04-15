@@ -108,7 +108,7 @@ const genQueryParams = (config: any) => {
   };
   let key = isWeighted ? 'weighted' : 'point';
   res[key] = {
-    opacity: 0.5,
+    opacity: 0.8,
     bounding_box,
     coordinate_system: 'EPSG:4326',
   };
