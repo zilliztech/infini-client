@@ -1,4 +1,4 @@
-### Arctern GUI/Client
+### Arctern GUI/Client online demo
 > An Interactive Dashboard built with D3, React, Typescript
 
 > Still in early phase
