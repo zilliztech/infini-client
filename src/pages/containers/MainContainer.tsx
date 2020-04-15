@@ -2,7 +2,7 @@ import React, {FC, useContext} from 'react';
 import {Route, Switch, Redirect} from 'react-router-dom';
 // import Dashboards from '../Dashboards';
 import Bi from './Bi';
-// import Page404 from '../Page404';
+// import Page404 from '../Page404'; lalla
 import {authContext} from '../../contexts/AuthContext';
 import {PATH_LOGIN, PATH_CONFIG_DB, PATH_BI} from '../../utils/Endpoints';
 import {queryContext} from './../../contexts/QueryContext';
