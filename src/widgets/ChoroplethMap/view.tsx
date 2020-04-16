@@ -194,7 +194,7 @@ const ChoroplethMapView: FC<ChoroplethMapProps> = props => {
       <MapboxGl
         {...props}
         onMapUpdate={onMapUpdate}
-        onDrawUpdate={onDrawUpdate}
+        // onDrawUpdate={onDrawUpdate}
         onMouseMove={onMouseMove}
         onMouseOut={onMouseOut}
         draws={config.draws || []}
