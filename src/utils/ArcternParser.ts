@@ -22,7 +22,7 @@ export const stWithinParser = (expression: any) => {
 
 export const stDistanceParser = (expression: any) => {
   const {fromlon, fromlat, tolon, tolat, distance} = expression;
-  return `ST_Distance(ST_Transform (ST_Point (${tolon}, ${tolat}),'epsg:4326', 'epsg:3857'),st_transform(st_geomFromText ('point(${fromlon} ${fromlat})'),'epsg:4326', 'epsg:3857')) < ${distance}`;
+  return `ST_DistanceSphere(ST_Point (${tolon}, ${tolat}), st_geomFromText('point(${fromlon} ${fromlat})')) < ${distance}`;
 };
 
 export const wktParser = (expression: any) => {

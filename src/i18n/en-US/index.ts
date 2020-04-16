@@ -37,9 +37,9 @@ const nls = {
   label_info: base.label_info,
   label_import_dashboard: 'Import Dashboard',
   // Login Page
-  label_title: 'Sign in Infini',
+  label_title: 'Sign in Arctern',
   label_username: 'USER NAME',
-  label_username_placeholder: 'Infini',
+  label_username_placeholder: 'Arctern',
   label_password: 'PASSWORD',
   label_password_placeholder: 'password',
   label_email: 'email',
