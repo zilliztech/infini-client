@@ -35,7 +35,7 @@ const MapTheme = (props: any) => {
   return (
     <div>
       <div className={classes.title}>{nls.label_widgetEditorDisplay_mapTheme}</div>
-      <Selector currOpt={currOpt} options={MapThemes} onOptionChange={onMapThemeChange} />
+      <Selector currOpt={currOpt} options={MapThemes} onOptionChange={onMapThemeChange} isShowCurrOpt={true}/>
     </div>
   );
 };
