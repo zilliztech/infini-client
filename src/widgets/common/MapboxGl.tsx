@@ -44,7 +44,7 @@ const MapboxGl: FC<MapChartProps> = props => {
   const imageSourceCache = useRef<any>(null);
   const mapMoveTimeout = useRef<any>(null);
   const mapResizeTimeout = useRef<any>(null);
-  const movingThrottle = 350;
+  const movingThrottle = 1000;
   let data = Array.isArray(props.data) ? props.data[0] : `data:image/png;base64,${props.data}`;
 
   // create map
