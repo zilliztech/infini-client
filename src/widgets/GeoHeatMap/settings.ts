@@ -31,25 +31,26 @@ const geoHeatMapConfigHandler: ConfigHandler<GeoHeatMapConfig> = config => {
   let newConfig = arcternMapConfigHandler(config);
   let lon = dimensionGetter(newConfig, KEY.LONGTITUDE) as MapDimension;
   let lat = dimensionGetter(newConfig, KEY.LATITUDE) as MapDimension;
-
+  let color = measureGetter(newConfig, 'w');
   if (!lon || !lat) {
     return newConfig;
   }
-
-  const pointDimension = {
+  newConfig.aggType = color!.expression;
+  const pointMeasure = {
     value: `ST_Point (${lon.value}, ${lat.value})`,
     as: 'point',
+    expression: 'project',
   };
-  newConfig.dimensions = [pointDimension];
+  newConfig.dimensions = [];
+  newConfig.measures = [pointMeasure, {...color, expression: 'project'}];
   newConfig.isServerRender = true;
   return newConfig;
 };
 
 const genQueryParams = (config: any) => {
-  const {width, height, zoom, bounds = {}} = config;
+  const {width, height, zoom, bounds = {}, aggType} = config;
   const {_sw = {}, _ne = {}} = bounds;
   const bounding_box = [_sw.lng, _sw.lat, _ne.lng, _ne.lat];
-  const color = measureGetter(config, 'w')!;
   return {
     width: Number.parseInt(width),
     height: Number.parseInt(height),
@@ -57,7 +58,7 @@ const genQueryParams = (config: any) => {
       bounding_box,
       coordinate_system: 'EPSG:4326',
       map_zoom_level: zoom,
-      aggregation_type: color.expression,
+      aggregation_type: aggType,
     },
   };
 };
