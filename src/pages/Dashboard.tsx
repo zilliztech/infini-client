@@ -52,12 +52,15 @@ const Dashboard: FC<DashboardProps> = ({dashboard, setDashboard}) => {
   };
   const onResponse = (query: Query, data: Data) => {
     dataCache.current[query.id] = data;
-    console.info(query, meta)
     setMeta((meta: Meta) => {
       const copiedMeta = cloneObj(meta);
       const {id} = query as Query;
       if (sources.includes(id)) {
         setSourceData((prev: any) => ({...prev, [id]: data}));
+        return meta;
+      }
+      let lastTimeStamp = meta && meta[query.id] && meta[query.id].query.timeStamp;
+      if (lastTimeStamp && lastTimeStamp > query.timeStamp) {
         return meta;
       }
       copiedMeta[query.id] = {query, id, loading: false};

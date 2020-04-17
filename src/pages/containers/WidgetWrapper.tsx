@@ -83,6 +83,7 @@ const WidgetWrapper: FC<DefaultWidgetProps> = props => {
       const copiedMeta = cloneObj(meta);
       const {id, timestamp} = query;
       copiedMeta[query.id] = {query, id, timestamp, loading: true};
+      // console.info(copiedMeta[query.id].loading, copiedMeta[query.id].timestamp);
       return copiedMeta;
     });
   };
@@ -90,6 +91,11 @@ const WidgetWrapper: FC<DefaultWidgetProps> = props => {
     dataCache.current[query.id] = data;
     setLocalMeta((meta: Meta) => {
       const {id, timestamp} = query;
+      if (meta && (meta[query.id].timestamp as number) > timestamp!) {
+        // console.info('xxxx, not work yeah~~~~');
+        // console.info(meta[query.id].loading, meta[query.id].timestamp! - timestamp!);
+        return meta;
+      }
       const copiedMeta = cloneObj(meta);
       copiedMeta[id] = {query, id, timestamp, loading: false};
       return copiedMeta;
