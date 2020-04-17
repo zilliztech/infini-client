@@ -1,7 +1,5 @@
 import {makeSetting} from '../../utils/Setting';
-import {cloneObj} from '../../utils/Helpers';
-import {orFilterGetter} from '../../utils/Filters';
-import {KEY} from '../Utils/Map';
+import {KEY, arcternMapConfigHandler} from '../Utils/Map';
 import {dimensionGetter, measureGetter} from '../../utils/WidgetHelpers';
 import {CONFIG, COLUMN_TYPE, RequiredType} from '../../utils/Consts';
 import {GeoHeatMapConfig} from './types';
@@ -17,9 +15,8 @@ const onAddColor = ({measure, config, setConfig, reqContext}: any) => {
 };
 
 const geoHeatMapConfigHandler: ConfigHandler<GeoHeatMapConfig> = config => {
-  let newConfig = cloneObj(config);
-  if (!newConfig.bounds) {
-    newConfig.bounds = {
+  if (!config.bounds) {
+    config.bounds = {
       _sw: {
         lng: -73.5,
         lat: 40.1,
@@ -31,7 +28,7 @@ const geoHeatMapConfigHandler: ConfigHandler<GeoHeatMapConfig> = config => {
     };
     // return newConfig;
   }
-
+  let newConfig = arcternMapConfigHandler(config);
   let lon = dimensionGetter(newConfig, KEY.LONGTITUDE) as MapDimension;
   let lat = dimensionGetter(newConfig, KEY.LATITUDE) as MapDimension;
 
@@ -45,9 +42,6 @@ const geoHeatMapConfigHandler: ConfigHandler<GeoHeatMapConfig> = config => {
   };
   newConfig.dimensions = [pointDimension];
   newConfig.isServerRender = true;
-  newConfig.filter = newConfig.filter || {};
-  newConfig.filter = orFilterGetter(newConfig.filter);
-
   return newConfig;
 };
 

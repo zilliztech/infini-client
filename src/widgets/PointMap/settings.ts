@@ -1,10 +1,8 @@
 import {makeSetting} from '../../utils/Setting';
-import {orFilterGetter} from '../../utils/Filters';
 import {CONFIG, COLUMN_TYPE, RequiredType} from '../../utils/Consts';
-import {cloneObj} from '../../utils/Helpers';
 import {getColType} from '../../utils/ColTypes';
 import {queryDistinctValues, MeasureParams, parseTocolorItems} from '../Utils/settingHelper';
-import {DEFAULT_MAX_POINTS_NUM, KEY} from '../Utils/Map';
+import {DEFAULT_MAX_POINTS_NUM, KEY, arcternMapConfigHandler} from '../Utils/Map';
 import {measureGetter} from '../../utils/WidgetHelpers';
 import {cleanLastSelfFilter, addSelfFilter} from '../../widgets/Utils/settingHelper';
 import {MapMeasure} from '../common/MapChart.type';
@@ -60,9 +58,8 @@ const onDeletePointMapColor = ({setConfig}: any) => {
 };
 
 const pointMapConfigHandler = (config: any) => {
-  let newConfig = cloneObj(config);
-  if (!newConfig.bounds) {
-    newConfig.bounds = {
+  if (!config.bounds) {
+    config.bounds = {
       _sw: {
         lng: -73.5,
         lat: 40.1,
@@ -72,8 +69,8 @@ const pointMapConfigHandler = (config: any) => {
         lat: 41.1,
       },
     };
-    // return newConfig;
   }
+  let newConfig = arcternMapConfigHandler(config);
   let lon = measureGetter(newConfig, KEY.LONGTITUDE) as MapMeasure;
   let lat = measureGetter(newConfig, KEY.LATITUDE) as MapMeasure;
   if (!lon || !lat) {
@@ -91,8 +88,6 @@ const pointMapConfigHandler = (config: any) => {
     newConfig.measures.push(colorMeasure);
   }
   newConfig.limit = newConfig.points || DEFAULT_MAX_POINTS_NUM;
-
-  newConfig.filter = orFilterGetter(newConfig.filter);
   return newConfig;
 };
 
