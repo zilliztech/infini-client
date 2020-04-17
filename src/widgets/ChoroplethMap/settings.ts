@@ -1,10 +1,8 @@
-import {cloneObj} from '../../utils/Helpers';
-import {orFilterGetter} from '../../utils/Filters';
 import {makeSetting} from '../../utils/Setting';
 import {restoreSource} from '../../utils/Helpers';
 import {CONFIG, COLUMN_TYPE, RequiredType} from '../../utils/Consts';
 import {measureGetter, dimensionGetter, getExpression} from '../../utils/WidgetHelpers';
-import {KEY as MAPKEY} from '../Utils/Map';
+import {KEY as MAPKEY, arcternMapConfigHandler} from '../Utils/Map';
 import {ChoroplethMapConfig} from './types';
 import {MeasureParams} from '../Utils/settingHelper';
 import {getColorGradient} from '../../utils/Colors';
@@ -40,10 +38,9 @@ const onAddWkt = async ({dimension, setConfig}: any) => {
   setConfig({type: CONFIG.ADD_DIMENSION, payload: {dimension}});
 };
 const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapConfig) => {
-  let newConfig = cloneObj(config);
   // Start: handle map bound
-  if (!newConfig.bounds) {
-    newConfig.bounds = {
+  if (!config.bounds) {
+    config.bounds = {
       _sw: {
         lng: -73.5,
         lat: 40.1,
@@ -54,21 +51,8 @@ const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapCo
       },
     };
   }
+  let newConfig = arcternMapConfigHandler(config);
   let colorM = measureGetter(newConfig, 'w');
-  if (!newConfig.bounds) {
-    newConfig.bounds = {
-      _sw: {
-        lng: -73.5,
-        lat: 40.1,
-      },
-      _ne: {
-        lng: -70.5,
-        lat: 41.1,
-      },
-    };
-  }
-  newConfig.filter = orFilterGetter(newConfig.filter);
-
   // gen vega
   newConfig.measures = [colorM];
   return newConfig;
