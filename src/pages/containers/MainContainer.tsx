@@ -24,7 +24,7 @@ const MainContainer: FC<any> = () => {
       <Route path={`${PATH_BI}/:id`} component={Bi} />
       {/* <Route component={Page404} /> */}
       <Route>
-        <Redirect to={`${PATH_BI}/1`} />
+        <Redirect to={`${PATH_BI}/nyc_taxi`} />
       </Route>
     </Switch>
   );
