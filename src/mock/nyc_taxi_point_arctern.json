@@ -1,5 +1,5 @@
 {
-  "id": 1,
+  "id": "nyc_taxi",
   "demo": true,
   "title": "纽约出租车数据分析点图",
   "userId": "zilliz",
