@@ -1,6 +1,6 @@
 {
   "id": "nyc_taxi",
-  "demo": true,
+  "demo": false,
   "title": "纽约出租车数据分析点图",
   "userId": "zilliz",
   "configs": [
