@@ -52,6 +52,7 @@ const Dashboard: FC<DashboardProps> = ({dashboard, setDashboard}) => {
   };
   const onResponse = (query: Query, data: Data) => {
     dataCache.current[query.id] = data;
+    console.info(query, meta)
     setMeta((meta: Meta) => {
       const copiedMeta = cloneObj(meta);
       const {id} = query as Query;
