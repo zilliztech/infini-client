@@ -55,14 +55,13 @@ const genNewDashboard = (id: number = 0): Dashboard => ({
 export const isNewDashboard = (id: number) => {
   const local = window.localStorage.getItem(namespace(['dashboard'], String(id)));
   return !local;
-}
+};
 
-export const getDashboardById = (id: number) => {
+export const getDashboardById = (id: number | string) => {
   const local = window.localStorage.getItem(namespace(['dashboard'], String(id)));
-
   if (local) {
     return JSON.parse(local);
   }
 
-  return genNewDashboard(id);
+  return genNewDashboard(id as number);
 };

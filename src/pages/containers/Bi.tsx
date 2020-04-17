@@ -14,15 +14,15 @@ const Bi: FC<DashboardPageProps> = ({match}) => {
   const {getDashBoard, saveDashboard} = useContext(queryContext);
   const [loading, setLoading] = useState<boolean>(true);
   const [dashboard, setDashboard] = useReducer(dashboardReducer, null);
-  const id = Number(match.params.id);
+  const id = isNaN(Number(match.params.id)) ? match.params.id : Number(match.params.id);
 
   useEffect(() => {
-      getDashBoard(id).then((dashboard: DashboardType) => {
-        if (dashboard) {
-          setDashboard({type: DASH_ACTIONS.UPDATE, payload: dashboard});
-          setLoading(false);
-        }
-      });
+    getDashBoard(id).then((dashboard: DashboardType) => {
+      if (dashboard) {
+        setDashboard({type: DASH_ACTIONS.UPDATE, payload: dashboard});
+        setLoading(false);
+      }
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
