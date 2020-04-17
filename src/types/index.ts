@@ -61,6 +61,7 @@ type MetaInfo = {
   loading: boolean;
   // timestamp
   timestamp?: number;
+  query?: any;
 };
 
 // in a dashboard, every request's metainfo is stored in the Meta Map
