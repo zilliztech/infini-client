@@ -120,7 +120,7 @@ const Dashboard: FC<DashboardProps> = ({dashboard, setDashboard}) => {
     }
   };
 
-  const onDragStart = function(...args: any) {
+  const onDragStart = function (...args: any) {
     let evt = args[4];
     let target = evt.target;
     let isCanvas = target && target.tagName === 'CANVAS';
@@ -147,7 +147,7 @@ const Dashboard: FC<DashboardProps> = ({dashboard, setDashboard}) => {
   return (
     <div className={classes.root}>
       <Header
-        showRestoreBtn={!demo}
+        showRestoreBtn={demo}
         mode={mode}
         setMode={setMode}
         dashboard={dashboard}

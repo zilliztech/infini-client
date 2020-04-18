@@ -32,9 +32,10 @@ const Bi: FC<DashboardPageProps> = ({match}) => {
       if (isNewDashboard(dashboard.id) && dashboard.configs.length === 0) {
         return;
       }
-
       // make changes persistent
-      saveDashboard(JSON.stringify(dashboard), id);
+      if (dashboard && !dashboard.demo) {
+        saveDashboard(JSON.stringify(dashboard), id);
+      }
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
