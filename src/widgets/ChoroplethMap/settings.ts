@@ -1,8 +1,9 @@
 import {makeSetting} from '../../utils/Setting';
-import {restoreSource} from '../../utils/Helpers';
+import {restoreSource, cloneObj} from '../../utils/Helpers';
 import {CONFIG, COLUMN_TYPE, RequiredType} from '../../utils/Consts';
 import {measureGetter, dimensionGetter, getExpression} from '../../utils/WidgetHelpers';
-import {KEY as MAPKEY, arcternMapConfigHandler} from '../Utils/Map';
+import {KEY as MAPKEY, parseBoundsToPolygon} from '../Utils/Map';
+import {orFilterGetter} from '../../utils/Filters';
 import {ChoroplethMapConfig} from './types';
 import {MeasureParams} from '../Utils/settingHelper';
 import {getColorGradient} from '../../utils/Colors';
@@ -28,19 +29,12 @@ const onAddChoroplethMapColor = async ({measure, config, setConfig, reqContext}:
     setConfig({type: CONFIG.ADD_MEASURE, payload: measure});
   }
 };
-const onAddWkt = async ({dimension, setConfig}: any) => {
-  setConfig({
-    type: CONFIG.ADD_FILTER,
-    payload: {
-      fillEmpty: `${dimension.value}!=''`,
-    },
-  });
-  setConfig({type: CONFIG.ADD_DIMENSION, payload: {dimension}});
-};
+
 const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapConfig) => {
+  const newConfig = cloneObj(config);
   // Start: handle map bound
-  if (!config.bounds) {
-    config.bounds = {
+  if (!newConfig.bounds) {
+    newConfig.bounds = {
       _sw: {
         lng: -73.5,
         lat: 40.1,
@@ -51,7 +45,24 @@ const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapCo
       },
     };
   }
-  let newConfig = arcternMapConfigHandler(config);
+  let lon = measureGetter(newConfig, MAPKEY.LONGTITUDE);
+  let lat = measureGetter(newConfig, MAPKEY.LATITUDE);
+  const dimension = newConfig.dimensions[0];
+  newConfig.selfFilter.fillEmpty = {
+    type: 'filter',
+    expr: `${dimension.value}!=''`,
+  };
+  if (Object.keys(newConfig.filter).length === 0)
+    newConfig.selfFilter.bounds = {
+      type: 'filter',
+      expr: {
+        type: 'st_within',
+        x: lon!.value,
+        y: lat!.value,
+        polygon: parseBoundsToPolygon(newConfig.bounds),
+      },
+    };
+  newConfig.filter = orFilterGetter(newConfig.filter);
   let colorM = measureGetter(newConfig, 'w');
   // gen vega
   newConfig.measures = [colorM];
@@ -85,7 +96,6 @@ const settings = makeSetting<ChoroplethMapConfig>({
       short: 'building',
       isNotUseBin: true,
       columnTypes: [COLUMN_TYPE.TEXT],
-      onAdd: onAddWkt,
       expression: 'wkt',
     },
   ],
