@@ -65,7 +65,7 @@ const Login: FC = () => {
   }, []);
   if (isIn) {
     // return <Redirect to="/" />;
-    return <Redirect to={`${PATH_BI}/1`} />;
+    return <Redirect to={`${PATH_BI}/nyc_taxi`} />;
   }
 
   const importDashboard = (obj: any) => {
