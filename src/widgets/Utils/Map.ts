@@ -1,6 +1,8 @@
 import {measureGetter, dimensionGetter} from '../../utils/WidgetHelpers';
 import {MapChartConfig} from '../common/MapChart.type';
 import {SqlParser} from 'infinivis-core';
+import {cloneObj} from '../../utils/Helpers';
+import {orFilterGetter} from '../../utils/Filters';
 const parseExpression = SqlParser.parseExpression;
 
 // Map related consts
@@ -171,4 +173,26 @@ export const drawsGlGetter = (config: any) => {
 export const parseBoundsToPolygon = (bounds: any) => {
   const {_sw: sw, _ne: ne} = bounds;
   return `${sw.lng} ${sw.lat}, ${sw.lng} ${ne.lat}, ${ne.lng} ${ne.lat}, ${ne.lng} ${sw.lat}, ${sw.lng} ${sw.lat}`;
+};
+
+export const arcternMapConfigHandler = (config: any) => {
+  let newConfig = cloneObj(config);
+
+  const hasFilter = Object.keys(newConfig.filter).length > 0;
+  if (!hasFilter) {
+    let lon =
+      measureGetter(newConfig, KEY.LONGTITUDE) || dimensionGetter(newConfig, KEY.LONGTITUDE);
+    let lat = measureGetter(newConfig, KEY.LATITUDE) || dimensionGetter(newConfig, KEY.LATITUDE);
+    newConfig.selfFilter.bounds = {
+      type: 'filter',
+      expr: {
+        type: 'st_within',
+        x: lon!.value,
+        y: lat!.value,
+        polygon: parseBoundsToPolygon(newConfig.bounds),
+      },
+    };
+  }
+  newConfig.filter = orFilterGetter(newConfig.filter);
+  return newConfig;
 };

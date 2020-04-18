@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 import {useTheme, makeStyles} from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import EditableLabel from '../common/EditableLabel';
+import Spinner from '../../components/common/Spinner';
 import {I18nContext} from '../../contexts/I18nContext';
 import {CONFIG} from '../../utils/Consts';
 import WidgetPlaceholder from './WidgetPlaceholder';
@@ -13,7 +14,19 @@ const WidgetView = (props: any) => {
   const {nls} = useContext(I18nContext);
   const theme = useTheme();
   const classes = useStyles(theme);
-  const {config, setConfig, isReady, width, height, Widget, dimensionsReady, measuresReady} = props;
+  const {
+    config,
+    setConfig,
+    isReady,
+    width,
+    height,
+    Widget,
+    dimensionsReady,
+    measuresReady,
+    dataMeta = {},
+  } = props;
+  const loading = dataMeta.loading;
+  const showLoading = loading && isReady;
   const onTitleChange = ({title}: any) => {
     setConfig && setConfig({type: CONFIG.UPDATE_TITLE, payload: title});
   };
@@ -41,6 +54,11 @@ const WidgetView = (props: any) => {
       </div>
       <div className={`${classes.widgetContent}`}>
         {isReady && <Widget {...props} wrapperWidth={width} wrapperHeight={height} />}
+        {showLoading && (
+          <div className="loading-container">
+            <Spinner />
+          </div>
+        )}
         {!isReady && (
           <WidgetPlaceholder
             {...props}

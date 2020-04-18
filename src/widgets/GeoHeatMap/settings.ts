@@ -1,7 +1,5 @@
 import {makeSetting} from '../../utils/Setting';
-import {cloneObj} from '../../utils/Helpers';
-import {orFilterGetter} from '../../utils/Filters';
-import {KEY} from '../Utils/Map';
+import {KEY, arcternMapConfigHandler} from '../Utils/Map';
 import {dimensionGetter, measureGetter} from '../../utils/WidgetHelpers';
 import {CONFIG, COLUMN_TYPE, RequiredType} from '../../utils/Consts';
 import {GeoHeatMapConfig} from './types';
@@ -17,9 +15,8 @@ const onAddColor = ({measure, config, setConfig, reqContext}: any) => {
 };
 
 const geoHeatMapConfigHandler: ConfigHandler<GeoHeatMapConfig> = config => {
-  let newConfig = cloneObj(config);
-  if (!newConfig.bounds) {
-    newConfig.bounds = {
+  if (!config.bounds) {
+    config.bounds = {
       _sw: {
         lng: -73.5,
         lat: 40.1,
@@ -31,30 +28,29 @@ const geoHeatMapConfigHandler: ConfigHandler<GeoHeatMapConfig> = config => {
     };
     // return newConfig;
   }
-
+  let newConfig = arcternMapConfigHandler(config);
   let lon = dimensionGetter(newConfig, KEY.LONGTITUDE) as MapDimension;
   let lat = dimensionGetter(newConfig, KEY.LATITUDE) as MapDimension;
-
+  let color = measureGetter(newConfig, 'w');
   if (!lon || !lat) {
     return newConfig;
   }
-
-  const pointDimension = {
+  newConfig.aggType = color!.expression;
+  const pointMeasure = {
     value: `ST_Point (${lon.value}, ${lat.value})`,
     as: 'point',
+    expression: 'project',
   };
-  newConfig.dimensions = [pointDimension];
+  newConfig.dimensions = [];
+  newConfig.measures = [pointMeasure, {...color, expression: 'project'}];
   newConfig.isServerRender = true;
-  newConfig.filter = newConfig.filter || {};
-  newConfig.filter = orFilterGetter(newConfig.filter);
   return newConfig;
 };
 
 const genQueryParams = (config: any) => {
-  const {width, height, zoom, bounds = {}} = config;
+  const {width, height, zoom, bounds = {}, aggType} = config;
   const {_sw = {}, _ne = {}} = bounds;
   const bounding_box = [_sw.lng, _sw.lat, _ne.lng, _ne.lat];
-  const color = measureGetter(config, 'w')!;
   return {
     width: Number.parseInt(width),
     height: Number.parseInt(height),
@@ -62,7 +58,7 @@ const genQueryParams = (config: any) => {
       bounding_box,
       coordinate_system: 'EPSG:4326',
       map_zoom_level: zoom,
-      aggregation_type: color.expression,
+      aggregation_type: aggType,
     },
   };
 };

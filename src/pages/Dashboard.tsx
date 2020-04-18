@@ -59,6 +59,10 @@ const Dashboard: FC<DashboardProps> = ({dashboard, setDashboard}) => {
         setSourceData((prev: any) => ({...prev, [id]: data}));
         return meta;
       }
+      let lastTimeStamp = meta && meta[query.id] && meta[query.id].query.timeStamp;
+      if (lastTimeStamp && lastTimeStamp > query.timeStamp) {
+        return meta;
+      }
       copiedMeta[query.id] = {query, id, loading: false};
       return copiedMeta;
     });
