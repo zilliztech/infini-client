@@ -23,17 +23,17 @@ const CustomEditor: FC = ({
   setConfig,
   MapTheme,
   Limit,
-  PopUp,
+  // PopUp,
   VisualDataMapping,
   nls,
-  options,
-}: any) => {
+}: // options,
+any) => {
   const colorType = _getColorType(config);
   const colorMeasure = measureGetter(config, 'color');
   const colType = colorMeasure && getColType(colorMeasure.type);
   const useColorPalette = !colorMeasure || (colorMeasure && colType === 'number');
   const useVisualDataMapping = colorMeasure && colType === 'text';
-  const popUpOpts: any = options.map((opt: any) => opt.colName);
+  // const popUpOpts: any = options.map((opt: any) => opt.colName);
 
   return (
     <div className={classes.root}>
@@ -58,9 +58,9 @@ const CustomEditor: FC = ({
           setConfig={setConfig}
         />
       </div>
-      <div className={classes.source}>
+      {/* <div className={classes.source}>
         <PopUp config={config} setConfig={setConfig} options={popUpOpts} />
-      </div>
+      </div> */}
 
       {useColorPalette && (
         <div className={classes.source}>
