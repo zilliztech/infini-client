@@ -19,7 +19,7 @@ import {HeaderProps, WidgetConfig} from '../../types';
 import {isReadyToRender, convertConfig, genEffectClickOutside} from '../../utils/EditorHelper';
 import {applyUsedLayout} from '../../utils/Layout';
 import {MODE, CONFIG, DASH_ACTIONS} from '../../utils/Consts';
-import {namespace, cloneObj} from '../../utils/Helpers';
+import {cloneObj} from '../../utils/Helpers';
 import {getFilterLength} from '../../utils/Filters';
 import {genHeaderStyle} from './Header.style';
 const useStyles = makeStyles(theme => genHeaderStyle(theme) as any) as Function;
@@ -50,7 +50,7 @@ const Header: FC<HeaderProps> = props => {
     showRestoreBtn = true,
   } = props;
 
-  const {id, sources, title, sourceOptions} = dashboard;
+  const {sources, title, sourceOptions} = dashboard;
 
   let widgetMode: MODE = mode.mode === MODE.EDIT ? MODE.EDIT : MODE.NORMAL;
   const isEdit: Boolean = widgetMode === MODE.EDIT;
@@ -135,7 +135,7 @@ const Header: FC<HeaderProps> = props => {
   };
 
   const onRestoreLayout = () => {
-    window.localStorage.removeItem(namespace(['dashboard'], String(id)));
+    // window.localStorage.removeItem(namespace(['dashboard'], String(id)));
     window.location.reload();
   };
 

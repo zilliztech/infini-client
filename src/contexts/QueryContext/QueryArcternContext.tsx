@@ -55,6 +55,7 @@ const QueryArcternProvider: FC<{children: ReactNode}> = ({children}) => {
         content: errContent,
         onConfirm: () => {
           window.localStorage.clear();
+          window.location.reload();
           _setDB(false);
         },
       });
