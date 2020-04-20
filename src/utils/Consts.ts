@@ -107,9 +107,21 @@ enum DefaultExpression {
   unique = 'unique',
   stddev = 'stddev',
 }
+enum PandasExpression {
+  mean = 'mean',
+  min = 'min',
+  max = 'max',
+  sum = 'sum',
+  count = 'count',
+  stddev = 'std',
+}
 export type DefaultExpressionOption = {
   label: string;
   value: DefaultExpression;
+};
+export type PandasExpressionOption = {
+  label: string;
+  value: PandasExpression;
 };
 export type CustomExpressOption = {
   label: string;
@@ -122,6 +134,14 @@ export const EXPRESSION_OPTIONS: DefaultExpressionOption[] = [
   {label: 'SUM', value: DefaultExpression.sum},
   {label: '# UNIQUE', value: DefaultExpression.unique},
   {label: 'STDDEV', value: DefaultExpression.stddev},
+];
+export const PANDAS_EXPRESSION_OPTIONS: PandasExpressionOption[] = [
+  {label: 'MEAN', value: PandasExpression.mean},
+  {label: 'MIN', value: PandasExpression.min},
+  {label: 'MAX', value: PandasExpression.max},
+  {label: 'SUM', value: PandasExpression.sum},
+  {label: 'COUNT', value: PandasExpression.count},
+  {label: 'STDDEV', value: PandasExpression.stddev},
 ];
 
 export const OUT_OUT_CHART = -999999999;

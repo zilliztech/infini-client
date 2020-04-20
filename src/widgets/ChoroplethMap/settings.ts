@@ -1,13 +1,13 @@
 import {makeSetting} from '../../utils/Setting';
 import {restoreSource, cloneObj} from '../../utils/Helpers';
-import {CONFIG, COLUMN_TYPE, RequiredType} from '../../utils/Consts';
+import {CONFIG, COLUMN_TYPE, RequiredType, PANDAS_EXPRESSION_OPTIONS} from '../../utils/Consts';
 import {measureGetter, dimensionGetter, getExpression} from '../../utils/WidgetHelpers';
 import {KEY as MAPKEY, parseBoundsToPolygon} from '../Utils/Map';
 import {orFilterGetter} from '../../utils/Filters';
 import {ChoroplethMapConfig} from './types';
 import {MeasureParams} from '../Utils/settingHelper';
 import {getColorGradient} from '../../utils/Colors';
-
+import {genPandasAggtype} from '../Utils/settingHelper';
 const onAddChoroplethMapColor = async ({measure, config, setConfig, reqContext}: MeasureParams) => {
   const buildDimension = dimensionGetter(config, 'wkt');
   if (buildDimension) {
@@ -48,6 +48,11 @@ const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapCo
   let lon = measureGetter(newConfig, MAPKEY.LONGTITUDE);
   let lat = measureGetter(newConfig, MAPKEY.LATITUDE);
   const dimension = newConfig.dimensions[0];
+  const pointMeasure = {
+    expression: 'project',
+    value: `ST_GeomFromText(${dimension.value})`,
+    as: dimension.as,
+  };
   newConfig.selfFilter.fillEmpty = {
     type: 'filter',
     expr: `${dimension.value}!=''`,
@@ -63,15 +68,16 @@ const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapCo
       },
     };
   newConfig.filter = orFilterGetter(newConfig.filter);
-  let colorM = measureGetter(newConfig, 'w');
+  let colorM = measureGetter(newConfig, 'w')!;
+  newConfig.aggType = colorM.expression;
   // gen vega
-  newConfig.measures = [colorM];
+  newConfig.measures = [{...colorM, expression: 'project'}, pointMeasure];
+  newConfig.dimensions = [];
   return newConfig;
 };
 const genQueryParams = (config: any) => {
   const {width, height, ruler, colorKey = '', bounds = {}} = config;
   const {_sw = {}, _ne = {}} = bounds;
-  const color = measureGetter(config, 'w')!;
   const bounding_box = [_sw.lng, _sw.lat, _ne.lng, _ne.lat];
   return {
     width: Number.parseInt(width),
@@ -82,7 +88,7 @@ const genQueryParams = (config: any) => {
       color_gradient: getColorGradient(colorKey),
       color_bound: [ruler.min, ruler.max],
       opacity: 1,
-      aggregation_type: color.expression,
+      aggregation_type: genPandasAggtype(config.aggType),
     },
   };
 };
@@ -120,6 +126,7 @@ const settings = makeSetting<ChoroplethMapConfig>({
       short: 'color',
       onAdd: onAddChoroplethMapColor,
       columnTypes: [COLUMN_TYPE.NUMBER],
+      expressions: PANDAS_EXPRESSION_OPTIONS.map(item => item.value),
     },
   ],
   icon: `<svg viewBox="0 0 80 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
