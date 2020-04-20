@@ -336,7 +336,7 @@ const _genNewMeasure = (newSelected: NewColumn, originAs: string, expressions: s
       break;
     case 'number':
     default:
-      newMeasure.expression = 'avg';
+      newMeasure.expression = expressions[0];
       break;
   }
   return newMeasure;
