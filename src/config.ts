@@ -11,14 +11,6 @@ export const DEFAULT_MEGACONFIG_LIST = [
   //   database: 'aalocal',
   //   port: '5432',
   // },
-  {
-    type: 'megawise',
-    host: '192.168.1.169',
-    username: 'gis_user',
-    password: 'gis_passwd',
-    database: 'postgres',
-    port: '5432',
-  },
   // {
   //   type: 'megawise',
   //   host: '192.168.1.58',
@@ -27,14 +19,6 @@ export const DEFAULT_MEGACONFIG_LIST = [
   //   database: 'postgres',
   //   port: '5430',
   // },
-  {
-    type: 'megawsise',
-    host: '192.168.2.26',
-    username: 'gis_user',
-    password: 'gis_passwd',
-    database: 'postgres',
-    port: '5432',
-  },
 ];
 
 // column typs definition
