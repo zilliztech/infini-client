@@ -302,3 +302,14 @@ export const genColorItem = (measure: Measure) => {
     value,
   };
 };
+
+export const genPandasAggtype = (expression: string) => {
+  switch (expression) {
+    case 'avg':
+      return 'mean';
+    case 'stddev':
+      return 'std';
+    default:
+      return expression;
+  }
+};

@@ -1,10 +1,12 @@
 import {makeSetting} from '../../utils/Setting';
 import {KEY, arcternMapConfigHandler} from '../Utils/Map';
 import {dimensionGetter, measureGetter} from '../../utils/WidgetHelpers';
-import {CONFIG, COLUMN_TYPE, RequiredType} from '../../utils/Consts';
+import {CONFIG, COLUMN_TYPE, RequiredType, PANDAS_EXPRESSION_OPTIONS} from '../../utils/Consts';
 import {GeoHeatMapConfig} from './types';
 import {MapDimension} from '../common/MapChart.type';
 import {ConfigHandler} from '../../types';
+import {genPandasAggtype} from '../Utils/settingHelper';
+
 // GeoHeatMap
 const onAddColor = ({measure, config, setConfig, reqContext}: any) => {
   reqContext.numMinMaxValRequest(measure.value, config.source).then((res: any) => {
@@ -58,7 +60,7 @@ const genQueryParams = (config: any) => {
       bounding_box,
       coordinate_system: 'EPSG:4326',
       map_zoom_level: zoom,
-      aggregation_type: aggType,
+      aggregation_type: genPandasAggtype(aggType),
     },
   };
 };
@@ -91,6 +93,7 @@ const settings = makeSetting<GeoHeatMapConfig>({
       short: 'color',
       onAdd: onAddColor,
       columnTypes: [COLUMN_TYPE.NUMBER],
+      expressions: PANDAS_EXPRESSION_OPTIONS.map(item => item.value),
     },
   ],
   icon: `<svg viewBox="0 0 80 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">

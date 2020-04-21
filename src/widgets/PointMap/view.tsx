@@ -10,7 +10,7 @@ import MapboxGl from '../common/MapboxGl';
 import {MapChartConfig} from '../common/MapChart.type';
 import {queryContext} from '../../contexts/QueryContext';
 import {I18nContext} from '../../contexts/I18nContext';
-import {stDistanceParser} from '../../utils/ArcternParser'
+import {stDistanceParser} from '../../utils/ArcternParser';
 import {
   measureGetter,
   popupContentGetter,
@@ -225,12 +225,11 @@ const PointMapNormal: FC<PointMapProps> = props => {
         allowPopUp={allowPopUp}
       />
       <Paper className="z-map-info-container" ref={paperRef}>
-        {isLoading && (
+        {(isLoading || dataMeta.loading) && (
           <div className="loading-container">
             <Spinner />
           </div>
         )}
-
         <div ref={detailRef}></div>
         <button className="close-button" onClick={onClose} type="button">
           {nls.label_close}

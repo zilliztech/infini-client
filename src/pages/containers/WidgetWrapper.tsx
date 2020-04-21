@@ -91,7 +91,7 @@ const WidgetWrapper: FC<DefaultWidgetProps> = props => {
     dataCache.current[query.id] = data;
     setLocalMeta((meta: Meta) => {
       const {id, timestamp} = query;
-      if (meta && (meta[query.id].timestamp as number) > timestamp!) {
+      if (meta && meta[query.id] && (meta[query.id].timestamp as number) > timestamp!) {
         // console.info('xxxx, not work yeah~~~~');
         // console.info(meta[query.id].loading, meta[query.id].timestamp! - timestamp!);
         return meta;
