@@ -179,6 +179,10 @@ const QueryArcternProvider: FC<{children: ReactNode}> = ({children}) => {
     return axiosInstance
       .post(url, {id: DB && DB.id.toString()}, getAxiosConfig())
       .then((res: any) => {
+        if (res && res.code === -1) {
+          window.localStorage.clear();
+          window.location.reload();
+        }
         return res && res.data.data;
       })
       .catch(errorParser);
