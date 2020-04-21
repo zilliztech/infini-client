@@ -71,7 +71,7 @@ const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapCo
   let colorM = measureGetter(newConfig, 'w')!;
   newConfig.aggType = colorM.expression;
   // gen vega
-  newConfig.measures = [{...colorM, expression: 'project'}, pointMeasure];
+  newConfig.measures = [pointMeasure, {...colorM, expression: 'project'}];
   newConfig.dimensions = [];
   return newConfig;
 };
