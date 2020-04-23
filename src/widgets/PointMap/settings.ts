@@ -2,7 +2,12 @@ import {makeSetting} from '../../utils/Setting';
 import {CONFIG, COLUMN_TYPE, RequiredType} from '../../utils/Consts';
 import {getColType} from '../../utils/ColTypes';
 import {queryDistinctValues, MeasureParams, parseTocolorItems} from '../Utils/settingHelper';
-import {DEFAULT_MAX_POINTS_NUM, KEY, arcternMapConfigHandler} from '../Utils/Map';
+import {
+  DEFAULT_MAX_POINTS_NUM,
+  KEY,
+  arcternMapConfigHandler,
+  DEFAULT_MAP_POINT_SIZE,
+} from '../Utils/Map';
 import {measureGetter} from '../../utils/WidgetHelpers';
 import {cleanLastSelfFilter, addSelfFilter} from '../../widgets/Utils/settingHelper';
 import {MapMeasure} from '../common/MapChart.type';
@@ -34,6 +39,12 @@ const _onAddNumColor = async ({measure, config, setConfig, reqContext}: any) => 
   setConfig({type: CONFIG.ADD_RULERBASE, payload: ruler});
   setConfig({type: CONFIG.ADD_COLORKEY, payload: gradientOpts[0].key});
 };
+const _onAddNumSize = async ({measure, config, setConfig, reqContext}: any) => {
+  const res = await reqContext.numMinMaxValRequest(measure.value, config.source);
+  const pointSize = res;
+  setConfig({type: CONFIG.UPDATE_POINT_SIZE, payload: {pointSize}});
+  setConfig({type: CONFIG.UPDATE_POINT_SIZE_BASE, payload: {pointSizeBase: pointSize}});
+};
 const onAddColor = async ({measure, config, setConfig, reqContext}: any) => {
   cleanLastSelfFilter({dimension: measure, setConfig, config});
   setConfig({type: CONFIG.DEL_ATTR, payload: ['colorItems']});
@@ -53,8 +64,16 @@ const onAddColor = async ({measure, config, setConfig, reqContext}: any) => {
   setConfig({type: CONFIG.ADD_MEASURE, payload: measure});
 };
 
+const onAddSize = async ({measure, config, setConfig, reqContext}: any) => {
+  await _onAddNumSize({measure, config, setConfig, reqContext});
+  setConfig({type: CONFIG.ADD_MEASURE, payload: measure});
+};
+
 const onDeletePointMapColor = ({setConfig}: any) => {
   setConfig({type: CONFIG.DEL_ATTR, payload: ['colorItems']});
+};
+const onDeleteSize = ({setConfig}: any) => {
+  setConfig({type: CONFIG.UPDATE_POINT_SIZE, payload: {pointSize: DEFAULT_MAP_POINT_SIZE}});
 };
 
 const pointMapConfigHandler = (config: any) => {
@@ -78,6 +97,7 @@ const pointMapConfigHandler = (config: any) => {
   }
 
   let colorMeasure = measureGetter(newConfig, 'color');
+  let sizeMeasure = measureGetter(newConfig, 'size');
   const pointMeasure = {
     expression: 'project',
     value: `ST_Point (${lon.value}, ${lat.value})`,
@@ -86,6 +106,9 @@ const pointMapConfigHandler = (config: any) => {
   newConfig.measures = [pointMeasure];
   if (colorMeasure) {
     newConfig.measures.push(colorMeasure);
+  }
+  if (sizeMeasure) {
+    newConfig.measures.push(sizeMeasure);
   }
   newConfig.limit = newConfig.points || DEFAULT_MAX_POINTS_NUM;
   return newConfig;
@@ -96,7 +119,8 @@ const genQueryParams = (config: any) => {
   const {_sw = {}, _ne = {}} = bounds;
   const bounding_box = [_sw.lng, _sw.lat, _ne.lng, _ne.lat];
   const c = measureGetter(config, 'color');
-  const isWeighted = !!c;
+  const s = measureGetter(config, 'size');
+  const isWeighted = !!c || !!s;
   let res: any = {
     width: Number.parseInt(width),
     height: Number.parseInt(height),
@@ -110,9 +134,10 @@ const genQueryParams = (config: any) => {
   if (isWeighted) {
     res[key] = {
       ...res[key],
-      size_bound: [pointSize],
-      color_bound: [ruler.min, ruler.max],
-      color_gradient: getColorGradient(colorKey),
+      size_bound: s ? [pointSize.min, pointSize.max] : [pointSize],
+      //TODO: hardcode for server, fix later;
+      color_bound: c ? [ruler.min, Math.min(50, ruler.max)] : undefined,
+      color_gradient: c ? getColorGradient(colorKey) : [colorKey],
     };
   } else {
     res[key] = {
@@ -150,6 +175,15 @@ const settings = makeSetting({
       onAdd: onAddColor,
       expressions: ['project'],
       onDelete: onDeletePointMapColor,
+      columnTypes: [COLUMN_TYPE.NUMBER],
+    },
+    {
+      type: RequiredType.OPTION,
+      key: 'size',
+      short: 'size',
+      onAdd: onAddSize,
+      expressions: ['project'],
+      onDelete: onDeleteSize,
       columnTypes: [COLUMN_TYPE.NUMBER],
     },
   ],
