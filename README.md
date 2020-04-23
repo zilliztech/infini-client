@@ -1,4 +1,4 @@
-### Arctern GUI/Client
+### Infini GUI/Client
 > An Interactive Dashboard built with D3, React, Typescript
 
 > Still in early phase
@@ -12,7 +12,7 @@ vim src/utils/Endpoints.ts
 npm/yarn install
 ```
 
-* start the server
+* start the dev server
 ```
 npm/yarn start
 ```
@@ -22,11 +22,21 @@ npm/yarn start
 yarn build
 ```
 
-## Support Database
-* postgres (partial support)
-* mysql (not yet)
-* arctern (connecting)
-* magewise
+* Dockerize
+```
+docker build -t infiniclient:sometag .
+```
+
+* Deployment
+After build, it will generate bunch of javascripts and htmls in build folder, you can serve them using nginx or any other webserver
+
+## Support SQL
+* postgres sql(partial support)
+* mysql sql
+* spark sql
+
+## Architecture
+TBD
 
 ## Folder and Files structure
 ```js
