@@ -31,6 +31,7 @@ export type ConfigAction =
   | {type: CONFIG.ADD_LIMIT; payload: {id: string; limit: number}}
   | {type: CONFIG.UPDATE_POINTS; payload: {id: string; [propName: string]: any}}
   | {type: CONFIG.UPDATE_POINT_SIZE; payload: {id: string; [propName: string]: any}}
+  | {type: CONFIG.UPDATE_POINT_SIZE_BASE; payload: {id: string; [propName: string]: any}}
   | {type: CONFIG.ADD_MAPTHEME; payload: WidgetConfig}
   | {type: CONFIG.ADD_STACKTYPE; payload: string}
   | {type: CONFIG.CHANGE_IS_AREA; payload: boolean}
@@ -125,6 +126,9 @@ export const singleConfigHandler = (config: WidgetConfig, action: ConfigAction) 
       return copiedConfig;
     case CONFIG.UPDATE_POINT_SIZE:
       copiedConfig.pointSize = action.payload.pointSize;
+      return copiedConfig;
+    case CONFIG.UPDATE_POINT_SIZE_BASE:
+      copiedConfig.pointSizeBase = action.payload.pointSizeBase;
       return copiedConfig;
     case CONFIG.ADD_MAPTHEME:
       copiedConfig.mapTheme = action.payload;
