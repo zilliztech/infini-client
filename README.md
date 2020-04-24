@@ -31,9 +31,8 @@ docker build -t infiniclient:sometag .
 After build, it will generate bunch of javascripts and htmls in build folder, you can serve them using nginx or any other webserver
 
 ## Support SQL
-* postgres sql(partial support)
-* mysql sql
-* spark sql
+* postgres sql
+* mysql sql(partial support)
 
 ## Architecture
 TBD
