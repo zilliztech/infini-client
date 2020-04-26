@@ -126,7 +126,6 @@ const genQueryParams = (config: any) => {
     height: Number.parseInt(height),
   };
   let key = isWeighted ? 'weighted' : 'point';
-  // console.info(!!c, !!s, isWeighted, key);
   res[key] = {
     opacity: 1,
     bounding_box,
@@ -137,7 +136,7 @@ const genQueryParams = (config: any) => {
       ...res[key],
       size_bound: s ? [pointSize.min, pointSize.max] : [pointSize],
       //TODO: hardcode for server, fix later;
-      color_bound: c ? [ruler.min, Math.min(50, ruler.max)] : undefined,
+      color_bound: c ? [ruler.min, Math.min(50, ruler.max)] : null,
       color_gradient: c ? getColorGradient(colorKey) : [colorKey],
     };
   } else {
