@@ -42,8 +42,8 @@ const _onAddNumColor = async ({measure, config, setConfig, reqContext}: any) => 
 const _onAddNumSize = async ({measure, config, setConfig, reqContext}: any) => {
   const res = await reqContext.numMinMaxValRequest(measure.value, config.source);
   const pointSize = res;
-  setConfig({type: CONFIG.UPDATE_POINT_SIZE, payload: {pointSize}});
   setConfig({type: CONFIG.UPDATE_POINT_SIZE_BASE, payload: {pointSizeBase: pointSize}});
+  setConfig({type: CONFIG.UPDATE_POINT_SIZE, payload: {pointSize}});
 };
 const onAddColor = async ({measure, config, setConfig, reqContext}: any) => {
   cleanLastSelfFilter({dimension: measure, setConfig, config});
@@ -136,7 +136,7 @@ const genQueryParams = (config: any) => {
       ...res[key],
       size_bound: s ? [pointSize.min, pointSize.max] : [pointSize],
       //TODO: hardcode for server, fix later;
-      color_bound: c ? [ruler.min, Math.min(50, ruler.max)] : undefined,
+      color_bound: c ? [ruler.min, Math.min(50, ruler.max)] : null,
       color_gradient: c ? getColorGradient(colorKey) : [colorKey],
     };
   } else {
