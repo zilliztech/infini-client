@@ -42,8 +42,8 @@ const _onAddNumColor = async ({measure, config, setConfig, reqContext}: any) => 
 const _onAddNumSize = async ({measure, config, setConfig, reqContext}: any) => {
   const res = await reqContext.numMinMaxValRequest(measure.value, config.source);
   const pointSize = res;
-  setConfig({type: CONFIG.UPDATE_POINT_SIZE, payload: {pointSize}});
   setConfig({type: CONFIG.UPDATE_POINT_SIZE_BASE, payload: {pointSizeBase: pointSize}});
+  setConfig({type: CONFIG.UPDATE_POINT_SIZE, payload: {pointSize}});
 };
 const onAddColor = async ({measure, config, setConfig, reqContext}: any) => {
   cleanLastSelfFilter({dimension: measure, setConfig, config});
@@ -126,6 +126,7 @@ const genQueryParams = (config: any) => {
     height: Number.parseInt(height),
   };
   let key = isWeighted ? 'weighted' : 'point';
+  // console.info(!!c, !!s, isWeighted, key);
   res[key] = {
     opacity: 1,
     bounding_box,

@@ -8,3 +8,4 @@ export {default as Sort} from './Sort';
 export {default as StackType} from './StackType';
 export {default as StyleSwitch} from './StyleSwitch';
 export {default as VisualDataMapping} from './VisualDataMapping';
+export {default as Range} from './Range';

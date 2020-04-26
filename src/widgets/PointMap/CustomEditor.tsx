@@ -25,6 +25,7 @@ const CustomEditor: FC = ({
   Limit,
   // PopUp,
   VisualDataMapping,
+  Range,
   nls,
 }: // options,
 any) => {
@@ -33,6 +34,9 @@ any) => {
   const colType = colorMeasure && getColType(colorMeasure.type);
   const useColorPalette = !colorMeasure || (colorMeasure && colType === 'number');
   const useVisualDataMapping = colorMeasure && colType === 'text';
+  // weighted map use weighted pointSize like {min:0, max:30}; point map use pointSize like 3;
+  const isWeightedPointSize = typeof config.pointSize === 'object';
+  // console.info(isWeightedPointSize)
   // const popUpOpts: any = options.map((opt: any) => opt.colName);
 
   return (
@@ -49,14 +53,25 @@ any) => {
           setConfig={setConfig}
           title={nls.label_of_points_size}
         />
-        <Limit
-          min={DEFAULT_MAP_POINT_SIZE}
-          max={DEFAULT_MAX_MAP_POINT_SIZE}
-          attr={'pointSize'}
-          title={nls.label_point_size}
-          config={config}
-          setConfig={setConfig}
-        />
+        {isWeightedPointSize ? (
+          <Range
+            min={config.pointSizeBase.min}
+            max={config.pointSizeBase.max}
+            attr={'pointSize'}
+            config={config}
+            setConfig={setConfig}
+            title={nls.label_point_size}
+          />
+        ) : (
+          <Limit
+            min={DEFAULT_MAP_POINT_SIZE}
+            max={DEFAULT_MAX_MAP_POINT_SIZE}
+            attr={'pointSize'}
+            title={nls.label_point_size}
+            config={config}
+            setConfig={setConfig}
+          />
+        )}
       </div>
       {/* <div className={classes.source}>
         <PopUp config={config} setConfig={setConfig} options={popUpOpts} />
