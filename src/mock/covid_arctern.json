@@ -5,7 +5,7 @@
   "userId": "infini",
   "configs": [
     {
-      "type": "GeoHeatMap",
+      "type": "PointMap",
       "title": "全球确诊数",
       "source": "world_with_city",
       "layout": {
@@ -19,62 +19,62 @@
         "moved": false,
         "static": false
       },
-      "dimensions": [
+      "dimensions": [],
+      "measures": [
         {
-          "label": "Longitude",
-          "short": "longtitude",
-          "value": "Longitude",
           "type": "double",
-          "format": "auto",
+          "value": "Longitude",
+          "label": "Longitude",
           "as": "lon",
-          "isBinned": false,
-          "maxbins": 12,
-          "expression": "gis_mapping_lon",
-          "isNotUseBin": true
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "gis_point_lon",
+          "name": "y0"
         },
         {
-          "label": "Latitude",
-          "short": "latitude",
-          "value": "Latitude",
           "type": "double",
-          "format": "auto",
+          "value": "Latitude",
+          "label": "Latitude",
           "as": "lat",
-          "isBinned": false,
-          "maxbins": 12,
-          "expression": "gis_mapping_lat",
-          "isNotUseBin": true
-        }
-      ],
-      "measures": [
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "gis_point_lat",
+          "name": "y1"
+        },
         {
           "type": "int",
           "value": "ConfirmedCount",
           "label": "ConfirmedCount",
-          "as": "w",
+          "as": "size",
           "format": "auto",
           "isCustom": false,
           "isRecords": false,
-          "expression": "sum",
-          "name": "y0"
+          "expression": "project",
+          "name": "y3"
         }
       ],
-      "colorItems": [],
       "filter": {},
       "selfFilter": {},
-      "width": 530,
-      "height": 1093,
+      "width": 951,
+      "height": 1092.666748046875,
       "isServerRender": true,
-      "colorKey": "green_yellow_red",
       "mapTheme": "mapbox://styles/mapbox/dark-v9",
-      "zoom": 2.4742439486819863,
+      "zoom": 4.109058911483106,
+      "pointSize": {"min": 0, "max": 1000},
+      "points": 1000000,
+      "popupItems": [],
       "id": "id_bkxbkpx7wy7",
-      "ruler": {"max": 166831, "min": 0},
-      "rulerBase": {"max": 166831, "min": 0},
-      "center": {"lng": 104.13633351225008, "lat": 37.90513974653511},
+      "colorKey": "#E062AE",
+      "center": {"lng": 109.1222886800249, "lat": 31.65536168245535},
       "bounds": {
-        "_sw": {"lng": 70.60454112247754, "lat": -27.067169735573266},
-        "_ne": {"lng": 137.66812590202528, "lat": 73.36503696611794}
-      }
+        "_sw": {"lng": 89.74767396923829, "lat": 11.063794550160054},
+        "_ne": {"lng": 128.49690339081485, "lat": 48.538831566976484}
+      },
+      "pointSizeBase": {"max": 219764, "min": 0},
+      "ruler": {"max": 219764, "min": 0},
+      "rulerBase": {"max": 219764, "min": 0}
     },
     {
       "type": "HeatChart",
@@ -82,7 +82,7 @@
       "source": "world_with_city",
       "layout": {
         "w": 6,
-        "h": 31,
+        "h": 30,
         "x": 24,
         "y": 0,
         "i": "id_wbn47cet8m",
@@ -148,7 +148,7 @@
       "source": "world_with_city",
       "layout": {
         "w": 6,
-        "h": 13,
+        "h": 12,
         "x": 12,
         "y": 10,
         "i": "id_lm8umpo0a7",
@@ -204,8 +204,8 @@
       "limit": 10,
       "colorKey": "blue_green_yellow",
       "id": "id_lm8umpo0a7",
-      "ruler": {"min": 0, "max": 31897},
-      "rulerBase": {"min": 0, "max": 31897}
+      "ruler": {"min": 0, "max": 88199.5},
+      "rulerBase": {"min": 0, "max": 88199.5}
     },
     {
       "type": "PieChart",
@@ -213,7 +213,7 @@
       "source": "world_with_city",
       "layout": {
         "w": 6,
-        "h": 12.5,
+        "h": 12,
         "x": 18,
         "y": 10,
         "i": "id_97um5t9egj9",
@@ -270,7 +270,7 @@
       },
       "sort": {"name": "", "order": "descending"},
       "limit": 13,
-      "colorKey": "ordinal8",
+      "colorKey": "ordinal2",
       "id": "id_97um5t9egj9"
     },
     {
@@ -297,7 +297,7 @@
         "w": 6,
         "h": 8,
         "x": 18,
-        "y": 22.5,
+        "y": 22,
         "i": "id_9jm06b2lb4b",
         "minW": 3,
         "minH": 1,
@@ -331,9 +331,9 @@
       ],
       "layout": {
         "w": 6,
-        "h": 7.5,
+        "h": 8,
         "x": 12,
-        "y": 23,
+        "y": 22,
         "i": "id_ndo07sr4ope",
         "minW": 3,
         "minH": 1,
@@ -346,7 +346,7 @@
       "id": "id_ndo07sr4ope"
     },
     {
-      "type": "HistogramChart",
+      "type": "LineChart",
       "title": "",
       "source": "world_with_city",
       "layout": {
@@ -371,9 +371,9 @@
           "isBinned": true,
           "maxbins": 12,
           "min": 0,
-          "max": 166831,
-          "extent": [0, 166831],
-          "staticRange": [0, 166831]
+          "max": 219764,
+          "extent": [0, 219764],
+          "staticRange": [0, 219764]
         }
       ],
       "measures": [
@@ -381,7 +381,7 @@
           "type": "string",
           "value": "Country",
           "label": "Country",
-          "as": "y",
+          "as": "measure_m7xv27u0dn",
           "format": "auto",
           "isCustom": false,
           "isRecords": false,
@@ -391,8 +391,8 @@
       ],
       "colorItems": [
         {
-          "color": "#37A2DA",
-          "as": "y",
+          "color": "#FFDB5C",
+          "as": "measure_m7xv27u0dn",
           "label": "Country",
           "isRecords": false,
           "value": "Country"
@@ -400,10 +400,11 @@
       ],
       "filter": {},
       "selfFilter": {},
+      "isShowRange": false,
       "id": "id_tukcxwkesgi"
     }
   ],
   "createdAt": "Tue Apr 14 17:39:12 2020",
-  "modifyAt": "Tue Apr 14 17:39:12 2020",
-  "sources": ["nyc_taxi", "world_with_city"]
+  "modifyAt": "Sun Apr 26 11:55:59 2020",
+  "sources": ["world_with_city"]
 }
