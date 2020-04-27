@@ -109,7 +109,7 @@ const scatterConfigHandler = (config: any) => {
 };
 
 const genQueryParams = (config: any) => {
-  const {width, height, pointSize, colorKey = '', ruler = [], xDomain, yDomain} = config;
+  const {width, height, pointSize, colorKey = '', ruler = [], xDomain, yDomain, opacity} = config;
   const bounding_box = [xDomain[0], yDomain[0], xDomain[1], yDomain[1]];
   const c = measureGetter(config, 'color');
   const isWeighted = !!c;
@@ -119,7 +119,7 @@ const genQueryParams = (config: any) => {
   };
   let key = isWeighted ? 'weighted' : 'point';
   res[key] = {
-    opacity: 0.5,
+    opacity,
     bounding_box,
     coordinate_system: 'EPSG:3857',
   };

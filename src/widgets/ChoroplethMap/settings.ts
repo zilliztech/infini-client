@@ -76,7 +76,7 @@ const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapCo
   return newConfig;
 };
 const genQueryParams = (config: any) => {
-  const {width, height, ruler, colorKey = '', bounds = {}} = config;
+  const {width, height, ruler, colorKey = '', bounds = {}, opacity} = config;
   const {_sw = {}, _ne = {}} = bounds;
   const bounding_box = [_sw.lng, _sw.lat, _ne.lng, _ne.lat];
   return {
@@ -87,7 +87,7 @@ const genQueryParams = (config: any) => {
       coordinate_system: 'EPSG:4326',
       color_gradient: getColorGradient(colorKey),
       color_bound: [ruler.min, ruler.max],
-      opacity: 1,
+      opacity,
       aggregation_type: genPandasAggtype(config.aggType),
     },
   };

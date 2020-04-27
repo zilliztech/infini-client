@@ -48,6 +48,8 @@ const getActionType = (attr: any) => {
       return CONFIG.UPDATE_POINTS;
     case 'pointSize':
       return CONFIG.UPDATE_POINT_SIZE;
+    case 'opacity':
+      return CONFIG.UPDATE_OPACITY;
     default:
       return 0;
   }
@@ -64,6 +66,7 @@ const Limit = (props: ILimit) => {
     min = 1000,
     max = 10000000,
     initValue = min * 2,
+    step = false,
   } = props;
   const value: number = config[attr] || min;
   const type = getActionType(attr);
@@ -81,7 +84,7 @@ const Limit = (props: ILimit) => {
 
   useEffect(() => {
     if (!config[attr]) {
-      setConfig({payload: {limit: initValue}, type});
+      setConfig({payload: {[attr]: initValue}, type});
     }
     setInputNum();
     //eslint-disable-next-line react-hooks/exhaustive-deps
@@ -97,7 +100,7 @@ const Limit = (props: ILimit) => {
           max={max}
           value={inputNum || value}
           onChange={onSlideChange}
-          step={getSliderStep(min, max)}
+          step={step || getSliderStep(min, max)}
         />
         <TextField
           classes={{root: classes.customInput}}

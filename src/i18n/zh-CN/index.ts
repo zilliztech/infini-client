@@ -89,6 +89,7 @@ const nls = {
   label_sort_by: '排序',
   label_point_size: '点大小',
   label_of_points_size: '点数量',
+  label_opacity: '透明度',
   label_desc: '倒序',
   label_asc: '顺序',
   label_records: '记录',
