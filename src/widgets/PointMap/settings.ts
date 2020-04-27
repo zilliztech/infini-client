@@ -115,7 +115,7 @@ const pointMapConfigHandler = (config: any) => {
 };
 
 const genQueryParams = (config: any) => {
-  const {width, height, pointSize, colorKey = '', bounds = {}, ruler = []} = config;
+  const {width, height, pointSize, colorKey = '', bounds = {}, ruler = [], opacity} = config;
   const {_sw = {}, _ne = {}} = bounds;
   const bounding_box = [_sw.lng, _sw.lat, _ne.lng, _ne.lat];
   const c = measureGetter(config, 'color');
@@ -127,7 +127,7 @@ const genQueryParams = (config: any) => {
   };
   let key = isWeighted ? 'weighted' : 'point';
   res[key] = {
-    opacity: 1,
+    opacity,
     bounding_box,
     coordinate_system: 'EPSG:4326',
   };

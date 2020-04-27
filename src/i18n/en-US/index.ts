@@ -90,6 +90,7 @@ const nls = {
   label_sort_by: 'SORT',
   label_point_size: 'POINT SIZE',
   label_of_points_size: 'NUM OF POINTS',
+  label_opacity: 'OPACITY',
   label_desc: 'DESC',
   label_asc: 'ASC',
   label_records: '# Records',

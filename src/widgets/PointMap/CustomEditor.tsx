@@ -93,6 +93,16 @@ any) => {
           )}
         </div>
       )}
+      <Limit
+        min={0}
+        max={1}
+        initValue={1}
+        step={0.01}
+        attr={'opacity'}
+        title={nls.label_opacity}
+        config={config}
+        setConfig={setConfig}
+      />
       <div className={classes.source}>
         <MeasuresFormat config={config} setConfig={setConfig} />
       </div>
