@@ -64,8 +64,7 @@ const Login: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   if (isIn) {
-    // return <Redirect to="/" />;
-    return <Redirect to={`${PATH_BI}/nyc_taxi`} />;
+    return <Redirect to={window.localStorage.getItem('lastVisited') || `${PATH_BI}/nyc_taxi`} />;
   }
 
   const importDashboard = (obj: any) => {

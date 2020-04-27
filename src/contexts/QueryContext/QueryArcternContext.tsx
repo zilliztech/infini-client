@@ -55,6 +55,8 @@ const QueryArcternProvider: FC<{children: ReactNode}> = ({children}) => {
         content: errContent,
         onConfirm: () => {
           window.localStorage.clear();
+          // redirect to the right demo for different demos
+          window.localStorage.setItem('lastVisited', window.location.pathname);
           window.location.reload();
           _setDB(false);
         },
