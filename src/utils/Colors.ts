@@ -14,6 +14,8 @@ const EchartRange = [
   '#FFDB5C',
   '#ff9f7f',
   '#fb7293',
+  '#FF0000',
+
   '#E062AE',
   '#E690D1',
   '#e7bcf3',

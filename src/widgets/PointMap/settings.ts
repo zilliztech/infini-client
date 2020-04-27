@@ -135,8 +135,7 @@ const genQueryParams = (config: any) => {
     res[key] = {
       ...res[key],
       size_bound: s ? [pointSize.min, pointSize.max] : [pointSize],
-      //TODO: hardcode for server, fix later;
-      color_bound: c ? [ruler.min, Math.min(50, ruler.max)] : null,
+      color_bound: c ? [ruler.min, ruler.max] : null,
       color_gradient: c ? getColorGradient(colorKey) : [colorKey],
     };
   } else {

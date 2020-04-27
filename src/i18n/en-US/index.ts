@@ -89,7 +89,7 @@ const nls = {
   label_add_measure: 'ADD MEASURE',
   label_sort_by: 'SORT',
   label_point_size: 'POINT SIZE',
-  label_of_points_size: 'NUM OF POINTS SIZE',
+  label_of_points_size: 'NUM OF POINTS',
   label_desc: 'DESC',
   label_asc: 'ASC',
   label_records: '# Records',
