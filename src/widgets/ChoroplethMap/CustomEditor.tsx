@@ -5,10 +5,12 @@ const CustomEditor: FC = ({
   MeasuresFormat,
   config,
   ColorPalette,
+  Limit,
   setConfig,
   MapTheme,
   data,
   dataMeta,
+  nls,
 }: any) => {
   return (
     <div className={classes.root}>
@@ -22,6 +24,18 @@ const CustomEditor: FC = ({
           config={config}
           setConfig={setConfig}
           colorTypes={['gradient']}
+        />
+      </div>
+      <div className={classes.source}>
+        <Limit
+          min={0}
+          max={1}
+          initValue={1}
+          step={0.01}
+          attr={'opacity'}
+          title={nls.label_opacity}
+          config={config}
+          setConfig={setConfig}
         />
       </div>
       <div className={classes.source}>

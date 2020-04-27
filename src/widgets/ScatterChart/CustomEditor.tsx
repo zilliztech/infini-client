@@ -45,6 +45,16 @@ const CustomEditor: FC = ({
           config={config}
           setConfig={setConfig}
         />
+        <Limit
+          min={0}
+          max={1}
+          initValue={1}
+          step={0.01}
+          attr={'opacity'}
+          title={nls.label_opacity}
+          config={config}
+          setConfig={setConfig}
+        />
       </div>
       <div className={classes.source}>
         <PopUp config={config} setConfig={setConfig} options={popUpOpts} />
