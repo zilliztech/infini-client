@@ -5,7 +5,6 @@ import {makeStyles, useTheme} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import {solidOpts, ordinalOpts, gradientOpts, isGradientType} from '../../utils/Colors';
 import {genEffectClickOutside} from '../../utils/EditorHelper';
-import {measureGetter} from '../../utils/WidgetHelpers';
 import Ruler from './Ruler';
 import {
   colorItemHeight,
@@ -85,11 +84,10 @@ const ColorPalette = (props: any) => {
     isUseRuler = isGradientType(config.colorKey),
   } = props;
   const {colorKey = ''} = config;
-  const colorMeasure = measureGetter(config, 'color');
   const root = useRef<HTMLDivElement>(null);
   const [isShowOpts, setShowOpts] = useState(false);
 
-  const title = `${nls.label_color_palette}${colorMeasure ? `: ${colorMeasure.label}` : ''}`;
+  const title = nls.label_color_palette;
   const _genOpts = (colorTypes: any[]) => {
     const [useSolid, useOrdinal, useGradient] = [
       !!colorTypes.find((opt: string) => opt === 'solid'),
