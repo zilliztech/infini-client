@@ -225,7 +225,7 @@ const PointMapNormal: FC<PointMapProps> = props => {
         allowPopUp={allowPopUp}
       />
       <Paper className="z-map-info-container" ref={paperRef}>
-        {(isLoading || dataMeta.loading) && (
+        {(isLoading || (dataMeta && dataMeta.loading)) && (
           <div className="loading-container">
             <Spinner />
           </div>
