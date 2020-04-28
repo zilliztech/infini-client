@@ -1,0 +1,167 @@
+{
+  "id": "covid_china",
+  "demo": false,
+  "title": "新冠病毒疫情实时-中国",
+  "userId": "infini",
+  "configs": [
+    {
+      "type": "PointMap",
+      "title": "当前确诊分布图",
+      "source": "china",
+      "layout": {
+        "w": 15,
+        "h": 30,
+        "x": 0,
+        "y": 0,
+        "i": "id_9g3lr4nc5ea",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "dimensions": [],
+      "measures": [
+        {
+          "type": "double",
+          "value": "longitude",
+          "label": "longitude",
+          "as": "lon",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "gis_point_lon",
+          "name": "y0"
+        },
+        {
+          "type": "double",
+          "value": "latitude",
+          "label": "latitude",
+          "as": "lat",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "gis_point_lat",
+          "name": "y1"
+        },
+        {
+          "type": "int",
+          "value": "cityConfirmedCount",
+          "label": "cityConfirmedCount",
+          "as": "size",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "project",
+          "name": "y2"
+        },
+        {
+          "type": "int",
+          "value": "cityCurrentConfirmedCount",
+          "label": "cityCurrentConfirmedCount",
+          "as": "color",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "project",
+          "name": "y3"
+        }
+      ],
+      "filter": {},
+      "selfFilter": {},
+      "width": 664,
+      "height": 1093,
+      "isServerRender": true,
+      "mapTheme": "mapbox://styles/mapbox/dark-v9",
+      "zoom": 3.061299135737756,
+      "pointSize": {"min": 1, "max": 16},
+      "points": 1000000,
+      "popupItems": [],
+      "colorKey": "green_yellow_red",
+      "opacity": 1,
+      "id": "id_9g3lr4nc5ea",
+      "center": {"lng": 104.09413796941863, "lat": 37.070210932030534},
+      "bounds": {
+        "_sw": {"lng": 76.12830509594068, "lat": -6.057673330534854},
+        "_ne": {"lng": 132.059970842903, "lat": 64.86687386636532}
+      },
+      "pointSizeBase": {"max": 50333, "min": 1},
+      "ruler": {"max": 75, "min": -1},
+      "rulerBase": {"max": 75, "min": -1}
+    },
+    {
+      "title": "累计确诊数",
+      "filter": {},
+      "selfFilter": {},
+      "type": "NumberChart",
+      "source": "china",
+      "dimensions": [],
+      "measures": [
+        {
+          "type": "int",
+          "value": "cityConfirmedCount",
+          "label": "cityConfirmedCount",
+          "as": "value",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "sum",
+          "name": "y0"
+        }
+      ],
+      "layout": {
+        "w": 15,
+        "h": 15,
+        "x": 15,
+        "y": 0,
+        "i": "id_gvdtm8yhaof",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "colorKey": "#FF0000",
+      "isServerRender": false,
+      "colorItems": [],
+      "id": "id_gvdtm8yhaof"
+    },
+    {
+      "title": "累计治愈数",
+      "filter": {},
+      "selfFilter": {},
+      "type": "NumberChart",
+      "source": "china",
+      "dimensions": [],
+      "measures": [
+        {
+          "type": "int",
+          "value": "cityCuredCount",
+          "label": "cityCuredCount",
+          "as": "value",
+          "format": "auto",
+          "isCustom": false,
+          "isRecords": false,
+          "expression": "sum",
+          "name": "y0"
+        }
+      ],
+      "layout": {
+        "w": 15,
+        "h": 15,
+        "x": 15,
+        "y": 15,
+        "i": "id_xbz65wxmfu",
+        "minW": 3,
+        "minH": 1,
+        "moved": false,
+        "static": false
+      },
+      "colorKey": "#9FE6B8",
+      "isServerRender": false,
+      "colorItems": [],
+      "id": "id_xbz65wxmfu"
+    }
+  ],
+  "createdAt": "Tue Apr 28 10:43:03 2020",
+  "modifyAt": "Tue Apr 28 10:43:03 2020",
+  "sources": ["nyc_taxi", "china"]
+}
