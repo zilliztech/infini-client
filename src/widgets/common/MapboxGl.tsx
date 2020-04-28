@@ -104,7 +104,7 @@ const MapboxGl: FC<MapChartProps> = props => {
     const onLoad = () => {
       if (mapContainer.current) {
         onMapLoaded(config, getMapBound).then((bounds: any) => {
-          if (bounds !== -1) {
+          if (bounds && bounds !== -1) {
             mapbox.fitBounds(bounds);
           }
           onMapUpdate && onMapUpdate(mapbox, mapContainer.current);
