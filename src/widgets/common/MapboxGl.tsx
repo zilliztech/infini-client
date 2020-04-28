@@ -54,6 +54,8 @@ const MapboxGl: FC<MapChartProps> = props => {
       style: config.mapTheme,
       zoom: config.zoom || DEFAULT_ZOOM,
       center: config.center || defaultMapCenterGetter(language),
+      minZoom: 0,
+      maxZoom: 18,
     });
     const _language = new MapboxLanguage();
     mapbox.addControl(_language);
