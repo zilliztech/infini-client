@@ -1,7 +1,7 @@
 {
-  "id": "covid",
+  "id": "covid_world",
   "demo": false,
-  "title": "新冠病毒热力图",
+  "title": "新冠病毒全球分布",
   "userId": "infini",
   "configs": [
     {
