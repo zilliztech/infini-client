@@ -1,5 +1,5 @@
 import {makeSetting} from '../../utils/Setting';
-import {KEY, arcternMapConfigHandler} from '../Utils/Map';
+import {KEY, arcternMapConfigHandler, getValidBoundingBox} from '../Utils/Map';
 import {dimensionGetter, measureGetter} from '../../utils/WidgetHelpers';
 import {CONFIG, COLUMN_TYPE, RequiredType, PANDAS_EXPRESSION_OPTIONS} from '../../utils/Consts';
 import {GeoHeatMapConfig} from './types';
@@ -51,8 +51,7 @@ const geoHeatMapConfigHandler: ConfigHandler<GeoHeatMapConfig> = config => {
 
 const genQueryParams = (config: any) => {
   const {width, height, zoom, bounds = {}, aggType} = config;
-  const {_sw = {}, _ne = {}} = bounds;
-  const bounding_box = [_sw.lng, _sw.lat, _ne.lng, _ne.lat];
+  const bounding_box = getValidBoundingBox(bounds);
   return {
     width: Number.parseInt(width),
     height: Number.parseInt(height),

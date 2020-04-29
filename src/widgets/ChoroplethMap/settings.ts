@@ -2,7 +2,7 @@ import {makeSetting} from '../../utils/Setting';
 import {restoreSource, cloneObj} from '../../utils/Helpers';
 import {CONFIG, COLUMN_TYPE, RequiredType, PANDAS_EXPRESSION_OPTIONS} from '../../utils/Consts';
 import {measureGetter, dimensionGetter, getExpression} from '../../utils/WidgetHelpers';
-import {KEY as MAPKEY, parseBoundsToPolygon} from '../Utils/Map';
+import {KEY as MAPKEY, parseBoundsToPolygon, getValidBoundingBox} from '../Utils/Map';
 import {orFilterGetter} from '../../utils/Filters';
 import {ChoroplethMapConfig} from './types';
 import {MeasureParams} from '../Utils/settingHelper';
@@ -77,8 +77,7 @@ const choroplethMapConfigHandler = <ChoroplethMapConfig>(config: ChoroplethMapCo
 };
 const genQueryParams = (config: any) => {
   const {width, height, ruler, colorKey = '', bounds = {}, opacity} = config;
-  const {_sw = {}, _ne = {}} = bounds;
-  const bounding_box = [_sw.lng, _sw.lat, _ne.lng, _ne.lat];
+  const bounding_box = getValidBoundingBox(bounds);
   return {
     width: Number.parseInt(width),
     height: Number.parseInt(height),

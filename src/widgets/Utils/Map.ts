@@ -196,3 +196,20 @@ export const arcternMapConfigHandler = (config: any) => {
   newConfig.filter = orFilterGetter(newConfig.filter);
   return newConfig;
 };
+
+const _getValidLat = (lng: number) => {
+  if (lng > 180) {
+    return lng - 360;
+  }
+  if (lng < -180) {
+    return lng + 360;
+  }
+  return lng;
+};
+// https://epsg.io/3857,for the usage area of EPSG 3857 is between 85.06°S and 85.06°N.
+// If the longitude is greater than 180, subtract 360 from this value.
+// the one of the longitude in this issue is 213.44455123091348, so replace this value with 213.44455123091348 - 360 = -146.55544876908652
+export const getValidBoundingBox = (bounds: any) => {
+  const {_sw = {}, _ne = {}} = bounds;
+  return [_getValidLat(_sw.lng), _sw.lat, _getValidLat(_ne.lng), _ne.lat];
+};
