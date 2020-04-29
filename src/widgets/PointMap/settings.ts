@@ -7,6 +7,7 @@ import {
   KEY,
   arcternMapConfigHandler,
   DEFAULT_MAP_POINT_SIZE,
+  getValidBoundingBox,
 } from '../Utils/Map';
 import {measureGetter} from '../../utils/WidgetHelpers';
 import {cleanLastSelfFilter, addSelfFilter} from '../../widgets/Utils/settingHelper';
@@ -116,8 +117,7 @@ const pointMapConfigHandler = (config: any) => {
 
 const genQueryParams = (config: any) => {
   const {width, height, pointSize, colorKey = '', bounds = {}, ruler = [], opacity} = config;
-  const {_sw = {}, _ne = {}} = bounds;
-  const bounding_box = [_sw.lng, _sw.lat, _ne.lng, _ne.lat];
+  const bounding_box = getValidBoundingBox(bounds);
   const c = measureGetter(config, 'color');
   const s = measureGetter(config, 'size');
   const isWeighted = !!c || !!s;
