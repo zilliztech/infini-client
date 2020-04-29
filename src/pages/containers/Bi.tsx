@@ -17,6 +17,7 @@ const Bi: FC<DashboardPageProps> = ({match}) => {
   const id = isNaN(Number(match.params.id)) ? match.params.id : Number(match.params.id);
 
   useEffect(() => {
+    window.localStorage.setItem('lastVisited', window.location.pathname);
     getDashBoard(id).then((dashboard: DashboardType) => {
       if (dashboard) {
         setDashboard({type: DASH_ACTIONS.UPDATE, payload: dashboard});

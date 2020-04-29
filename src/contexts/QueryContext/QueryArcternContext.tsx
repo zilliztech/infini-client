@@ -167,9 +167,13 @@ const QueryArcternProvider: FC<{children: ReactNode}> = ({children}) => {
       // final
       dashboard.sources = sources.map((s: string) => formatSource(s));
       dashboard.sourceOptions = sourceOptions;
+      return dashboard;
+    } else {
+      window.localStorage.clear();
+      // redirect to the right demo for different demos
+      window.localStorage.setItem('lastVisited', window.location.pathname);
+      window.location.reload();
     }
-
-    return dashboard;
   };
 
   const getTxtDistinctVal = async (sql: string) => {
