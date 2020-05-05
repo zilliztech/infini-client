@@ -62,7 +62,7 @@ const useStyles = makeStyles(() => ({
   submit: {},
 }));
 
-const DbMegaWiseSetting: FC<RouteComponentProps> = props => {
+const DbSetting: FC<RouteComponentProps> = props => {
   const classes = useStyles();
   const {auth} = useContext(authContext);
   const {DB, changeDBConfig, setDB, setConnId} = useContext(queryContext);
@@ -217,4 +217,4 @@ const DbMegaWiseSetting: FC<RouteComponentProps> = props => {
   );
 };
 
-export default DbMegaWiseSetting;
+export default DbSetting;

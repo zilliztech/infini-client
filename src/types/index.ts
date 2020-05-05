@@ -4,7 +4,7 @@ import {DashboardAction} from '../utils/reducers/dashboardReducer';
 import {Filter as coreFilter, Expression as coreExpression} from 'infinivis-core';
 import {TimeBin, ExtractBin} from '../utils/Time';
 
-///////////// Database settings for Megawise /////////////
+///////////// Database settings /////////////
 export type DBSetting = {
   type: 'megawise' | 'postgres' | 'mysql';
   host: string;

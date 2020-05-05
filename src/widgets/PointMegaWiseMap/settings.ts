@@ -120,6 +120,7 @@ const pointMapConfigHandler = (config: any) => {
 
 const settings = makeSetting({
   type: 'PointMegaWiseMap',
+  //TODO: add default dbType later
   dbTypes: ['megawise'],
   dimensions: [],
   measures: [

@@ -12,14 +12,13 @@ import Nav from '../../components/common/Nav';
 import Spinner from '../../components/common/Spinner';
 import {rootContext} from '../../contexts/RootContext';
 import MainContainer from './MainContainer';
-import DbSetting from '../DbSetting';
 import DBSettingMegaWise from '../DBSettingMegaWise';
 import {PATH_LOGIN, PATH_CONFIG_DB, PATH_ROOT, PATH_BI} from '../../utils/Endpoints';
 
 const RootContainer: FC = () => {
   const {nls} = useContext(I18nContext);
   const {auth, setUnauthStatus} = useContext(authContext);
-  const {dialog, snakebar, theme, themeMap, isArctern} = useContext(rootContext);
+  const {dialog, snakebar, theme, themeMap} = useContext(rootContext);
   const classes = makeStyles({
     root: {
       display: 'flex',
@@ -44,7 +43,7 @@ const RootContainer: FC = () => {
           {isLogined && <Nav onAvatarClick={setUnauthStatus} />}
           <Switch>
             <Route path={PATH_LOGIN} component={Login} />
-            <Route path={PATH_CONFIG_DB} component={isArctern ? DbSetting : DBSettingMegaWise} />
+            <Route path={PATH_CONFIG_DB} component={DBSettingMegaWise} />
             <Route path={PATH_ROOT} component={MainContainer} />
             <Route exact path={PATH_BI}>
               <Redirect to={PATH_ROOT} />

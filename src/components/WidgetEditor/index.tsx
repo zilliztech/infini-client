@@ -1,7 +1,6 @@
 import React, {FC, useContext, useState, useEffect, useRef, Suspense} from 'react';
 import * as customSetting from '../settingComponents';
 import {useTheme, makeStyles} from '@material-ui/core/styles';
-import {rootContext} from '../../contexts/RootContext';
 import {I18nContext} from '../../contexts/I18nContext';
 import {WidgetEditorProps} from '../../types/Editor';
 import Source from './Source';
@@ -10,7 +9,6 @@ import Measures from './Measures';
 import WidgetEditorContent from './WidgetEditorContent';
 import Spinner from '../common/Spinner';
 import {cloneObj} from '../../utils/Helpers';
-import {getView} from '../../utils/WidgetHelpers';
 import {isReadyToRender, genEffectClickOutside} from '../../utils/EditorHelper';
 import {genWidgetEditorStyle, genCustomSettingStyle} from './index.style';
 import './index.scss';
@@ -22,7 +20,6 @@ const useStyles = makeStyles(theme => genWidgetEditorStyle(theme) as any) as Fun
 const useCustomSettingStyles = makeStyles(theme => genCustomSettingStyle(theme) as any) as Function;
 
 const WidgetEditor: FC<WidgetEditorProps> = props => {
-  const {isArctern} = useContext(rootContext);
   const {nls} = useContext(I18nContext);
   const theme = useTheme();
   const classes = useStyles(theme);
@@ -38,7 +35,6 @@ const WidgetEditor: FC<WidgetEditorProps> = props => {
   const baseInfoNode = useRef<HTMLElement>(null);
   // Dynamic load chart settings and view components
   // let CustomEditComponent;
-  type = getView(type, isArctern);
   let chartKey = `${type}/view`;
   let chartEditorKey = `${type}/CustomEditor`;
   let Widget = cache.get(chartKey);

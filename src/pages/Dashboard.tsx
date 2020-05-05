@@ -32,7 +32,7 @@ const _getLayouts = (configs: WidgetConfig[]) =>
 const Dashboard: FC<DashboardProps> = ({dashboard, setDashboard}) => {
   const {configs, id, demo, sources} = dashboard;
   const {getData, isFirefox} = useContext(queryContext);
-  const {widgetSettings, isArctern} = useContext(rootContext);
+  const {widgetSettings} = useContext(rootContext);
   const theme = useTheme();
   // get sourceOptions like dimensions options, measures options
   const classes = useStyles(theme);
@@ -90,8 +90,8 @@ const Dashboard: FC<DashboardProps> = ({dashboard, setDashboard}) => {
       isFirstRun.current = false;
     }
     // parse configs to querys, create cross filter nodes and sqls
-    let querys = getWidgetSql(widgetConfigs, sources, widgetSettings, isArctern);
-    // console.info(`the querys is: ${JSON.stringify(querys)}`); 
+    let querys = getWidgetSql(widgetConfigs, sources, widgetSettings);
+    // console.info(`the querys is: ${JSON.stringify(querys)}`);
     // send to the backend
     dataQueryCache.current.q(querys);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -116,7 +116,7 @@ const Dashboard: FC<DashboardProps> = ({dashboard, setDashboard}) => {
     }
   };
 
-  const onDragStart = function(...args: any) {
+  const onDragStart = function (...args: any) {
     let evt = args[4];
     let target = evt.target;
     let isCanvas = target && target.tagName === 'CANVAS';

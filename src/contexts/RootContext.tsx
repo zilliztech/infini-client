@@ -6,7 +6,6 @@ import {namespace} from '../utils/Helpers';
 
 // interface
 interface IRootContext {
-  isArctern?: boolean;
   theme: any;
   auth: any;
   saveTheme: Function;
@@ -58,18 +57,7 @@ function importThemes(r: any) {
 }
 importThemes(require.context('../themes', false, /Theme\.ts$/));
 
-const filterValidWidgets = (widgetSettings: any, dbType: string) => {
-  const keys = Object.keys(widgetSettings);
-  keys.forEach((key: string) => {
-    if (widgetSettings[key].dbTypes.indexOf(dbType) === -1) {
-      delete widgetSettings[key];
-    }
-  });
-  return widgetSettings;
-};
-
 export const rootContext = React.createContext<IRootContext>({
-  isArctern: false,
   auth: {},
   theme: {},
   themes: [],
@@ -88,8 +76,6 @@ const {Provider} = rootContext;
 
 // put global singletons here: dialog, tooltip...
 const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
-  // database type
-  const isArctern = false;
   // color theme
   const auth = window.localStorage.getItem(namespace(['login'], 'userAuth'));
   const currTheme = (auth && JSON.parse(auth).theme) || 'Dark';
@@ -103,30 +89,7 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
   const _tooltipContent = useRef<HTMLDivElement>(null);
   const _tooltipWrapper = useRef<HTMLDivElement>(null);
   const _timeout: any = useRef(null);
-  if (!isArctern) {
-    if (widgetSettings.PointMegaWiseMap) {
-      widgetSettings.PointMap = widgetSettings.PointMegaWiseMap;
-      widgetSettings.PointMap.type = 'PointMap';
-    }
-    if (widgetSettings.GeoHeatMegaWiseMap) {
-      widgetSettings.GeoHeatMap = widgetSettings.GeoHeatMegaWiseMap;
-      widgetSettings.GeoHeatMap.type = 'GeoHeatMap';
-    }
-    if (widgetSettings.ChoroplethMegaWiseMap) {
-      widgetSettings.ChoroplethMap = widgetSettings.ChoroplethMegaWiseMap;
-      widgetSettings.ChoroplethMap.type = 'ChoroplethMap';
-    }
-    if (widgetSettings.ScatterMegaWiseChart) {
-      widgetSettings.ScatterChart = widgetSettings.ScatterMegaWiseChart;
-      widgetSettings.GeoHeatMap.type = 'ScatterChart';
-    }
-    [
-      'ChoroplethMegaWiseMap',
-      'GeoHeatMegaWiseMap',
-      'PointMegaWiseMap',
-      'ScatterMegaWiseChart',
-    ].forEach((key: string) => delete widgetSettings[key]);
-  }
+
   useEffect(() => {
     if (_tooltipWrapper.current) {
       _tooltipWrapper.current.style.left = `-999999px`;
@@ -198,7 +161,6 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
     <Provider
       value={{
         auth,
-        isArctern,
         theme,
         themes,
         themeMap,
@@ -210,7 +172,7 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
         showTooltip,
         hideTooltip,
         globalConfig,
-        widgetSettings: filterValidWidgets(widgetSettings, isArctern ? 'arctern' : 'megawise'), //TODO:
+        widgetSettings,
       }}
     >
       {children}

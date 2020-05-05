@@ -847,21 +847,3 @@ export const getWidgetTitle = (config: WidgetConfig, nls: any) => {
 
   return source;
 };
-
-export const getView = (type: string, isArctern: boolean = false) => {
-  if (isArctern) {
-    return type;
-  }
-  switch (type) {
-    case 'PointMap':
-      return 'PointMegaWiseMap';
-    case 'GeoHeatMap':
-      return 'GeoHeatMegaWiseMap';
-    case 'ChoroplethMap':
-      return 'ChoroplethMegaWiseMap';
-    case 'ScatterChart':
-      return 'ScatterMegaWiseChart';
-    default:
-      return type;
-  }
-};

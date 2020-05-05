@@ -62,7 +62,7 @@ const WidgetWrapper: FC<DefaultWidgetProps> = props => {
   const {getData} = useContext(queryContext);
   const {nls} = useContext(I18nContext);
   const theme = useTheme();
-  const {widgetSettings, isArctern} = useContext(rootContext);
+  const {widgetSettings} = useContext(rootContext);
   const classes = useStyles();
   const container = useRef<HTMLDivElement>(null);
   const {
@@ -155,8 +155,7 @@ const WidgetWrapper: FC<DefaultWidgetProps> = props => {
   if (widgetsMap.has(widgetKey)) {
     Widget = widgetsMap.get(widgetKey);
   } else {
-    let root = getView(widgetType, isArctern);
-    Widget = React.lazy(() => import(`../../widgets/${root}/view`));
+    Widget = React.lazy(() => import(`../../widgets/${widgetType}/view`));
     widgetsMap.set(widgetKey, Widget);
   }
 
@@ -181,7 +180,7 @@ const WidgetWrapper: FC<DefaultWidgetProps> = props => {
     );
     if (sourceReady.isReady && dimensionsReady.isReady && measuresReady.isReady) {
       // generate sql
-      const querys = getWidgetSql(localConfigs, [], widgetSettings, isArctern).filter(
+      const querys = getWidgetSql(localConfigs, [], widgetSettings).filter(
         (c: any) => c.id === localConfig.id || c.id === localConfig.linkId
       );
 
