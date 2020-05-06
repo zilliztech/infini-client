@@ -30,7 +30,7 @@ import {queryContext} from '../../contexts/QueryContext';
 import {I18nContext} from '../../contexts/I18nContext';
 import {rootContext} from '../../contexts/RootContext';
 import localConfigReducer from '../../utils/reducers/localConfigReducer';
-import {getWidgetTitle, getView} from '../../utils/WidgetHelpers';
+import {getWidgetTitle} from '../../utils/WidgetHelpers';
 
 // component cache
 const widgetsMap = new Map();

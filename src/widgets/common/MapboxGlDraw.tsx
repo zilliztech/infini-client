@@ -1,5 +1,4 @@
-import React, {FC, useEffect, useRef, useContext} from 'react';
-import {rootContext} from '../../contexts/RootContext';
+import React, {FC, useEffect, useRef} from 'react';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 const {DragCircleMode, DirectMode, SimpleSelectMode} = require('mapbox-gl-draw-circle');
 

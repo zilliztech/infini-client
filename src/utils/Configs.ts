@@ -22,9 +22,6 @@ import {
   Filters,
   WidgetSettings,
 } from '../types';
-import {restoreSource} from './Helpers';
-import {dateTruncParser, extractParser, parseBin} from './MegaWiseParser';
-import {truncParser, extractParser as arcternExtractParser} from './ArcternParser';
 
 // define a dataNode type
 type dataNode = {
