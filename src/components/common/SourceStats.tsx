@@ -39,6 +39,7 @@ const SourceStats = (props: ISourceStats) => {
       if (count) {
         let total: number = sourceOptions[`${s}rowCount`] || 0;
         let c = count.result ? count.result[0].countval : count[0] && count[0].countval;
+        c = c > total ? total : c;
         let label = (
           <span className={classes.wrapper}>
             <span style={{color: theme.palette.primary.main}}>{`${format(',.0f')(c || 0)}`}</span>

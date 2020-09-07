@@ -154,6 +154,8 @@ const QueryNodeProvider: FC<{children: ReactNode}> = ({children}) => {
         .then((res: any) => {
           const sourceOptions = res.data && res.data.data;
           let _sourceOptions: any = {};
+          console.log('xx',sources, sourceOptions);
+
           sources.forEach((source: any) => {
             let options = sourceOptions.filter((s: any) => s.name === source)[0];
             _sourceOptions[source] =
