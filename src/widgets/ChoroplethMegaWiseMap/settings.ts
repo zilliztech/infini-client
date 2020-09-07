@@ -107,6 +107,7 @@ const vegaChoroplethMapGen = (config: ChoroplethMapConfig) => {
 const settings = makeSetting<ChoroplethMapConfig>({
   type: 'ChoroplethMegaWiseMap',
   dbTypes: ['megawise'],
+  enable: false,
   dimensions: [
     {
       type: RequiredType.REQUIRED,
@@ -150,7 +151,6 @@ const settings = makeSetting<ChoroplethMapConfig>({
       <use id="Combined-Shape" fill="currentColor" xlink:href="#path-1"></use>
   </g>
 </svg>`,
-  enable: true,
   configHandler: choroplethMapConfigHandler,
   onAfterSqlCreate: (sql: string, config: ChoroplethMapConfig): string => {
     return `SELECT ${config.renderSelect} from (${sql}) as ${config.renderAs}`;

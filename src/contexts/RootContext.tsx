@@ -38,6 +38,7 @@ function importAllWidgets(r: any) {
   r.keys().forEach((key: string) => {
     const m = r(key);
     const defaultM = m.default;
+    console.log(defaultM)
     if (defaultM && defaultM.enable) {
       // console.info(defaultM)
       widgetSettings[defaultM.type] = defaultM;
@@ -118,8 +119,11 @@ const RootProvider: FC<{children: React.ReactNode}> = ({children}) => {
     }
     if (widgetSettings.ScatterMegaWiseChart) {
       widgetSettings.ScatterChart = widgetSettings.ScatterMegaWiseChart;
+    }
+    if (widgetSettings.GeoHeatMap) {
       widgetSettings.GeoHeatMap.type = 'ScatterChart';
     }
+
     [
       'ChoroplethMegaWiseMap',
       'GeoHeatMegaWiseMap',

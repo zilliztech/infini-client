@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import {useTheme} from '@material-ui/core/styles';
+// import {useTheme} from '@material-ui/core/styles';
 import {format} from 'd3';
 import {makeStyles} from '@material-ui/core/styles';
 import {customOptsStyle} from '../../utils/Theme';
@@ -31,19 +31,19 @@ interface ISourceStats {
 const SourceStats = (props: ISourceStats) => {
   const {data, sources, sourceOptions} = props;
   const classes = useStyles() as any;
-  const theme = useTheme();
+  // const theme = useTheme();
   // selected counts
   const selected: any = sources
     .map((s: string) => {
       let count = data[s];
       if (count) {
         let total: number = sourceOptions[`${s}rowCount`] || 0;
-        let c = count.result ? count.result[0].countval : count[0] && count[0].countval;
-        c = c > total ? total : c;
+        // let c = count.result ? count.result[0].countval : count[0] && count[0].countval;
+        // c = c > total ? total : c;
         let label = (
           <span className={classes.wrapper}>
-            <span style={{color: theme.palette.primary.main}}>{`${format(',.0f')(c || 0)}`}</span>
-            <span>{` of ${format(',.0f')(total)} · ${s}`}</span>
+            {/* <span style={{color: theme.palette.primary.main}}>{`${format(',.0f')(c || 0)}`}</span> */}
+            <span>{`${format(',.0f')(total)} · ${s}`}</span>
           </span>
         );
         return {
